@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contract Pending{{titleOfPage}}</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+
+    <style>
+
+        body{
+            margin: 10px 0px 0px 15px;
+            background-color: lavender;
+            font-family: Tahoma;
+            font-size: small;
+        }
+        .container{
+            height: 225px;
+            width: 67%;
+            display: flex;
+            flex-flow: column;
+            justify-content: space-between;
+        }
+        .NarrationndDel{
+            position: absolute;
+            right: 22%;
+            width: 24%;
+            height: 187px;
+            display: flex;
+            flex-flow: column;
+            justify-content: space-between;
+        }
+        .Outbox{
+            width: 80%;
+            border: 1px solid;
+            height: 45%;
+            margin-top: 7px;
+        }
+        .Text{
+            margin-top: -10px;
+            margin-left: 12px;
+            width: 69px;
+            background: lavender;
+        }
+        .inputText{
+            width: 96%;
+            height: 82%;
+            border: 1px solid;
+            overflow-y: scroll;
+            margin: 2px;
+            resize:none;
+        }
+        .grid{
+            width: 98%;
+            overflow: auto;
+            border:1px solid;
+            margin-top:5px;
+            height:200px;
+        }
+        table.gridtable {
+            margin: 0 auto;
+            width: 200%;
+            font-family: arial;
+            font-size: 12px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            text-align: center;
+            font-family: Tahoma;
+            font-size: smaller;
+        }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #b3b3cc;
+            border-top:0px;
+        }
+        table.gridtable td {
+            border-width: 1px;
+            padding: 5px 0px;
+            border-style: solid;
+            border-color: #666666;
+            font-weight: normal;
+            text-align :left;
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+        select, input{
+            background-color: white;
+            font-weight:bold;
+        }
+        .item-table{
+            margin-top:5px;
+            font-weight: bold;
+            margin-left: 150px;
+            width: 82%;
+            font-size:11px;
+            color:#ff0090;
+        }
+        .btn{
+            margin: 30px;
+            display: flex;
+            width: 40%;
+            justify-content: space-between;
+        }
+        .btn button{
+            background: grey;
+            color: white;
+            height: 30px;
+            cursor:pointer;
+        }
+    </style>
+
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+
+    <script>
+    var dat = "{{contractDt}}";
+    var year = dat.slice(-4);
+    var day = dat.slice(0,2);
+    var month = dat.slice(3,5);
+    /*$(document).ready( function() {
+        //var now = new Date();
+
+        //var day = ("0" + now.getDate()).slice(-2);
+       // var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+        var today = year+"-"+month+"-"+day ;
+
+        $('#sdate').val(today);
+        $('#sdate').attr('max', today);
+    });*/
+
+        window.onload = function(){
+            var now = new Date();
+
+            //var day = ("0" + now.getDate()).slice(-2);
+            //var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+            var today = year+"-"+month+"-"+day ;
+            //alert(today)
+
+            //$('#sdate').val(today);
+            //$('#sdate').attr('max', today);
+            document.getElementById("company").value = "{{Company}}";
+            document.getElementById("DocTyp").value = "{{DcmtType}}";
+            document.getElementById("Order").value = "{{OrdNo}}";
+            document.getElementById("sdate").value = today;
+            document.getElementById("customer").value = "{{Customer}}";
+            document.getElementById("consignee").value = "{{Customer}}";
+            document.getElementById("broker").value = "{{Broker}}";
+            document.getElementById("despto").value = "{{DespTo}}";
+            document.getElementById("currency").value = "{{CURRENCY}}";
+            document.getElementById("exrate").value = "{{EXRAte}}";
+            //document.getElementById("freight").value = "{{Freight}}";
+
+
+            document.getElementById("ContDetailTable").rows[1].cells[3].click();
+        }
+
+    </script>
+    <script>
+        $(document).ready(function(){
+     $('th').click(function(){
+        var table = $(this).parents('table').eq(0)
+        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+        this.asc = !this.asc
+        if (!this.asc){rows = rows.reverse()}
+        for (var i = 0; i < rows.length; i++){table.append(rows[i])}
+    })
+    function comparer(index) {
+        return function(a, b) {
+            var valA = getCellValue(a, index), valB = getCellValue(b, index)
+            return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+        }
+    }
+    function getCellValue(row, index){ return $(row).children('td').eq(index).text() }
+});
+    </script>
+
+</head>
+<body>
+    <div class="container">
+        <div style="width:72%;">
+            <label for="company" style="width: 13.8%; display: inline-block;"><b>Company:</b></label>
+            <input type="text" name="company" id="company" style="width:53.5%; " disabled>
+            <label for="DocTyp" style="width: 20%; display: inline-block;"><b>&emsp; Document Type:</b></label>
+            <input type="text" name="DocTyp" id="DocTyp" style="width:5%; " disabled>
+        </div>
+        <div style="width:75%">
+            <label for="Order" style="width: 13.2%; display: inline-block;"><b>Order No.:</b> </label>
+            <input type="text" name="Order" id="Order" style="width:18%;"  disabled>
+            <label for="sdate" style="width: 10%; display: inline-block;">&nbsp;<b>Date:</b></label>
+            <input type="date" name="sdate" id="sdate" style="width:21.5%;" disabled>
+            <label for="ordertype" style="width: 15%; display:inline-block;">&emsp; <b>Order Type:</b></label>
+            <select name="ordertype" id="ordertype" style="width:17%;" disabled>
+                <option value="">{{OrdType}}</option>
+            </select>
+        </div>
+        <div style="width:80%">
+            <label for="customer" style="width: 12.5%; display: inline-block;"><b>Customer:</b> </label>
+            <input type="text" name="customer" id="customer" style="width:48.2%;" disabled>
+            <label for="despto" style="width: 13%; display: inline-block;"><b>&emsp; Desp To:</b></label>
+            <input type="text" name="despto" id="despto" style="width: 20%;" disabled>
+
+        </div>
+        <div style="width:90%">
+            <label for="consignee" style="width: 11%; display: inline-block;"><b>Consignee:</b> </label>
+            <input type="text" name="consignee" id="consignee" style="width:43%;" disabled>
+            <label for="currency" style="width: 11.5%; display: inline-block;"><b>&emsp; Currency:</b> </label>
+            <input type="text" name="currency" id="currency" style="width:6%;" disabled>
+            <label for="exrate" style="width: 10%; display: inline-block;"><b>&emsp; Ex. Rate:</b> </label>
+            <input type="text" name="exrate" id="exrate" style="width:10%;" disabled>
+        </div>
+        <div style="width:50%">
+            <label for="broker" style="width: 20%; display: inline-block;"><b>Broker:</b> </label>
+            <input type="text" name="broker" id="broker" style="width:77%;" disabled>
+        </div>
+        <div style="width:100%;">
+<!--            <label for="freight" style="width: 10%; display:inline-block; display:none;"><b>Freight:</b> </label>-->
+<!--            <input type="text" name="freight" id="freight" style="width:15%;" disabled>-->
+            <label for="oilperc" style="width: 10%; display:inline-block; "><b>Oil Perc:</b> </label>
+            <input type="text" name="oilperc" id="oilperc" style="width:22%;" disabled>
+        </div>
+        <div>
+<!--            <label for="comm" style="width: 10%; display:inline-block; display:None;"><b>Comm.%:</b> </label>-->
+<!--            <input type="text" name="comm" id="comm" style="width:10%;" disabled>-->
+        </div>
+        <div class="NarrationndDel">
+            <div class="Outbox" style="height:53%;">
+                <div class="Text"><b>Narration</b></div>
+<!--                <div class="inputText">-->
+                    <textarea name="" class="inputText" id="narration">{{Narration}}</textarea>
+<!--                </div>-->
+            </div>
+            <div class="Outbox" style="height:25%; display: None;">
+                <div class="Text" style="width:78px"><b>Delivery At</b></div>
+<!--                <div class="inputText" style="height:75%">-->
+                    <textarea name="" id="" class="inputText" style="height:61%;"></textarea>
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+
+<!-- #################   Table   ######################-->
+    <div style="display:None" class="item-table" id="itemText">text</div>
+    <div class="grid">
+        <table class="gridtable sortable" id="ContDetailTable">
+            <thead style="position:sticky; top:0;">
+                <tr>
+                    <th style="position:sticky; left:0; margin:0; border-left:0; border-right:1px solid;">*</th>
+                    <th style="width: 80px; font-size: 14px;">Prev. Doc. No</th>
+                    <th style="width:80px;">Prev. Doc. Type</th>
+                    <th>Item Type</th>
+                    <th style="width:200px;">Item</th>
+                    <th>Quality</th>
+                    <th>ShadeCode</th>
+                    <th style="width: 150px;">Shade</th>
+                    <th>Lot Number</th>
+                    <th style="width: 80px;">Qnty</th>
+                    <th>Original Cont.Rate</th>
+                    <th style="width: 80px;">Contract Rate</th>
+                    <th>Initial Comm%</th>
+                    <th style="width: 80px;">Net Rate</th>
+                    <th>Balance Comm%</th>
+                    <th>D-Rate</th>
+                    <th style="width: 80px;">Bill Rate</th>
+                    <th>Cross Section/Luster</th>
+                    <th>Package Type</th>
+                    <th>Delv. Days</th>
+                    <th style="width: 80px;">Delv. Start Date</th>
+                    <th style="width: 80px;">Delv. End Date</th>
+                    <th>Order Status</th>
+                    <th>Contract Status</th>
+                    <th>Updt Qty</th>
+                    <th style="width:140px;">PO Reference Number</th>
+                    <th style="border-right:0px; width: 100px;">Package Weight</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in GDataView %}
+                <tr style="background-color: lightblue;" onclick="myFunction(this)">
+                    <th style="position:sticky; left:0; margin:0; border-left:0; border-right:1px solid;">{{i.srNo}}</th>
+                    <td onclick="cellFunction(this)">{{i.CONTNO}}</td>
+                    <td style="text-align:center" onclick="cellFunction(this)">{{i.CONDOCTYP}}</td>
+                    <td onclick="cellFunction(this)">{{i.YARNTYP}}</td>
+                    <td onclick="cellFunction(this)">{{i.ITEM}}</td>
+                    <td onclick="cellFunction(this)">{{i.QUALITY}}</td>
+                    <td onclick="cellFunction(this)">{{i.SHADECODE}}</td>
+                    <td onclick="cellFunction(this)">{{i.SHADE}}</td>
+                    <td onclick="cellFunction(this)">{{i.LOTNUMBER}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;">{{i.QNTY}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;background-color:#f7b5b5;">{{i.ORIGINALCONTRATE}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;">{{i.CONTRACTRATE}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;">{{i.INITIALCOMMPERC}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;background-color: #fcf7ac;">{{i.NETRATE}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;">{{i.BALCOMMPERC}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;background-color: #fcf7ac;">{{i.DRATE}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;background-color:#f7b5b5;">{{i.BILLRATE}}</td>
+                    <td onclick="cellFunction(this)">{{i.CROSSSECTION}}</td>
+                    <td onclick="cellFunction(this)">{{i.PKGTYPE}}</td>
+                    <td onclick="cellFunction(this)">{{i.DELVDAYS}}</td>
+                    <td onclick="cellFunction(this)">{{i.DELVSRTDT}}</td>
+                    <td onclick="cellFunction(this)">{{i.DELVENDDT}}</td>
+                    <td onclick="cellFunction(this)">{{i.ORDSTATUS}}</td>
+                    <td onclick="cellFunction(this)">{{i.CONTRACTSTATUS}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;">{{i.UPDTQTY}}</td>
+                    <td onclick="cellFunction(this)">{{i.POREFNO}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;">{{i.PKGWT}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- #################   challan Table start   ######################-->
+    <div id="challandiv" class="grid" style="width:85%; display:none;">
+        <table class="gridtable" id="challantable" style="width:100%;">
+            <thead style="position:sticky; top:0;">
+                <tr>
+                    <th style="width: 80px; font-size: 14px;">Challan No.</th>
+                    <th style="width: 75px;">Challan Date</th>
+                    <th style="width:200px;">Item</th>
+                    <th>Quality</th>
+                    <th style="width: 150px;">Shade</th>
+                    <th>Lot Number</th>
+                    <th style="width: 80px;">Qnty</th>
+                    <th style="width: 80px;">Rate</th>
+                    <th>Cops</th>
+                    <th>Box</th>
+                    <th style="width: 80px;">Datewise Desp Qty</th>
+                    <th style="width: 150px;">Party</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background-color: lightblue;">
+                    <td onclick="cellFunction(this)">{{i.CONTNO}}</td>
+                    <td onclick="cellFunction(this)">{{i.YARNTYP}}</td>
+                    <td onclick="cellFunction(this)">{{i.ITEM}}</td>
+                    <td onclick="cellFunction(this)">{{i.QUALITY}}</td>
+                    <td onclick="cellFunction(this)">{{i.SHADE}}</td>
+                    <td onclick="cellFunction(this)">{{i.LOTNUMBER}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;">{{i.QNTY}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;background-color:#f7b5b5;">{{i.ORIGINALCONTRATE}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;">{{i.CONTRACTRATE}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;">{{i.INITIALCOMMPERC}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;background-color: #fcf7ac;">{{i.NETRATE}}</td>
+                    <td onclick="cellFunction(this)" style="text-align:right;">{{i.BALCOMMPERC}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<!--    ################################# end challan table-->
+    <div id="totalqty" style="margin-left: 901px; margin-bottom:5px; font-size:15px; font-weight:bold; color:red;">text</div>
+    <div style="display: inline-block; width: 50%; font-size:13px; font-weight:bold;">
+        <div class="CusAdd">{{BPAddress}}</div>
+        <div class="pan">Pan No. : &emsp;{{PanNo}}</div>
+        <div class="gst">GST No. : &emsp;{{GstNo}}</div>
+        <div class="Arn">ARN No. : &emsp;</div>
+    </div>
+    <div style="display: inline-block; vertical-align: top; width: 49%; font-size:13px; font-weight:bold;">
+        <div class="CusAdd" style="background:lightblue;">Consignee Address : &ensp; {{BPAddress}}</div>
+    </div>
+    <div class="btn">
+        <button style="display:none">Show Desp. Challans</button>
+        <button style="display:none" disabled>PDF</button>
+        <button onclick="javascript:window.close();opener.window.focus();" > Back</button>
+    </div>
+     <script>
+        var z
+        function cellFunction(x){
+            z = x.cellIndex;
+            //return y;
+        }
+        function myFunction(x){
+            var totalQuantity = 0;
+            var y = x.rowIndex;
+            rowlength = document.getElementById("ContDetailTable").rows.length
+            var item = document.getElementById("ContDetailTable").rows[y].cells[3].innerHTML;
+            var shade = document.getElementById("ContDetailTable").rows[y].cells[5].innerHTML;
+            document.getElementById("itemText").innerHTML = "ITEM:  " + item + "\xa0\xa0\xa0\xa0\xa0\xa0\xa0 SHADE:  " + shade;
+
+            //alert(y)
+            i = 1;
+            while(i<rowlength){
+                count = 1;
+                while(count<26){
+                    document.getElementById("ContDetailTable").rows[i].cells[count].style.border= "1px solid black";
+                    count += 1;
+                }
+                totalQuantity += parseFloat(document.getElementById("ContDetailTable").rows[i].cells[9].innerHTML);
+                            document.getElementById("totalqty").innerHTML = totalQuantity.toFixed(2);
+                i += 1;
+            }
+            document.getElementById("ContDetailTable").rows[y].cells[z].style.border= "2px solid yellow";
+            //alert(z)
+        }
+    </script>
+
+</body>
+</html>

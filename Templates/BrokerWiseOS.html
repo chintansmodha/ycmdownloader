@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html>
+    <head style="font-family:arial;">
+        <title>Broker Wise OS</title>
+            {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+        <meta charset="utf-8" />
+        <style>
+
+            .container{
+                margin: 10px auto;
+                width:90%;
+                height:610px;
+                overflow:scroll;
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #b3b3cc;
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+
+
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #D8DA5C}
+.containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+
+    </style>
+        <STYLE>A {text-decoration: none;} </STYLE>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+
+</script>
+    </head>
+
+    <body style="background-color:#cccccc;font-family:arial;" onload="myFunction()" >
+<b style="margin-left:80px;background-color:#9ebeff;border-width: 2px;
+                padding: 10px;
+                border-style: solid;
+                border-color: #666666;"><a href="BrokerWiseOS.html">Outsanding (Broker Wise)</a></b>
+        <b style="background-color:white;border-width: 2px;
+                padding: 10px;
+                border-style: solid;
+                border-color: #666666;"><a href="CompanyWiseOS.html">Outsanding (Company Wise)</a></b>
+    <!-- <div class="yeartype">
+        <label for='year'><b>---Select Financial Year:---</b></label>
+       <select name='year' id='year' onchange="updateDate();">
+           {% for i in GDataYear%}
+       <option value={{i.CODE}}>{{i.CODE}}</option>
+       {%endfor%}
+       </select>
+           </div> -->
+        
+        <select style="position:absolute;margin-left:350px;" name="year" id="year" onchange="updateYear();">
+            {% for i in GDataYear %}
+       <option value={{i.CODE}}>{{i.CODE}}</option>
+       {% endfor %}
+        </select>
+       
+<input type="text" id="myInput" onkeyup="searchFunction()" style="margin-left:450px;" placeholder="Search for broker.." title="Type in a name">
+<b> (Rs. in Lacs)</b> 
+    <div class="container" id="wrap">
+        <table class="gridtable" id="tableMain">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>BROKER</th>
+                        <th>TOTAL</th>
+                        <th>UPTO15</th>
+                        <th>RANGE16-30</th>
+                        <th>OVER30</th>
+                        <th>DNAMT</th>
+                        <th>UNBILLEDAMT</th>
+                        <th>Advanced</th>
+                        <th>Un Adj.</th>
+                        <!-- <th>>Od Days</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                {%for j in GDataCompany%}
+                {%for k in GDataTotal%}
+                {% if k.BROKER == j %}
+       <tr class="breakrow">
+        <td style="text-align:left;background-color:#9ebeff;">{{ k.BROKER }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:100px;">{{ k.TOTAL }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:100px;">{{ k.UPTO15 }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:100px;">{{ k.RANGE16 }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:100px;">{{ k.OVER30 }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:100px;">{{ k.DNAMT }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:100px;">{{ k.UNBILLEDAMT }}</td>
+        <td style="text-align:right;background-color:#ff6a5d;width:100px;">{{ k. }}</td>
+        <td style="text-align:right;background-color:#ff6a5d;width:100px;">{{ k.UNADJUSTED }}</td>
+        <!-- <td style="text-align:right;background-color:#bbc0d6;width:100px;">{{ k.ABOVEODDAYS }}</td> -->
+
+    </tr>       {% endif %}
+                {% endfor %}
+                {%for i in GDataBrokerWiseOS%}
+        {%if j == i.BROKERGRP %}
+    <tr class="datarow" style="text-align:left;background-color:white;">
+        <td>{{ i.COMPANY }}</td>
+        <td style="display:none;" class="companycode">{{ i.COMPANYCODE }}</td>
+        <td style="display:none;" class="brokercode" >{{ i.BROKERCODE }}</td>
+        <td style="text-align:right;">{{ i.TOTAL }}</td>
+        <td style="text-align:right;" class="upto15">{{ i.UPTO15 }}</td>
+        <td style="text-align:right;" class="range16">{{ i.RANGE16 }}</td>
+        <td style="text-align:right;" class="over30">{{ i.OVER30 }}</td>
+        <td style="text-align:right;" class="dnamt">{{ i.DNAMT }}</td>
+        <td style="text-align:right;" class="unbilled">{{ i.UNBILLEDAMT }}</td>
+        <td style="text-align:right;" class="advance">{{ i. }}</td>
+        <td style="text-align:right;" class="unadj">{{ i.UNADJUSTED }}</td>
+        <!-- <td style="text-align:right;" class="odday">{{ i.ABOVEODDAYS }}</td> -->
+     </tr>
+                {%endif%}
+                 {% endfor %}
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+<div class="containerfooter">
+    <table class="gridtable">
+        <thead>
+        <tr style="font-family:arial;">
+
+        <td style="background-color:#9ebeff;"><b>TOTAL</b></td>
+        <td style="text-align:right;background-color:#ff9e58;width:100px;">{{ total }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:100px;">{{ upto15 }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:100px;">{{ range16 }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:100px;">{{ over30 }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:100px;">{{ dnamt }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:100px;">{{ unbilled }}</td>
+        <td style="text-align:right;background-color:#ff6a5d;width:100px;">{{ i }}</td>
+        <td style="text-align:right;background-color:#ff6a5d;width:100px;">{{ unadj }}</td>
+        <!-- <td style="text-align:right;background-color:#bbc0d6;width:100px;">{{ olddays }}</td> -->
+        </tr>
+        </thead>
+    </table>
+                    </div>
+		<script>
+document.getElementById("year").value = "{{year}}";
+
+
+    function updateYear(){
+        var year = document.getElementById("year").value;
+        window.open("BrokerWiseOSUpdateYear?year="+year);        
+
+    }
+
+
+
+function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tableMain");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }$(".datarow").hide();
+}
+
+
+function myFunction() {
+  $(".datarow").hide();
+}
+		$( document ).ready(function() {
+
+            //collapse and expand sections
+
+            $('.breakrow').click(function(){
+                $(this).nextUntil('tr.breakrow').slideToggle(200);
+            });
+        });
+
+$( ".upto15" ).click(function() {
+
+ var $this = $(this);
+ var cellIndex = $this.index();
+ var upto15 = $this.closest('tr').children().eq(cellIndex).html();
+ var brokercode = $this.closest('tr').children().eq(cellIndex-2).html();
+ var companycode = $this.closest('tr').children().eq(cellIndex-3).html();
+ var year = document.getElementById("year").value;
+
+window.open("BrokerWiseOSUpto15.html?companycode="+companycode+"&brokercode="+brokercode+
+"&upto15="+upto15+"&up15="+1+"&rg16="+0+"&ov30="+0+"&dna="+0+"&unb="+0+"&adv="+0+"&una="+0+"&odd="+0+"&year="+year);
+$this.css('background-color', '#00ffff');
+});
+
+$( ".range16" ).click(function() {
+
+ var $this = $(this);
+ var cellIndex = $this.index();
+ var range16 = $this.closest('tr').children().eq(cellIndex).html();
+ var brokercode = $this.closest('tr').children().eq(cellIndex-3).html();
+ var companycode = $this.closest('tr').children().eq(cellIndex-4).html();
+ var year = document.getElementById("year").value;
+
+window.open("BrokerWiseOSRange16.html?companycode="+companycode+"&brokercode="+brokercode+"&range16="+range16
++"&up15="+0+"&rg16="+1+"&ov30="+0+"&dna="+0+"&unb="+0+"&adv="+0+"&una="+0+"&odd="+0+"&year="+year);
+$this.css('background-color', '#00ffff');
+});
+
+$( ".over30" ).click(function() {
+
+ var $this = $(this);
+ var cellIndex = $this.index();
+ var over30 = $this.closest('tr').children().eq(cellIndex).html();
+ var brokercode = $this.closest('tr').children().eq(cellIndex-4).html();
+ var companycode = $this.closest('tr').children().eq(cellIndex-5).html();
+ var year = document.getElementById("year").value;
+window.open("BrokerWiseOSOver30.html?companycode="+companycode+"&brokercode="+brokercode+"&over30="+over30
++"&up15="+0+"&rg16="+0+"&ov30="+1+"&dna="+0+"&unb="+0+"&adv="+0+"&una="+0+"&odd="+0+"&year="+year);
+$this.css('background-color', '#00ffff');
+});
+
+$( ".dnamt" ).click(function() {
+
+ var $this = $(this);
+ var cellIndex = $this.index();
+ var dnamt = $this.closest('tr').children().eq(cellIndex).html();
+ var brokercode = $this.closest('tr').children().eq(cellIndex-5).html();
+ var companycode = $this.closest('tr').children().eq(cellIndex-6).html();
+ var year = document.getElementById("year").value;
+window.open("BrokerWiseOSDnAmt.html?companycode="+companycode+"&brokercode="+brokercode+"&dnamt="+dnamt
++"&up15="+0+"&rg16="+0+"&ov30="+0+"&dna="+1+"&unb="+0+"&adv="+0+"&una="+0+"&odd="+0+"&year="+year);
+$this.css('background-color', '#00ffff');
+});
+$( ".unbilled" ).click(function() {
+
+ var $this = $(this);
+ var cellIndex = $this.index();
+ var unbilled = $this.closest('tr').children().eq(cellIndex).html();
+ var brokercode = $this.closest('tr').children().eq(cellIndex-6).html();
+ var companycode = $this.closest('tr').children().eq(cellIndex-7).html();
+ var year = document.getElementById("year").value;
+window.open("BrokerWiseOSUnbilled.html?companycode="+companycode+"&brokercode="+brokercode+"&unbilled="+unbilled
++"&up15="+0+"&rg16="+0+"&ov30="+0+"&dna="+0+"&unb="+1+"&adv="+0+"&una="+0+"&odd="+0+"&year="+year);
+$this.css('background-color', '#00ffff');
+});
+
+$( ".advance" ).click(function() {
+
+ var $this = $(this);
+ var cellIndex = $this.index();
+ var advance = $this.closest('tr').children().eq(cellIndex).html();
+ var brokercode = $this.closest('tr').children().eq(cellIndex-7).html();
+ var companycode = $this.closest('tr').children().eq(cellIndex-8).html();
+ var year = document.getElementById("year").value;
+window.open("BrokerWiseOSAdvance.html?companycode="+companycode+"&brokercode="+brokercode+"&advance="+advance
++"&up15="+0+"&rg16="+0+"&ov30="+0+"&dna="+0+"&unb="+0+"&adv="+1+"&una="+0+"&odd="+0+"&year="+year);
+$this.css('background-color', '#00ffff');
+});
+$( ".unadj" ).click(function() {
+
+ var $this = $(this);
+ var cellIndex = $this.index();
+ var unadj = $this.closest('tr').children().eq(cellIndex).html();
+ var brokercode = $this.closest('tr').children().eq(cellIndex-8).html();
+ var companycode = $this.closest('tr').children().eq(cellIndex-9).html();
+ var year = document.getElementById("year").value;
+window.open("BrokerWiseOSUnAdj.html?companycode="+companycode+"&brokercode="+brokercode+"&unadj="+unadj
++"&up15="+0+"&rg16="+0+"&ov30="+0+"&dna="+0+"&unb="+0+"&adv="+0+"&una="+1+"&odd="+0+"&year="+year);
+$this.css('background-color', '#00ffff');
+});
+
+$( ".odday" ).click(function() {
+ var $this = $(this);
+ var cellIndex = $this.index();
+ var odday = $this.closest('tr').children().eq(cellIndex).html();
+ var brokercode = $this.closest('tr').children().eq(cellIndex-9).html();
+ var companycode = $this.closest('tr').children().eq(cellIndex-10).html();
+ var year = document.getElementById("year").value;
+window.open("BrokerWiseOSOdDay.html?companycode="+companycode+"&brokercode="+brokercode+"&odday="+odday
++"&up15="+0+"&rg16="+0+"&ov30="+0+"&dna="+0+"&unb="+0+"&adv="+0+"&una="+0+"&odd="+1+"&year="+year);
+$this.css('background-color', '#00ffff');
+});
+		</script>
+
+
+    </body>
+</html>

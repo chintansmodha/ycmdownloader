@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{Heading}}</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+    <style>
+        .zero {
+            border-style: solid;
+            margin-left: 60px;
+            margin-top: 10px;
+            padding: 8px;
+            width: 90%;
+            border-width: 5px;
+            height: 80px;
+        }
+
+        .one {
+            position: absolute;
+            margin-top: 10px;
+            margin-left: 30px;
+        }
+
+        .two {
+            position: absolute;
+            margin-top: 50px;
+            margin-left: 30px;
+        }
+
+        .three {
+            position: absolute;
+            margin-top: 10px;
+            margin-left: 830px;
+        }
+
+        .four {
+            position: absolute;
+            margin-top: 50px;
+            margin-left: 830px;
+        }
+
+        .five {
+            position: absolute;
+            margin-top: 10px;
+            margin-left: 850px;
+        }
+
+        .six {
+            position: absolute;
+            margin-top: 10px;
+            margin-left: 170px;
+        }
+
+        .seven {
+            position: absolute;
+            margin-top: 50px;
+            margin-left: 170px;
+        }
+
+        .eight {
+            position: absolute;
+            margin-top: 10px;
+            margin-left: 970px;
+        }
+
+        .nine {
+            position: absolute;
+            margin-top: 50px;
+            margin-left: 970px;
+        }
+
+        .ten {
+            position: absolute;
+            margin-top: 10px;
+            margin-left: 150px;
+        }
+
+
+        .container {
+            margin: 10px auto;
+            width: 90%;
+            height: 490px;
+            overflow: scroll;
+
+        }
+
+        table.gridtable {
+            margin: 0 auto;
+            width: 100%;
+            overflow: auto;
+            font-family: arial;
+            font-size: 14px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            text-align: center;
+
+        }
+
+        table.gridtable th {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        table.gridtablefooter th {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        .footer {
+            border-width: 2px;
+            width: 87%;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+
+
+        }
+
+        table.gridtable td {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            font-weight: normal;
+        }
+
+        tr:hover {
+            background-color: #D8DA5C
+        }
+
+        .containerfooter {
+            margin: 10px auto;
+            width: 90%;
+            height: 50px;
+
+
+        }
+    </style>
+</head>
+
+<body style="background-color:#99ccff;font-family:arial;">
+    <h1 style="margin-left:50px;">{{Heading}}</h1>
+    <div class="zero">
+        <div class="one"><b><label>Company: </label></b></div>
+        <div class="six">{{Company}}</div>
+
+        <div class="two"><b><label>Broker: </label></b></div>
+        <div class="seven">{{Broker}}</div>
+
+        <div class="three"><b><label>O/S Ammount: </label></b></div>
+        <div class="eight">{{OsAmt}}</div>
+
+        <div class="four"><b><label>Total Bills: </label></b></div>
+        <div class="nine">{{Bills}}</div>
+
+    </div>
+    <div class="container" id="wrap" style="font-family:arial;">
+        <table class="gridtable" id="tableMain">
+            <thead>
+
+                <tr>
+                    {%for i in Header%}
+                    <th>{{i}}</th>
+                    {%endfor%}
+                </tr>
+            </thead>
+            <tbody>
+                {%for i in GDataUpto15%}
+
+                <tr>
+                    <td style="text-align:left;">{{ i.FINNO }}</td>
+                    <td style="text-align:left;">{{ i.FINDATE }}</td>
+                    <td style="text-align:right;">{{ i.AMOUNT }}</td>
+                    <td style="text-align:right;">{{ i.DNAMT }}</td>
+                    <td style="text-align:right;">{{ i.CUMAMT }}</td>
+                    <td style="text-align:left;width:350px;">{{ i.PARTY }}</td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.getElementById("wrap").addEventListener("scroll", function () {
+            var translate = "translate(0," + this.scrollTop + "px)";
+            this.querySelector("thead").style.transform = translate;
+        });
+    </script>
+</body>
+
+</html>

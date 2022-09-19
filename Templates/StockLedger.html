@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Stock Ledger</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Stock Ledger</h1>
+    <style>
+.reporttype{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+        .date{
+            position: absolute;
+            margin-top: 10px;
+    margin-left:250px ;
+}
+        .comp{position: absolute;
+    margin-top: 100px;
+    margin-left:50px ;
+}
+        .itemgrp{position: absolute;
+    margin-top: 100px;
+    margin-left:400px ;
+}
+        .item{position: absolute;
+    margin-top: 100px;
+    margin-left:750px ;
+}
+ .export{position: absolute;
+    margin-top: 550px;
+    margin-left:50px ;
+}
+
+.items{
+    width: 700px;
+}
+
+
+select,
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 200px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+
+#type{
+
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"/></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+   function fetchItems(){
+    var opn = document.getElementById('type');
+    if (opn.value == 1){
+
+    document.getElementById('type').options.length = 0;
+    var opn = document.getElementById('type');
+    $.ajax({
+        url : "fetchItem", // the endpoint
+        type : "GET", // http method
+        data : {
+                }, 
+        success : function(json) {   
+            $.each(json.user, function(index, value){
+                var option = document.createElement('option');
+                option.text = value.LONGDESCRIPTION+"-"+value.ABSUNIQUEID;
+                option.value = value.ABSUNIQUEID;
+                opn.add(option, 0);
+            });
+        },
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+    }
+
+
+
+};
+
+
+
+    function Filter(){
+        document.getElementById('type').options.length = 0;
+        var opn = document.getElementById('type');
+        $(document).ready(function(){
+        var selected = $('#itemgrp').val();
+        itemgroup = selected.toString();
+
+        $.ajax({
+        url : "getItem", // the endpoint
+        type : "GET", // http method
+        data : { 'param' : itemgroup, 
+                }, 
+        success : function(json) {   
+            $.each(json.user, function(index, value){
+                var option = document.createElement('option');
+                option.text = value.LONGDESCRIPTION+"-"+value.ABSUNIQUEID;
+                option.value = value.ABSUNIQUEID;
+                opn.add(option, 0);
+            });
+        },
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+
+});
+
+    };
+
+    
+
+	function itemtype(alltype)
+	{
+		var comp=document.getElementById("type");
+		comp.disabled=!!alltype.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	};
+
+    function quality(allqlt)
+	{
+		var comp=document.getElementById("itemgrp");
+		comp.disabled=!!allqlt.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	};
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)){
+    alert("Please Enter Start Date");
+        event.preventDefault();
+    }
+
+    if (!Date.parse(endDate)){
+    alert("Please Enter End Date");
+        event.preventDefault();
+    }
+
+    if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+};
+
+	function company(allcomp)
+	{
+		var comp=document.getElementById("unit");
+		comp.disabled=!!allcomp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	};
+
+    $(document).ready(function()
+	{
+	$("#unit").select2();
+	$("#type").select2({dropdownAutoWidth : true});
+    $("#itemgrp").select2();
+    /* document.getElementById('type').options.length = 0; */
+	});
+
+
+    
+
+</script>
+    <script>
+        Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+    });
+        $(document).ready( function() {
+        $('#startdate').val(new Date().toDateInputValue());
+    });
+    $(document).ready( function() {
+        $('#enddate').val(new Date().toDateInputValue());
+    });
+
+
+    </script>
+</head>
+<body style="background-color:Lavender;">
+
+
+<form action='StockLedger' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+<div class="reporttype">
+<label for='reporttype'><b>Summary:</b></label>
+<select name='reporttype' id='reporttype'>
+<option value=1 selected>No</option>
+<option value=2 >Yes</option>
+</select>
+</div>
+
+    <div class="date">
+<label for='startdate'><b>Start Date:</b></label>
+<input type='date' id='startdate' name='startdate'>
+<label for='enddate'><b>End Date:</b></label>
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+
+<div class="comp">
+<label for='unit' ><b>Company Unit:</b></label>
+<label for="allcomp"> Select All Company Units</label>
+<input type="checkbox" id="allcomp" name="allcomp" value=1 onclick="company(this)"/>
+<br><br>
+<select  name='unit' id='unit'  class="unit" multiple>
+ {%for i in GDataCompanyCode%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="item">
+<label for='type'><b>Item:</b></label>
+<label for="alltype"> Select All Items</label>
+<input type="checkbox" id="alltype"  name="alltype" value=1  onclick="itemtype(this)">
+
+<br><br>
+<select  name='type' id='type' class="items" onchange="fetchItems()" multiple >
+<option value=1>Fetch All Items</option>
+</select>
+</div>
+
+<div class="itemgrp">
+<label for='itemgrp' ><b>Item Group:</b></label>
+<label for="allitemgrp"> Select All Groups</label>
+<input type="checkbox" id="allitemgrp" name="allitemgrp" value=1 onclick="quality(this)"/>
+<br><br>
+<select  name='itemgrp' id='itemgrp' multiple onchange="Filter()">
+ {%for i in GDataQuality%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+
+
+<div class="export">
+<label for='format' ><b>Export To:</b></label>
+<br><br>
+<button type='submit' form='form1' value='PDF' class="mar"  >PDF</button>
+</div>
+
+</form>
+<div class="six">
+<label for='exception'><b>{%if Exception %}
+<script>alert("Please Select Valid Credentials");</script>
+{% endif %}
+</b></label>
+</div>
+<script>
+
+
+
+    function add(event_data){
+    var jigar = document.getElementById("type");
+    alert(event_data);
+    $(jigar).append(event_data);
+};
+
+
+    </script>
+
+</body>
+
+</html>

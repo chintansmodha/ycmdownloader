@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Pending Purchase Order</title>
+        {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<style>
+select,
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 200px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+
+
+</style>
+    <script >
+    function progressstatus(selectallprogressstatus)
+	{
+		var allpending=document.getElementById("selectallPending");
+		var allpartlypending=document.getElementById("selectallPartlyPending");
+		allpending.checked=!!selectallprogressstatus.checked;
+		allpartlypending.checked=!!selectallprogressstatus.checked;
+	}
+
+    function companys(selectallcompany)
+    {
+            var comp=document.getElementById("selcompany");
+            comp.disabled=!!selectallcompany.checked;
+            if (comp.disabled)
+            {
+                comp.focus();
+            }
+    }
+
+    function party(selectallparty)
+        {
+            var partys=document.getElementById("selparty");
+            partys.disabled=!!selectallparty.checked;
+            if (partys.disabled)
+            {
+                partys.focus();
+            }
+        }
+
+
+    </script>
+    <script>
+
+
+
+ 	$(document).ready(function()
+        {
+            var selcompanylist=[];
+            $("#selcompany").select2(
+                {
+                    data:selcompanylist
+                }
+            );
+        }
+    );
+
+$(document).ready(function()
+        {
+            var selpartylist=[];
+            $("#selparty").select2(
+                {
+                    data:selpartylist
+                }
+            );
+        }
+    );
+    </script>
+</head>
+
+<body>
+
+<!-- go through this below site -->
+<!--******* http://eonasdan.github.io/bootstrap-datetimepicker/Installing/ ****-->
+<div class="vspacer20"></div>
+<div class="container">
+    <div class="row">
+        <div class='col-sm-16'>
+            <div class="panel panel-primary col-sm-16">
+                <div class="panel-heading">Pending Purchase Order List</div>
+                <form action='PendingPurchaseRegister' id='PendingPurchaseReportForm' target="_blank" class="mar" method="get">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div>
+                                    <label>Company</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div>
+                                    <label>Party</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div>
+                                    <label>Progress Status Type</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="selectallcompany" name="selectallcompany"
+                                                  onchange="companys(this);" value="1">Select All Company </Center>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="selectallparty" name="selectallparty"
+                                                  onclick="party(this)" value="1">Select All Party </Center>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="selectallprogressstatus"
+                                                  name="selectallprogressstatus"
+                                                  onclick="progressstatus(this)" value="1">Select All Progress
+                                        Status </Center>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <select name='selcompany' id='selcompany' class="form-control" multiple>
+                                        {%for i in company%}
+                                        <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.code }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <select name='selparty' id='selparty' multiple class="form-control">
+                                    {%for i in party%}
+                                    <option value="{{ i.LONGDESCRIPTION }}">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-xs-3 ">
+                                <input type="checkbox" id="selectallPending" name="selectallPending"
+                                       value="1"> All Pending </Center>
+                                </br>
+                                <input type="checkbox" id="selectallPartlyPending" name="selectallPartlyPending"
+                                       value="1"> All Partly Pending </Center>
+                            </div>
+                            <!--<div class="col-xs-3">
+                                <input type="checkbox" id="selectallClose" name="selectallClose"
+                                                   value="1">Select All Close (Either Full PO Qty Received or PO Cancelled) </Center>
+                            </div>-->
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+                            </div>
+                            <div class="col-xs-4">
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="text-right">
+                                    <label>Generate Report : </label>
+                                    <button type="submit" id="submit" value="Submit" class="btn btn-primary">PDF
+                                    </button>
+                                    <!--                                    <button class="btn btn-primary">Excel</button>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/moment.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+		$(function () {
+			$('#datetimeFrom').datetimepicker();
+			$('#datetimeTo').datetimepicker();
+		});
+
+</script>
+</body>

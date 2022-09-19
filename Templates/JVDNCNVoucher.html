@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >JV/DN/CN Voucher</title>
+{% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+    <style>
+
+        .container{
+                margin: 320px auto;
+                width:98%;
+                height:350px;
+                overflow:scroll;
+                position:absolute;
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding:2px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #b0c5e6;
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #D8DA5C}
+.containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+
+
+        .one{
+            position: absolute;
+            margin-top: 290px;
+            margin-left:50px ;
+}
+
+        .ten{
+            position: absolute;
+            margin-top: 340px;
+            margin-left:50px ;
+}
+
+        .amt{
+            position: absolute;
+            margin-top: 230px;
+            margin-left:550px ;
+}
+
+        .twelve{
+            position: absolute;
+            margin-top: 100px;
+            margin-left:1050px ;
+}
+
+        .comp{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:50px ;
+}
+.bank{
+            position: absolute;
+            margin-top: 60px;
+            margin-left: 50px;
+}
+        .three{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:450px ;
+}
+        .narr{
+            position: absolute;
+            margin-top: 60px;
+            margin-left:450px;
+            overflow:scroll;
+
+}
+        .party{
+            position: absolute;
+            margin-top: 110px;
+            margin-left: 50px;
+}
+        .broker{
+            position: absolute;
+            margin-top: 150px;
+            margin-left: 50px ;
+}
+        .five{
+            position: absolute;
+            margin-top: 650px;
+            margin-left:50px ;
+            overflow-y: auto;
+}
+
+        .six{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:50px ;
+}
+        .eight{
+            position: absolute;
+            margin-top: 300px;
+            margin-left: 1050px;
+}
+
+.refno{
+            position: absolute;
+            margin-top: 230px;
+            margin-left: 50px;
+}
+        .refdate{
+            position: absolute;
+            margin-top: 230px;
+            margin-left: 300px;
+ }
+
+      .vchno{
+            position: absolute;
+            margin-top: 200px;
+            margin-left: 50px;
+}
+        .vchdate{
+            position: absolute;
+            margin-top: 200px;
+            margin-left: 300px;
+
+}
+
+        .tdsappamt{
+            position: absolute;
+            margin-top: 270px;
+            margin-left: 500px;
+}
+        .tds{
+            position: absolute;
+            margin-top: 270px;
+            margin-left: 340px;
+}
+        .tdsamt{
+            position: absolute;
+            margin-top: 270px;
+            margin-left: 880px;
+}
+        .tdsgl{
+            position: absolute;
+            margin-top: 270px;
+            margin-left: 50px;
+}
+#comp{
+ width:350px;
+}
+#bank{
+    width:350px;
+}
+#party{
+    width:350px;
+}
+#narr{
+    width:400px;
+    height:60px;
+}
+#tds{
+    width:80px;
+}
+
+select,
+.select2 {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+     height: 40px;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+}
+
+.select3 {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select3-container .select3-selection {
+     height: 30px;
+}
+.select3-container--default .select3-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+ 	function company(allcomp)
+ 	{
+ 		var comp=document.getElementById("comp");
+ 		comp.disabled=!!allcomp.checked;
+ 		if (comp.disabled)
+ 		{
+			comp.focus();
+ 		}
+ 	}
+
+     function party()
+ 	{
+ 		var party=document.getElementById("party");
+ 		if (party.disabled)
+ 		{
+  			party.focus();
+ 		}
+	}
+
+ 	function desp()
+ 	{
+ 		var desp=document.getElementById("desp");
+ 		if (desp.disabled)
+ 		{
+ 			desp.focus();
+ 		}
+ 	}
+
+	function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)){
+      alert("Please Enter Start Date");
+      event.preventDefault();
+     }
+
+     if (!Date.parse(endDate)){
+     alert("Please Enter End Date");
+         event.preventDefault();
+     }
+
+    if((Date.parse(startDate) > Date.parse(endDate))) {
+          alert("End date should be greater than Start date");
+         event.preventDefault();
+     }
+      return true;
+}
+
+
+
+</script>
+
+<body style="background-color:Lavender;">
+
+
+<form action='BankCashVoucherTable' id='form1' class="mar" onsubmit=" date(event);" target="_blank" style="font-family:arial;">
+
+
+<div class="refno">
+<label for='refno'><b>Ref. No:</b></label>
+<input type='number' id='refno' name='refno'>
+</div>
+
+<div class="refdate">
+<label for='refdate'><b>Ref. Date:</b></label>
+<input type ='date' id='refdate' name='refdate'>
+<br> <br>
+</div>
+
+<div class="vchno">
+<label for='vchno'><b>Vch. No:</b></label>
+<input type='number' id='vchno' name='vchno'>
+</div>
+
+<div class="vchdate">
+<label for='vchdate'><b>Vch. Date:</b></label>
+<input type ='date' id='vchdate' name='vchdate'>
+<br> <br>
+</div>
+
+<div class="amt">
+<label for='amt'><b>Amount:</b></label>
+<input type="number" id="amt" name="amt">
+<br> <br>
+</div>
+
+<div class="narr">
+<label for='narr'><b>Narration:</b></label><br>
+<input type="text" id="narr" name="narr">
+<br> <br>
+</div>
+
+
+
+<div class="comp">
+<label for='comp'><b>Company:</b></label>
+    <BR>
+<input type='text' id='comp' name='comp'>
+</div>
+
+<div class="bank">
+<label for='bank'><b>Bank:</b></label>
+    <br>
+<input type='text' id='bank' name='bank'>
+</div>
+
+
+<div class="party">
+<label for='party'><b>Party:</b></label>
+    <br>
+<input type='text' id='party' name='party'>
+</div>
+
+
+<div class="three">
+<label for='reporttype'><b>Report Type:</b></label>
+<br>
+<select name='reporttype' id='reporttype'>
+<option value=1 >Debit Note</option>
+<option value=2 >Credit Note</option>
+<option value=3 selected>Journal Voucher</option>
+<option value=4 >Memorandum Journal Voucher</option>
+</select>
+</div>
+
+           <div class="tdsgl">
+<label for='tdsgl'><b>TDS GlCode:</b></label>
+<input type='text' id='tdsgl' name='tdsgl'>
+</div>
+
+
+
+    <div class="tds">
+<label for='tds'><b>TDS%:</b></label>
+<input type='number' id='tds' name='tds'>
+</div>
+
+     <div class="tdsamt">
+<label for='tdsamt'><b>TDS Amount:</b></label>
+<input type='number' id='tdsamt' name='tds'>
+</div>
+
+
+    <div class="tdsappamt">
+<label for='tdsappamt'><b>TDS Applicable Amount:</b></label>
+<input type='number' id='tdsappamt' name='tds'>
+</div>
+
+<div class="container" id="wrap">
+
+        <table class="gridtable" id="tableMain">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>A/C HEAD</th>
+                        <th>LEDGER ACCOUNT</th>
+                        <th>SUB LEDGER</th>
+                        <th>TYPE</th>
+                        <th>REF NUMBER</th>
+                        <th>REF DATE</th>
+                        <th>DR/CR</th>
+                        <th>INR AMOUNT</th>
+                        <th>DOC. AMT.</th>
+                        <th>CURRENCY</th>
+                        <th>DETAIL REMARKS</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataJVDNCNVoucher%}
+
+    <tr>
+        <td style="text-align:left;">{{ i.ACHEAD }}</td>
+
+        <td style="text-align:left;">{{ i.FDL_LEDGERACCOUNT }}</td>
+
+        <td style="text-align:left;">{{ i.FDL_SUBLEDGER }}</td>
+
+        <td style="text-align:center;width:100px;">{{ i.PAYMENTTYPE }}</td>
+
+        <td style="text-align:left;">{{ i.REFNO }}</td>
+
+        <td style="text-align:center;">{{ i.REFDATE }}</td>
+
+        <td style="text-align:left;">{{ i.DRCR }}</td>
+
+        <td style="text-align:right;">{{ i.AMOUNT }}</td>
+
+        <td style="text-align:right;">{{ i.CURR_AMT}}</td>
+
+        <td style="text-align:center;">{{ i.CURRANCY}}</td>
+
+        <td style="text-align:left;">{{ i.DETAIL_REMARKS}}</td>
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+</form>
+
+
+</body>
+
+<script>
+
+document.getElementById("wrap").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+
+document.getElementById("comp").value = '{{result.COMPANY}}';
+document.getElementById("comp").disabled=1;
+
+document.getElementById("bank").value = '{{result.BANKNAME}}';
+document.getElementById("bank").disabled=1;
+
+document.getElementById("party").value = '{{result.PARTY}}';
+document.getElementById("party").disabled=1;
+
+document.getElementById("vchno").value = {{result.VOUCHERNO}};
+var vchno=document.getElementById("vchno");
+vchno.disabled=1;
+
+document.getElementById("vchdate").value = '{{result.VOUCHERDATE}}';
+var vchdate=document.getElementById("vchdate");
+vchdate.disabled=1;
+
+document.getElementById("amt").value = {{result.HEADAMOUNT}};
+var amt=document.getElementById("amt");
+amt.disabled=1;
+
+document.getElementById("refno").value = '{{result.REFNO}}';
+var refno=document.getElementById("refno");
+refno.disabled=1;
+
+document.getElementById("refdate").value = '{{result.REFDATE}}';
+var refdate=document.getElementById("refdate");
+refdate.disabled=1;
+
+document.getElementById("narr").value = '{{result.REMARKS}}';
+var narr=document.getElementById("narr");
+narr.disabled=1;
+
+document.getElementById("tds").value = '{{result.TDS}}';
+document.getElementById("tds").disabled=1;
+
+document.getElementById("tdsamt").value = '{{result.TDSAMOUNT}}';
+document.getElementById("tdsamt").disabled=1;
+
+document.getElementById("tdsappamt").value = '{{result.TDSAPPLICABLEAMOUNT}}';
+document.getElementById("tdsappamt").disabled=1;
+
+document.getElementById("tdsgl").value = '{{result.TDSGLCODE}}';
+document.getElementById("tdsgl").disabled=1;
+</script>
+
+
+</html>

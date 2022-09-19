@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Print Despatch Instruction</title>
+{% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Print Despatch Instruction</h1>
+    <style>
+        .one{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:50px ;
+}
+        .two{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:250px ;
+}
+        .three{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:600px ;
+}
+        .four{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:750px ;
+}
+        .five{
+            position: absolute;
+            margin-top: 150px;
+            margin-left:50px ;
+            overflow-y: auto;
+}
+
+        .six{
+            position: absolute;
+            margin-top: 150px;
+            margin-left:250px ;
+
+}
+        .seven{
+            position: absolute;
+            margin-top: 400px;
+            margin-left:50px ;
+}
+
+        }
+
+#comp{
+ width:350px;
+}
+
+#party{
+ width:450px;
+ height:50px;
+}
+
+#item{
+ width:300px;
+}
+
+#type{
+    width:100px;
+}
+select,
+.select2 {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+     height: 100px;
+     overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+}
+
+.select3 {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select3-container .select3-selection {
+     height: 50px;
+     overflow: scroll;
+}
+.select3-container--default .select3-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+
+ 	function itemtype(allitem)
+	{
+		var items=document.getElementById("item");
+		items.disabled=!!allitem.checked;
+		if (items.disabled)
+		{
+			items.focus();
+		}
+	}
+
+ 	function company(allcomp)
+ 	{
+ 		var comp=document.getElementById("comp");
+ 		comp.disabled=!!allcomp.checked;
+ 		if (comp.disabled)
+ 		{
+			comp.focus();
+ 		}
+ 	}
+
+     function party()
+ 	{
+ 		var party=document.getElementById("party");
+ 		if (party.disabled)
+ 		{
+  			party.focus();
+ 		}
+	}
+
+ 	function desp()
+ 	{
+ 		var desp=document.getElementById("desp");
+ 		if (desp.disabled)
+ 		{
+ 			desp.focus();
+ 		}
+ 	}
+
+	function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)){
+      alert("Please Enter Start Date");
+      event.preventDefault();
+     }
+
+     if (!Date.parse(endDate)){
+     alert("Please Enter End Date");
+         event.preventDefault();
+     }
+
+    if((Date.parse(startDate) > Date.parse(endDate))) {
+          alert("End date should be greater than Start date");
+         event.preventDefault();
+     }
+      return true;
+}
+
+
+ 	$(document).ready(function()
+ 	{
+ 	$("#comp").select2();
+	$("#party").select2();
+ 	$("#item").select2();
+
+ 	});
+
+
+Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+    });
+        $(document).ready( function() {
+        $('#startdate').val(new Date().toDateInputValue());
+    });
+    $(document).ready( function() {
+        $('#enddate').val(new Date().toDateInputValue());
+    });
+</script>
+
+<body style="background-color:Lavender;">
+
+
+<form action='PrintDespatchInstructionTable' id='form1' class="mar" onsubmit=" date(event);" target="_blank" style="font-family:arial;">
+
+<div class="one">
+<label for='startdate'><b>Start Date:</b></label><br>
+<input type ='date' id='startdate' name='startdate'>
+<br> <br>
+<label for='enddate'><b>End Date:</b></label><br>
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+<div class="three">
+<label for='stordno'><b>Start Order No:</b></label><br>
+<input type ='text' id='stordno' name='stordno'>
+<br> <br>
+<label for='endordno'><b>End Order No:</b></label><br>
+<input type='text' id='endordno' name='endordno'>
+</div>
+
+<div class="two">
+<label for='item'><b>Item Type:</b></label> &nbsp;
+<label for="allitem"> Select All Item Types</label>
+<input  type="checkbox" id="allitem" name="allitem" value=1 onclick="itemtype(this)">
+<br>
+<select name='item' id='item' multiple >
+ {%for  i in GDataItemType%}
+<option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}</option>
+{% endfor %}
+</select>
+</div>
+
+
+
+<div class="five">
+<label for='type'><b>Report Type:</b></label>
+<br>
+<select name='type' id='type'>
+<option value=1  >With RD</option>
+<option value=2 selected>Without RD</option>
+</select>
+</div>
+
+<div class="six">
+<label for='documenttype'><b>Document Type:</b></label>
+<br>
+<select name='documenttype' id='documenttype'>
+<option value=02  >02</option>
+<option value=03 selected>03</option>
+</select>
+</div>
+
+</form>
+<div class="seven">
+<!--<label for='format' ><b>Export To:</b></label>-->
+<br><br>
+<button type='submit' form='form1' value='PDF' class="mar" >FIND</button>
+</div>
+
+<div class= "seven">
+<label for ='exception'><b>{%if Exception %}
+<script>alert("Note: No Result found according to your selected criteria ");</script>
+{% endif  %}
+</b></label>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+    <title>Finished Stock</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" type="text/css" href="css/lib/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.datatables.net/rss.xml">
+	<link rel="stylesheet" type="text/css" href="/media/css/site-examples.css?_=94461d89946ef749b7a43d14685c725d1">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+	<style type="text/css" class="init">
+
+	</style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="/media/js/site.js?_=7f3ff05b95c2da3db6d895b5bf6d6487"></script>
+	<script type="text/javascript" src="/media/js/dynamic.php?comments-page=extensions%2Fbuttons%2Fexamples%2Finitialisation%2Fexport.html" async></script>
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+	<script type="text/javascript" class="init">
+
+
+
+$(document).ready(function() {
+	$('#tableMain3').DataTable( {
+		dom: 'Bfrtip',
+		buttons: [
+			 'excel','print'
+		]
+	} );
+} );
+</script>
+    <style>
+.containertable{
+                margin: 40px auto;
+                width:40%;
+                height:350px;
+                overflow:scroll;
+                position:absolute;
+                background-color: #66ccff;
+            }
+.container1{
+                margin-top: 40px;
+                margin-left: 620px;
+                width:58%;
+                height:350px;
+                overflow:scroll;
+                position:absolute;
+                background-color: #66ccff;
+            }
+.container2{
+                margin: 400px auto;
+                width:40%;
+                height:250px;
+                overflow:scroll;
+                position:absolute;
+                background-color: #66ccff;
+            }
+.container3{
+                margin-top: 400px;
+                margin-left: 620px;
+                width:58%;
+                height:250px;
+                overflow:scroll;
+                position:absolute;
+                background-color: #66ccff;
+            }
+
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#666666;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding:2px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #ffff66;
+
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            table.gridtable td {
+                border-width: 1px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: bold;
+
+            }
+            td:hover {background-color: white}
+
+
+.search{
+position:absolute;
+margin-left:1200px;
+}
+
+
+    </style>
+<style type="text/css">
+      .hoverTable {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      /* Define the hover highlight color for the table row */
+      .hoverTable tr:hover {
+        background-color: #ffff99;
+      }
+      .hoverTable td:hover {
+        background-color: aqua;
+      }
+    </style>
+ <script>
+        function loadall(){
+
+<!--        $("select#CboRegisterType").append( $("<option>").val("value").html("{{LSRegisterType}}"));-->
+        document.getElementById("reporttype").value = {{reporttype}};
+        document.getElementById("startdate").value = '{{startdate}}';
+        document.getElementById("enddate").value = '{{enddate}}';
+<!--        document.getElementById("vchdt").value = '{{result.VCHDATE}}';-->
+        }
+    </script>
+
+<body nload="loadall()">
+
+
+
+
+<div class="container">
+
+
+
+
+<div class="container">
+
+    <div class="row">
+        <div class='col-sm-16'>
+
+            <div class="panel panel-primary col-sm-16">
+                <div class="panel-heading"> <button class="btn btn-default" onclick="history.back()"> <b>Back</b></button> &nbsp;&nbsp;Dispatch Detail For {{itemname}} </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+  <table class="table hoverTable col-xs-12" id="mainlist" style="overflow-x:auto;">
+                                    <thead>
+                                        <tr style=" font-family:arial;font-weight: bold;">
+                                        <th class="col-xs-10">{{header}}</th>
+                                        <th class="col-xs-2">Quantity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {%for i in GSecondList%}
+                                            <tr class="lotno">
+<!--                                            <td >{{i.UNIQUEID}}</td>-->
+                                            <td style="display:none;">{{i.UNIQUEID}}</td>
+                                            <td >{{i.LONGDESCRIPTION}}</td>
+                                            <td style="text-align:right;">{{i.QUANTITY}}</td>
+                                            </tr>
+                                        {% endfor%}
+                                    </tbody>
+                                </table>
+
+                    </div>
+
+<table class="table hoverTable col-xm-8" id="tableMain3">
+                                    <thead>
+                                        <tr style=" font-family:arial;font-weight: bold;">
+                                            <th>INVOICE NO.</th>
+                                            <th>INVOICE DATE</th>
+                                            <th>LRNO</th>
+                                            <th>DESPTO</th>
+                                            <th>LIFTDATE</th>
+                                            <th>LORRYNO</th>
+                                            <th>CUSTOMER</th>
+                                            <th>LOTNO</th>
+                                            <th>SHADECODE</th>
+                                            <th>QUANTITY</th>
+                                            <th>RATE</th>
+                                            <th>BOXNO</th>
+                                            <th>INVOICEAMOUNT</th>
+                                            <th>CONSIGNERNAME</th>
+                                            <th>ORDERNO</th>
+                                            <th>CHALLANNO</th>
+                                            <th>COMPANYNAME</th>
+                                            <th>PRODUCT</th>
+                                            <th>QUALITY</th>
+                                        </tr>
+                                    </thead>
+                                    {%for l in GLine%}
+                                        <tr>
+                                        <!--                                <th style="text-align:left;width:150px;">TOTAL</th>-->
+                                        <!--                                <th style="text-align:right;">{{l.AGENT}}</th>-->
+                                        <!--                                <th style="text-align:right;">{{l.QUANTITY}}</th>-->
+                                            <td>{{l.INVOICENUMBER}}</td>
+                                            <td>{{l.INVOICEDATE}}</td>
+                                            <td>{{l.LRNO}}</td>
+                                            <td>{{l.DESPTO}}</td>
+                                            <td>{{l.LIFTDATE}}</td>
+                                            <td>{{l.LORRYNO}}</td>
+                                            <td>{{l.CUSTOMER}}</td>
+                                            <td>{{l.LOTNUMBER}}</td>
+                                            <td>{{l.SHADECODE}}</td>
+                                            <td style="text-align:right;">{{l.QUANTITY}}</td>
+                                            <td style="text-align:right;">{{l.RATE}}</td>
+                                            <td style="text-align:center;">{{l.BOXES}}</td>
+                                            <td style="text-align:right;" class="currency-inr">{{l.INVOICEAMOUNT}}</td>
+                                            <td>{{l.CONSIGNERNAME}}</td>
+                                            <td>{{l.ORDERNO}}</td>
+                                            <td>{{l.CHALLANNO}}</td>
+                                            <td>{{l.COMPANYNAME}}</td>
+                                            <td>{{l.PRODUCT}}</td>
+                                            <td>{{l.QUALITY}}</td>
+                                        </tr>
+                                    {% endfor%}
+                                </table>
+                    <label for='Exceptions'><b>{% if Exceptions %}
+                        <script>alert("Note : No Record found according to your selected criteria"); </script>
+                        {% endif %}
+                    </b></label>
+                </div>
+</body>
+
+<script>
+
+
+$( ".lotno" ).click(function() {
+    var CurrentRow = $(this).closest("tr")
+    var uniqueid = CurrentRow.find("td:eq(0)").text(); // get current row 1st TD value
+    var itemname = CurrentRow.find("td:eq(1)").text();
+<!--var rows = document.getElementById("mainlist").rows;-->
+<!--                    for(var i = 0, ceiling = rows.length; i < ceiling; i++) {-->
+<!--                        rows[i].onclick = function() {-->
+<!--&lt;!&ndash;                            alert(this.cells[0].innerHTML);&ndash;&gt;-->
+<!--                            uniqueid=this.cells[0].innerHTML-->
+<!--                        }-->
+<!--                    }-->
+ var $this = $(this);
+ var cellIndex = $this.index();
+ let Dept = $this.closest('tr').children().eq(cellIndex+3).html();
+ let Item = $this.closest('tr').children().eq(cellIndex+1).html();
+<!-- let uniqueid = $this.closest('tr').children().eq(cellIndex).html();-->
+<!--alert("unique id : "+uniqueid)-->
+<!--alert("itemname  : "+itemname)-->
+ window.open("DespatchDetailLine?Dept="+Dept+"&Item="+Item+"&uniqueid="+uniqueid,"_self");
+<!--$this.css('background-color', '#00ffff');-->
+});
+
+<!--document.getElementById("wrap").addEventListener("scroll",function(){-->
+<!--   var translate = "translate(0,"+this.scrollTop+"px)";-->
+<!--   this.querySelector("thead").style.transform = translate;-->
+<!--});-->
+
+<!--document.getElementById("wrap1").addEventListener("scroll",function(){-->
+<!--   var translate = "translate(0,"+this.scrollTop+"px)";-->
+<!--   this.querySelector("thead").style.transform = translate;-->
+<!--});-->
+
+
+
+
+
+
+function searchFunction() {
+<!--alert("from search");-->
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("mainlist");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+
+</script>
+ <script type="text/javascript">
+            $('.currency-inr').each(function() {
+                var monetary_value = $(this).text();
+                var i = new Intl.NumberFormat('en-IN', {
+                    style: 'currency',
+                    currency: 'INR'
+                }).format(monetary_value);
+                $(this).text(i);
+            });
+            $('.currency-usd').each(function() {
+                var monetary_value = $(this).text();
+                var i = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD'
+                }).format(monetary_value);
+                $(this).text(i);
+            });
+        </script>
+
+</html>
+</body>
+</html>

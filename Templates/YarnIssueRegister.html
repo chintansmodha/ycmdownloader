@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Material Issue Register</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Material Issue Register</h1>
+    <style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+.two{position: absolute;
+    margin-top: 10px;
+    margin-left:300px ;
+}
+        .three{ position: absolute;
+    margin-top: 7px;
+    margin-left:680px ;
+}
+
+.three2{ position: absolute;
+    margin-top: 7px;
+    margin-left:1000px ;
+}
+.four{position: absolute;
+    margin-top: 200px;
+    margin-left:50px ;
+}
+        .five{position: absolute;
+    margin-top: 200px;
+    margin-left:420px ;
+}
+  .six{position: absolute;
+    margin-top: 200px;
+    margin-left:790px ;
+}
+ .seven{position: absolute;
+    margin-top: 500px;
+    margin-left:50px ;
+}
+.eight{position: absolute;
+    margin-top: 400px;
+    margin-left:50px ;
+}
+
+<!--.select2 {-->
+<!--    width: 100%;-->
+<!--    margin: 0 auto;-->
+<!--    border-radius: 0 !important;-->
+<!--    display: block;-->
+<!--}-->
+<!--.select2-container .select2-selection {-->
+<!--    height: 200px;-->
+<!--    overflow: scroll;-->
+<!--}-->
+<!--.select2-container&#45;&#45;default .select2-selection&#45;&#45;multiple {-->
+<!--    border-radius: 0;-->
+<!--    line-height: 30px;-->
+<!--    font-size: 14p;-->
+<!--    border: 1px solid #fafafa;-->
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+	function itemtype(allIssue2Departmnt)
+	{
+		var comp=document.getElementById("Issue2Departmnt");
+		comp.disabled=!!allIssue2Departmnt.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function itemtype1(allsupplier)
+	{
+		var comp=document.getElementById("supplier");
+		comp.disabled=!!allsupplier.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)&&!Date.parse(endDate)){
+    alert("Please Enter Start Date and End Date");
+        event.preventDefault();
+    }
+    else{
+        if (!Date.parse(startDate)){
+        alert("Please Enter Start Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(endDate)){
+        alert("Please Enter End Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) >= Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+    }
+
+}
+	function company(allDepartmnt)
+	{
+		var comp=document.getElementById("Departmnt");
+		comp.disabled=!!allDepartmnt.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function Destination(allDesttype)
+	{
+		var comp=document.getElementById("Desttype");
+		comp.disabled=!!allDesttype.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function PROGRESS(allPROGRESStype)
+	{
+		var comp=document.getElementById("PROGRESStype");
+		comp.disabled=!!allPROGRESStype.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Departmnt").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Issue2Departmnt").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#supplier").select2({
+		data:itemlist
+	});
+	});
+
+    $(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Desttype").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#PROGRESStype").select2({
+		data:itemlist
+	});
+	});
+
+</script>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='YarnIssueRegister' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+<!--Date-->
+<div class="one">
+<label for='startdate'><b>Start Date:</b></label>
+<input type='date' id='startdate' name='startdate'>
+<br><br>
+<label for='enddate'><b>End Date:</b></label>
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+<!--    Summary-->
+    <div class="two">
+<label for="summary"><b>Summary:</b></label>
+  <select name="summary" id="summary">
+    <option value="Details">Details</option>
+    <option value="Summary-Itemwise">Summary-Itemwise</option>
+    <option value="Summary-ItemLotwise">Summary-ItemLotwise</option>
+  </select>
+        <br><br>
+
+        <!--    Issue Status-->
+<label for="status"><b>Issue Status:</b></label>
+  <select name="status" id="status">
+    <option value="All Issues">All Issues</option>
+    <option value="Confirmed Issues Only">Confirmed Issues Only</option>
+    <option value="Pending Issues Only">Pending Issues Only</option>
+  </select>
+
+</div>
+
+<!--    Destination TYpe-->
+    <div class="three">
+<label for='Desttype' ><b>Destination Type:</b></label><br>
+<label for="allDesttype">All Destination Type</label>
+<input type="checkbox" id="allDesttype" name="allDesttype" value=1 onclick="Destination(this)"/>
+<br><br>
+<select  name='Desttype' id='Desttype'  style="width: 150px"  multiple >
+
+<option value="1">1-Customer </option>
+<option value="2">2-Supplier</option>
+    <option value="3">3-Internal</option>
+</select>
+</div>
+
+<!--    PROGRESS Type-->
+<div class="three2">
+    <label for='PROGRESStype' ><b>Progress Type:</b></label><br>
+<label for="allPROGRESStype">All Progress Type</label>
+<input type="checkbox" id="allPROGRESStype" name="allPROGRESStype" value=1 onclick="PROGRESS(this)"/>
+<br><br>
+<select  name='PROGRESStype' id='PROGRESStype'  style="width: 150px"  multiple >
+
+<option value="0">0-Entered </option>
+<option value="1">1-Partly Shipped </option>
+    <option value="2">2-Shipped </option>
+</select>
+</div>
+
+<div class="four">
+<label for='Departmnt' ><b>Warehouse:</b></label><br>
+<label for="allDepartmnt">All Warehouses</label>
+<input type="checkbox" id="allDepartmnt" name="allDepartmnt"  value=1 onclick="company(this)"/>
+<br><br>
+<select  name='Departmnt' id='Departmnt'  style="width: 350px" multiple>
+ {%for i in GDataDepartment%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="five">
+<label for='Issue2Departmnt'><b>Issue To Warehouse:</b></label><br>
+<label for="allIssue2Departmnt">All Issue To Warehouses</label>
+<input type="checkbox" id="allIssue2Departmnt" name="allIssue2Departmnt" value=1 onclick="itemtype(this)">
+
+<br><br>
+<select name='Issue2Departmnt' id='Issue2Departmnt' style="width: 350px" multiple >
+ {%for i in GDataIssue2Department%}
+<option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="six">
+<label for='supplier'><b>Supplier:</b></label><br>
+<label for="allsupplier">All Suppliers</label>
+<input type="checkbox" id="allsupplier" name="allsupplier" value=1 onclick="itemtype1(this)">
+
+<br><br>
+<select name='supplier' id='supplier' style="width: 550px" multiple >
+ {%for i in GDataSupplier%}
+<option value="{{ i.NUMBERID }}">{{ i.LEGALNAME1 }}-{{ i.NUMBERID }}</option>
+{% endfor %}
+</select>
+</div>
+
+
+
+<div class="seven">
+
+<br><br>
+    <label for='format' ><b>Export To:</b></label>
+<button type='submit' form='form1' value='PDF' class="mar" > PDF</button>
+</div>
+
+</form>
+<div class="eight">
+<label for='exception'><b>{%if Exception %}
+<script>alert("No Report Form For Given Criteria");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>
+<!--alert("Please Select Valid Credentials");-->

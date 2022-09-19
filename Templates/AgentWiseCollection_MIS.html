@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+
+<html>
+    <head style="font-family:arial;">
+        <title>Agent Wise Collection MIS</title>
+            {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+         <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+        	<link rel="canonical" href="http://openexchangerates.github.io/accounting.js/" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <meta charset="utf-8" />
+        <style>
+            .innercontainer{
+                margin: 10px auto;
+                width:90%;
+                height:610px;
+                overflow:scroll;
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #b3b3cc;
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+            }
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #D8DA5C}
+.containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+            }
+       </style>
+
+        <STYLE>A {text-decoration: none;} </STYLE>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <script>
+   function setdate(){
+            Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+    });
+    $(document).ready( function() {
+        $('#startdate').val(new Date().toDateInputValue());
+    });
+    $(document).ready( function() {
+        $('#enddate').val(new Date().toDateInputValue());
+    });
+}
+
+function format2(n, currency) {
+  return currency + n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+}
+
+</script>
+
+        <script>
+
+function date(event) {
+        var startDate = document.getElementById("startdate").value;
+        var endDate = document.getElementById("enddate").value;
+        if (!Date.parse(startDate) || !Date.parse(endDate)) {
+          alert("Please Enter Date");
+          event.preventDefault();
+        }
+        if (Date.parse(startDate) >= Date.parse(endDate)) {
+          alert("To date should be greater than From date");
+          event.preventDefault();
+        }
+        return true;
+      }
+
+      function date(event){
+        var startDate = document.getElementById("startdate").value;
+        var endDate = document.getElementById("enddate").value;
+        if (!Date.parse(startDate)){
+          alert("Please Enter Start Date");
+          event.preventDefault();
+         }
+        if((Date.parse(startDate) > Date.parse(endDate))) {
+              alert("End date should be greater than Start date");
+             event.preventDefault();
+         }
+      return true;
+    }
+</script>
+    </head>
+
+    <!--<body style="background-color:#cccccc;font-family:arial;" onload="myFunction()" >-->
+    <body style="font-family:arial;" onload="myFunction()" >
+
+<!--<b style="margin-left:80px;background-color:#9ebeff;border-width: 2px;-->
+<!--                padding: 10px;-->
+<!--                border-style: solid;-->
+<!--                border-color: #666666;"><a href="BrokerWiseOS.html">Outsanding (Broker Wise)</a></b>-->
+<!--<b style="background-color:white;border-width: 2px;-->
+<!--                padding: 10px;-->
+<!--                border-style: solid;-->
+<!--                border-color: #666666;"><a href="CompanyWiseOS.html">Outsanding (Company Wise)</a></b>   -->
+
+<div class="vspacer20"></div>
+<div class="container">
+    <div class="row">
+        <div class='col-sm-16'>
+            <div class="panel panel-primary col-sm-16">
+                <div class="panel-heading">Agent Wise Collection MIS</div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-9">
+                                <div>
+                                    <form action='AgentWiseCollectionMIS' id='form1' class="mar" onsubmit=" date(event);" >
+                                        <label>Start Date </label>&nbsp;
+                                        <input type="date" id="startdate" name="startdate"/> &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <label>End Date </label>&nbsp;
+                                        <input type="date" id="enddate" name="enddate"/>&nbsp;&nbsp;
+                                        <button type="submit" id="submit" value="Submit" class="btn btn-primary">Process
+                                        </button>
+
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-xs-3"> <label> Search  </label>
+                                <input type="text" id="myInput" onkeyup="searchFunction()"  placeholder="Search for broker.." title="Type in a name">
+                            </div>
+
+
+<!--                    <b> (Rs. in Lacs)</b>-->
+
+
+            </div>
+                        <div class="row">
+                            <div class="innercontainer" id="wrap">
+        <table class="gridtable" id="tableMain">
+                <thead>
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>BROKER</th>
+                        <th style="text-align:right;background-color:#ff9e58;width:150px;" >COLLECTION</th>
+                        <th style="text-align:right;background-color:#ff9e58;width:150px;">RETURN</th>
+                        <th style="text-align:right;background-color:#ff9e58;width:150px;">NET</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {%for j in GDataCompany%}
+                {%for k in GDataTotal%}
+                {% if k.BROKER == j %}
+       <tr class="breakrow">
+        <td style="text-align:left;background-color:#9ebeff;">{{ k.BROKER }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:150px;">{{ k.TOTAL }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:150px;">{{ k.UPTO15 }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:150px;">{{ k.NET }}</td>
+
+
+    </tr>       {% endif %}
+                {% endfor %}
+                {%for i in GDataBrokerWiseOS%}
+        {%if j == i.BROKERGRP %}
+    <tr class="datarow" style="text-align:left;background-color:white;">
+        <td>{{ i.COMPANYNAME }}</td>
+        <td style="display:none;" class="companycode">{{ i.COMPANYCODE }}</td>
+        <td style="display:none;" class="brokercode" >{{ i.BROKERCODE }}</td>
+        <td style="text-align:right;">{{ i.AMOUNT }}</td>
+        <td style="text-align:right;" class="upto15">{{ i.UPTO15 }}</td>
+        <td style="text-align:right;" class="range16">{{ i.RANGE16 }}</td>
+
+     </tr>
+                {%endif%}
+                 {% endfor %}
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+<div class="containerfooter">
+    <table class="gridtable">
+        <thead>
+        <tr style="font-family:arial;">
+
+        <td style="background-color:#9ebeff;"><b>TOTAL</b></td>
+        <td style="text-align:right;background-color:#ff9e58;width:150px;">{{ GCollection }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:150px;">{{ upto15 }}</td>
+        <td style="text-align:right;background-color:#ff9e58;width:150px;">{{ range16 }}</td>
+
+        </tr>
+        </thead>
+    </table>
+                    </div>
+                        </div>
+            </div>
+    </div>
+
+
+</div>
+<!--<div class="col-xs-2">-->
+<!--    <div class="form-group">-->
+<!--        <div class="input-group date" id="datetimeFrom">-->
+<!--            <form action='AgentWiseCollectionMIS' id='form1' class="mar" onsubmit=" date(event);" >-->
+<!--            <label>Select Date </label>-->
+<!--            <input type="date" id="startdate" name="startdate"/>-->
+
+
+<!--                                <button type="submit" id="submit" value="Submit" class="btn btn-primary">Process-->
+<!--                                </button>-->
+<!--                                &lt;!&ndash;                                    <button class="btn btn-primary">Excel</button>&ndash;&gt;-->
+<!--            </form>-->
+<!--            <input type="text" id="myInput" onkeyup="searchFunction()" style="margin-left:450px;" placeholder="Search for broker.." title="Type in a name">-->
+<!--            <b> (Rs. in Lacs)</b>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--    <div class="container" id="wrap">-->
+<!--        <table class="gridtable" id="tableMain">-->
+<!--                <thead>-->
+<!--                    <tr style=" font-family:arial;font-weight: bold;">-->
+<!--                        <th>BROKER</th>-->
+<!--                        <th style="text-align:right;background-color:#ff9e58;width:150px;" >COLLECTION</th>-->
+<!--                        <th style="text-align:right;background-color:#ff9e58;width:150px;">RETURN</th>-->
+<!--                        <th style="text-align:right;background-color:#ff9e58;width:150px;">NET</th>-->
+<!--                    </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                {%for j in GDataCompany%}-->
+<!--                {%for k in GDataTotal%}-->
+<!--                {% if k.BROKER == j %}-->
+<!--       <tr class="breakrow">-->
+<!--        <td style="text-align:left;background-color:#9ebeff;">{{ k.BROKER }}</td>-->
+<!--        <td style="text-align:right;background-color:#ff9e58;width:150px;">{{ k.TOTAL }}</td>-->
+<!--        <td style="text-align:right;background-color:#ff9e58;width:150px;">{{ k.UPTO15 }}</td>-->
+<!--        <td style="text-align:right;background-color:#ff9e58;width:150px;">{{ k.NET }}</td>-->
+
+
+<!--    </tr>       {% endif %}-->
+<!--                {% endfor %}-->
+<!--                {%for i in GDataBrokerWiseOS%}-->
+<!--        {%if j == i.BROKERGRP %}-->
+<!--    <tr class="datarow" style="text-align:left;background-color:white;">-->
+<!--        <td>{{ i.COMPANYNAME }}</td>-->
+<!--        <td style="display:none;" class="companycode">{{ i.COMPANYCODE }}</td>-->
+<!--        <td style="display:none;" class="brokercode" >{{ i.BROKERCODE }}</td>-->
+<!--        <td style="text-align:right;">{{ i.AMOUNT }}</td>-->
+<!--        <td style="text-align:right;" class="upto15">{{ i.UPTO15 }}</td>-->
+<!--        <td style="text-align:right;" class="range16">{{ i.RANGE16 }}</td>-->
+
+<!--     </tr>-->
+<!--                {%endif%}-->
+<!--                 {% endfor %}-->
+<!--    {% endfor %}-->
+
+<!--                </tbody>-->
+
+<!--            </table>-->
+
+<!--        </div>-->
+<!--<div class="containerfooter">-->
+<!--    <table class="gridtable">-->
+<!--        <thead>-->
+<!--        <tr style="font-family:arial;">-->
+
+<!--        <td style="background-color:#9ebeff;"><b>TOTAL</b></td>-->
+<!--        <td style="text-align:right;background-color:#ff9e58;width:150px;">{{ total }}</td>-->
+<!--        <td style="text-align:right;background-color:#ff9e58;width:150px;">{{ upto15 }}</td>-->
+<!--        <td style="text-align:right;background-color:#ff9e58;width:150px;">{{ range16 }}</td>-->
+
+<!--        </tr>-->
+<!--        </thead>-->
+<!--    </table>-->
+<!--                    </div>-->
+		<script>
+
+function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tableMain");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }$(".datarow").hide();
+}
+
+
+function myFunction() {
+<!--alert("from my function");-->
+  $(".datarow").hide();
+  setdate()
+}
+		$( document ).ready(function() {
+
+            //collapse and expand sections
+
+            $('.breakrow').click(function(){
+                $(this).nextUntil('tr.breakrow').slideToggle(200);
+            });
+        });
+
+
+		</script>
+
+
+    </body>
+</html>
+
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>Dispatch Detail Register</title>
+    {% load static %}
+    <link
+            rel="shortcut icon"
+            type="image/png"
+            href="{% static 'favicon.ico' %}"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"
+    />
+    <script
+            type="text/javascript"
+            charset="utf8"
+            src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"
+    ></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/moment.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+    <style type="text/css">
+      .hoverTable {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      /* Define the hover highlight color for the table row */
+      .hoverTable tr:hover {
+        background-color: #ffff99;
+      }
+      .hoverTable td:hover {
+        background-color: aqua;
+      }
+
+    </style>
+
+    <script>
+      function loadall() {
+        document.getElementById("CboRegisterType").selectedIndex =
+          "{{LSRegisterType}}";
+        //  console.log( {{LDStartDate}});
+        document.getElementById("startdate").value = "{{LDStartDate}}";
+        document.getElementById("enddate").value = "{{LDEndDate}}";
+
+        checkvalue = "{{LSRegisterType}}";
+
+
+        if (checkvalue == "0") {
+          $('#itemwise').prop('checked',true);
+        } else  if (checkvalue == "1") {
+         $('#agentwise').prop('checked',true);
+        } else if (checkvalue == "2"){
+          $('#dopeshadewise').prop('checked',true);
+        }
+       else {
+          $('#itemwise').prop('checked',true);
+        }
+      }
+
+      function date(event) {
+        var startDate = document.getElementById("startdate").value;
+        var endDate = document.getElementById("enddate").value;
+        if (!Date.parse(startDate) || !Date.parse(endDate)) {
+          alert("Please Enter Date");
+          event.preventDefault();
+        }
+        if (Date.parse(startDate) >= Date.parse(endDate)) {
+          alert("To date should be greater than From date");
+          event.preventDefault();
+        }
+        return true;
+      }
+
+      $(document).ready(function () {
+        // Set div display to none
+        $("#itemwise").click(function () {
+        console.log( '{{LDStartDate}}');
+
+          $("#itemwise").css("display", "block");
+          $("#agentwise").css("display", "none");
+          $("#dopeshadewise").css("display", "none");
+          $("#form1").attr("action", "DispatchDetail");
+
+
+
+          document.getElementById("startdate").value = '{{LDStartDate}}';
+          document.getElementById("enddate").value = '{{LDEndDate}}';
+        });
+
+        $("#agentwise").click(function () {
+          $("#itemwise").css("display", "none");
+          $("#agentewise").css("display", "none");
+          $("#dopeshadewise").css("display", "block");
+          $("#form1").attr("action", "DispatchDetail");
+
+          var x = document.getElementById("agentwise");
+          x.checked = "checked";
+
+          document.getElementById("CboRegisterType").selectedIndex =
+            "{{LSRegisterType}}";
+          document.getElementById("startdate").value = "{{LDStartDate}}";
+          document.getElementById("enddate").value = "{{LDEndDate}}";
+        });
+
+        $("#dopeshadewise").click(function () {
+          $("#itemswise").css("display", "none");
+          $("#agentwise").css("display", "none");
+          $("#dopeshadewise").css("display", "block");
+          $("#form1").attr("action", "DispatchDetail");
+          document.getElementById("dopeshadewise").checked = checked;
+          document.getElementById("startdate").value = "{{LDStartDate}}";
+          document.getElementById("enddate").value = "{{LDEndDate}}";
+        });
+      });
+
+    </script>
+
+
+</head>
+
+<body onload="loadall()">
+
+<div class="vspacer20"></div>
+<div class="container"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-16">
+            <div class="panel panel-primary col-sm-16">
+                <div class="panel-heading">Dispatch Detail Register Selection</div>
+                <form
+                        action="DispatchDetail"
+                        id="DispatchDetailsReportForm"
+                        name="form1"
+                        class="mar"
+                        onsubmit=" date(event);"
+                >
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div>
+                                    <label>Register Type</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-2">
+                                <div>
+                                    <label>From Date</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-2">
+                                <div>
+                                    <label>To Date</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="form-group">
+                                    <fieldset id="CboRegisterType">
+                                        <input
+                                                type="radio" id="itemwise" name="CboRegisterType"
+                                                value="0" class="mar" onchange="this.form.submit()"/>
+                                        <label for="proccess">Item Wise </label>
+                                        <input
+                                                type="radio"
+                                                id="agentwise"
+                                                name="CboRegisterType"
+                                                value="1"
+                                                class="mar"
+                                                onchange="this.form.submit()"
+                                        />
+                                        <label for="itm">Agent Wise </label>
+                                        <input
+                                                type="radio"
+                                                id="dopeshadewise"
+                                                name="CboRegisterType"
+                                                value="2"
+                                                class="mar"
+                                                onchange="this.form.submit()"
+                                        />
+                                        <label for="mach">DOPE Shade Wise </label>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="col-xs-2">
+                                <div class="form-group">
+                                    <div class="input-group date" id="datetimeFrom">
+                                        <input type="date" id="startdate" name="startdate"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-2">
+                                <div class="form-group">
+                                    <div class="input-group date" id="datetimeTo">
+                                        <input type="date" id="enddate" name="enddate"/>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-xs-4"></div>
+                            <div class="col-xs-4"></div>
+                            <div class="col-xs-4">
+                                <div class="text-right">
+                                    <label>Find : </label>
+                                    <button class="btn btn-primary" id="list">List</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="container">
+                            <h2>{{ reportname }} list</h2>
+
+                            <table class="table hoverTable col-xs-8" id="maintable">
+                                <thead>
+                                <tr>
+                                    <th class="col-xs-10">{{header}}</th>
+                                    <th class="col-xs-4" align="right">
+                                        Despatch Quantity
+                                    </th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {%for i in GList%}
+
+                                <tr class="challanno" hover {background-color: yellow;}>
+
+                                    <td  class="col-xs-2" id={{i.UNIQUEID}}>
+                                        {{i.UNIQUEID}}
+                                    </td>
+                                    <td class="col-xs-4">{{i.LONGDESCRIPTION}}</td>
+                                    <td class="col-xs-3" align="right">{{i.QUANTITY}}</td>
+                                </tr>
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <label for="Exceptions"
+                ><b
+                >{% if Exceptions %}
+                    <script>
+                  alert(
+                    "Note : No Record found according to your selected criteria"
+                  );
+
+                    </script>
+                    {% endif %}
+                </b></label
+                >
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+          $(document).ready(function () {
+      $(function () {
+        $("#datetimeFrom").datetimepicker();
+        $("#datetimeTo").datetimepicker();
+      });
+
+
+      $(".challanno").click(function () {
+        var rows = document.getElementById("maintable").rows;
+
+        var startDate = document.getElementById("startdate").value;
+        var endDate = document.getElementById("enddate").value;
+
+        var registertype =document.getElementById("CboRegisterType").selectedIndex;
+        var CurrentRow = $(this).closest("tr")
+        var uuid=CurrentRow.find("td:eq(0)").text(); // get current row 1st TD value
+        var itemname=CurrentRow.find("td:eq(1)").text();
+
+
+        window.open("DispatchDetailList?itemname="+itemname+"&startdate="+startDate+"&enddate="+endDate+"&uniqueid="+uuid.trim()+"&regeistertype="+registertype,"_self");
+
+      });
+        });
+
+      $(document).ready(function () {
+        $("list").click(function () {
+          alert("clickkk");
+        });
+      });
+
+      $(document).ready(function () {
+        $("#maintable").DataTable();
+      });
+
+</script>
+
+</body>
+</html>
+-->

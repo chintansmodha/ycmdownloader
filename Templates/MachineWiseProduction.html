@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Machine Wise Production</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+    <style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+
+.one2{position: absolute;
+    margin-top: 10px;
+    margin-left:650px ;
+}
+
+.two{position: absolute;
+    margin-top: 100px;
+    margin-left:50px ;
+}
+        .three{ position: absolute;
+    margin-top: 100px;
+    margin-left:480px ;
+}
+
+.four{position: absolute;
+    margin-top: 60px;
+    margin-left:708px ;
+}
+        .five{position: absolute;
+    margin-top: 60px;
+    margin-left:1037px ;
+}
+  .six{position: absolute;
+    margin-top: 300px;
+    margin-left:50px ;
+}
+ .seven{position: absolute;
+    margin-top: 300px;
+    margin-left:380px ;
+}
+.eight{position: absolute;
+    margin-top: 300px;
+    margin-left:710px ;
+}
+.nine{position: absolute;
+    margin-top: 300px;
+    margin-left:1040px ;
+}
+
+.ten{position: absolute;
+    margin-top: 450px;
+    margin-left:1120px ;
+}
+
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection{
+    height: 200px;
+    overflow: scroll ;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14px;
+    border: 1px solid #fafafa;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    var dates   = document.getElementById("date").style.display;
+    if (dates!='none'){
+        if (!Date.parse(startDate)&&!Date.parse(endDate)){
+        alert("Please Enter Start Date and End Date");
+            event.preventDefault();
+        }
+        else{
+            if (!Date.parse(startDate)){
+            alert("Please Enter Start Date");
+                event.preventDefault();
+            }
+            if (!Date.parse(endDate)){
+            alert("Please Enter End Date");
+                event.preventDefault();
+            }
+            if ((Date.parse(startDate) > Date.parse(endDate))) {
+            alert("End date should be greater Or Equal To Start date");
+            event.preventDefault();
+        }
+         return true;
+        }
+    }
+
+}
+	function company(allcomp)
+	{
+		var Comp=document.getElementById("comp");
+		Comp.disabled=!!allcomp.checked;
+		if (Comp.disabled)
+		{
+			Comp.focus();
+		}
+	}
+
+	function production(allprodtype)
+	{
+		var comp=document.getElementById("prodtype");
+		comp.disabled=!!allprodtype.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function winding(allwndtyp)
+	{
+		var comp=document.getElementById("wndtyp");
+		comp.disabled=!!allwndtyp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function quality(allqwlty)
+	{
+		var comp=document.getElementById("qwlty");
+		comp.disabled=!!allqwlty.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function item(allitm)
+	{
+		var comp=document.getElementById("itm");
+		comp.disabled=!!allitm.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function itemtype(allitmtyp)
+	{
+		var comp=document.getElementById("itmtyp");
+		comp.disabled=!!allitmtyp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function itemgroup(allitmgrp)
+	{
+		var comp=document.getElementById("itmgrp");
+		comp.disabled=!!allitmgrp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#comp").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#prodtype").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#wndtyp").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#qwlty").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	$("#itm").select2();
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#itmtyp").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#itmgrp").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready( function() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+   $('#enddate').val(today);
+   $('#startdate').val(today);
+   $('#enddate').attr('max', today);
+   $('#startdate').attr('max', today);
+});
+
+selectedOption = (value) =>{
+    if(value == 'squality'){
+        document.getElementById('entdate').style.display = "none";
+    }
+    else{
+        document.getElementById('entdate').style.display = "contents";
+    }
+}
+
+
+</script>
+
+
+    <h2 style="font-family:arial;margin-left: 50px">Machine Wise Production</h2>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='MachineWiseProduction' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+<!--    Date-->
+<div class="one" id="date">
+    <span id="stdate">
+        <label for='startdate'><b>Prod.Date:</b></label>
+        <input type='date' id='startdate' name='productiondate'>
+    </span>
+
+    <span id="entdate" style="display:none">
+        <label for='enddate'><b>&emsp; &emsp; End Date:</b></label>
+        <input type='date' id='enddate' name='enddate'>
+    </span>
+</div>
+
+<!--    Type-->
+<div class="one2">
+    <label for="type" ><b>Report Type : </b></label>
+    <select name="type" id="type" onchange="selectedOption(this.value)">
+        <option  value="squality">Selected Qualities</option>
+        <option  value="Aquality">All Qualities</option>
+    </select>
+</div>
+
+<!--    Department-->
+<div class="two">
+ <label for='comp' ><b>&emsp13;Department:</b></label><br>
+ <label for="allcomp">&emsp13; All Departments</label>
+ <input type="checkbox" id="allcomp" name="allcomp" value=1 onclick="company(this)"/> <br>
+ <select  name='comp' id='comp' multiple>
+  {%for i in GDataDepartment%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--    Production Type-->
+<div class="three" style="display:none;">
+ <label for='prodtype' ><b>&emsp13;Production Type:</b></label><br>
+ <label for="allprodtype">&emsp13; All Production Types</label>
+ <input type="checkbox" id="allprodtype" name="allprodtype" value=1 onclick="production(this)"/> <br>
+ <select  name='prodtype' id='prodtype' multiple>
+  {%for i in GDataProduction%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+
+
+<div class="ten">
+
+<br><br>
+    <label for='format' ><b>Export To:</b></label>
+<button type='submit' form='form1' value='PDF' class="mar" > PDF</button>
+</div>
+
+</form>
+<div class="eight">
+<label for='exception'><b>{%if Exception %}
+<script>alert("No Report Found On Given Criteria");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>
+<!--alert("Please Select Valid Credentials");-->

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html>
+    <head style="font-family:arial;">
+        <title>Material Issue Note Table</title>
+            {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+        <meta charset="utf-8" />
+        <style>
+            .one{position: absolute;
+                    margin-top: -30px;
+                    margin-left:50px ;
+                }
+             .two{position: absolute;
+                    margin-top: -30px;
+                    margin-left:950px ;
+                }
+            .count-checkboxes-wrapper{position: absolute;
+                margin-top: -30px;
+                margin-left:1050px ;
+            }
+            .container{
+                margin: 10px auto;
+                width:100%;
+                height:580px;
+                overflow:scroll;
+            }
+            table.gridtable {
+                overflow:auto;
+                width: 100%;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #cccccc;
+
+
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+
+
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #33F6FF}
+            .containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+            .pdfbutton{
+               position: absolute;
+               margin-left:10px ;
+               overflow-y: auto;
+    }
+
+       </style>
+        <STYLE>A {text-decoration: none;} </STYLE>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+        <script>
+            $(document).ready(function(){
+     var clicked = false;
+$("#select").on("click", function() {
+  $('input:checkbox').prop("checked", !clicked);
+        var checkboxes = $('input:checkbox:checked').length;
+        document.getElementById("count-checked-checkboxes").innerHTML = checkboxes;
+});
+});
+$(document).ready(function(){
+     var clicked = true;
+$("#deselect").on("click", function() {
+  $('input:checkbox').prop("checked", !clicked);
+        var checkboxes = $('input:checkbox:checked').length;
+        document.getElementById("count-checked-checkboxes").innerHTML = checkboxes;
+});
+});
+
+$(document).ready(function(){
+
+    var $checkboxes = $('#tableMain td input[type="checkbox"]');
+
+    $checkboxes.change(function(){
+        var countCheckedCheckboxes = $checkboxes.filter(':checked').length;
+        $('#count-checked-checkboxes').text(countCheckedCheckboxes);
+
+        $('#edit-count-checked-checkboxes').val(countCheckedCheckboxes);
+    });
+
+});
+
+</script>
+    </head>
+
+    <body style="background-color:Lavender;font-family:arial;" onload="myFunction()" >
+    <div class="container" id="wrap">
+        <table class="gridtable sortable" id="tableMain">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th style="width:10%;">IssueNo.</th>
+                        <th style="width:8%;">IssueDt.</th>
+                        <th style="width:8%;">Req.No.</th>
+                        <th style="width:8%;">Req.Dt.</th>
+                        <th style="width:10%;">IssueQnty.</th>
+                        <th style="width:6%;">Print</th>
+                        <th style="width:25%;">From Warehouse</th>
+                        <th style="width:22%;">To Warehouse</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {%for i in GDataIssueSlipSummary%}
+
+    <tr>
+        <td style="text-align:left;">{{ i.ISSUENO }}</td>
+
+        <td style="text-align:left;">{{ i.ISSUEDT }}</td>
+
+        <td style="text-align:left;">{{ i.REQNUMBER }}</td>
+
+        <td style="text-align:left;">{{ i.REQDATE }}</td>
+
+        <td style="text-align:right;">{{ i.ISSUEQUANTITY }}</td>
+
+        <td align="center"> <input type="checkbox" id="allcomp" name="allcomp" value="1" ></td>
+
+        <td>{{ i.FROMDEPARTMENT}}</td>
+
+        <td>{{ i.TODEPARTMENT}}</td>
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+<label style="margin-left:600px;" ><b>Export To:</b></label>
+    <button type='submit' style="background-color:#808080; color:#ffffff;" onclick="GetSelected()" value='PDF'  ><b>PDF</b></button>
+    <div class="containerfooter">
+        <div class="one">
+        <button type='button' style="background-color:#808080; color:#ffffff;" id="select" tabindex="1" ><b>Select All</b></button>
+         <button type='button' style="background-color:#808080; color:#ffffff;"  id="deselect" tabindex="2" ><b>Deselect All</b></button>
+    </div>
+     <div class="count-checkboxes-wrapper">
+        <span id="count-checked-checkboxes">0</span> checked
+    </div>
+                    </div>
+
+    <div class="five">
+<label for='exception'><b>{%if Exception %}
+<script>alert("Note: No Result found "); </script>
+{% endif %}
+</b></label>
+</div>
+		<script>
+
+function GetSelected() {
+        //Reference the Table.
+        var grid = document.getElementById("tableMain");
+
+        //Reference the CheckBoxes in Table.
+        var checkBoxes = grid.getElementsByTagName("INPUT");
+        var number = "";
+        var date = "";
+        var quantity = "";
+
+        //Loop through the CheckBoxes.
+        for (var i = 0; i < checkBoxes.length; i++) {
+            if (checkBoxes[i].checked) {
+                var row = checkBoxes[i].parentNode.parentNode;
+                number += "&number=" +row.cells[0].innerHTML;
+                date += "&date=" +row.cells[1].innerHTML;
+                quantity += "&quantity=" +row.cells[2].innerHTML;
+
+            }
+        }
+
+        //Display selected Row data in Alert Box.
+           if (number == ""){
+                alert("Please select at least one check box");
+           }else{
+                window.open("PrintIssueSlip_PDF?rohit="+number+date+quantity);
+           }
+
+    }
+
+
+function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tableMain");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }$(".datarow").hide();
+}
+
+
+function myFunction() {
+  $(".datarow").hide();
+}
+		$( document ).ready(function() {
+
+            //collapse and expand sections
+
+            $('.breakrow').click(function(){
+                $(this).nextUntil('tr.breakrow').slideToggle(200);
+            });
+        });
+
+            //add event listener to table rows
+            let thetable = document.getElementById('tableMain').getElementsByTagName('tbody')[0];
+            for (let i = 0; i < thetable.rows.length; i++)
+                {
+                    thetable.rows[i].onclick = function()
+                    {
+                        TableRowClick(this);
+                    };
+                }
+
+            function TableRowClick(therow) {
+                let BUSINESSUNIT = therow.cells[1].innerHTML;
+                let GLACCOUNT = therow.cells[3].innerHTML;
+                let SUPPLIERTYPE = therow.cells[5].innerHTML;
+                let SUPPLIERCODE = therow.cells[6].innerHTML;
+                let OPBAL = therow.cells[7].innerHTML;
+                let DRAMOUNT = therow.cells[8].innerHTML;
+                let CRAMOUNT = therow.cells[9].innerHTML;
+                let CLBAL = therow.cells[10].innerHTML;
+
+                window.open("AdhocLedgerDetail?company="+BUSINESSUNIT+"&account="+GLACCOUNT+
+                "&suppliertype="+SUPPLIERTYPE+
+                "&suppliercode="+SUPPLIERCODE+"&opbalance="+OPBAL+"&debit="+DRAMOUNT+
+                "&credit="+CRAMOUNT+"&clbalance="+CLBAL);
+
+                therow.style.backgroundColor='#00ffff';
+            };
+
+		</script>
+<script>
+document.getElementById("wrap").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+
+</script>
+
+    </body>
+</html>

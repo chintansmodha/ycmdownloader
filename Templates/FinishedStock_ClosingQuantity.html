@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Finished Stock</title>
+{% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<!--<h1 style="font-family:arial;margin-left: 50px">Bank Cash Voucher</h1>-->
+    <style>
+.container{
+                margin: 40px auto;
+                width:100%;
+                height:520px;
+                overflow:scroll;
+                position:absolute;
+                background-color: pink;
+                font-weight: bold;
+                color: black;
+                overflow-x: hidden;
+            }
+.container1{
+                margin-top: 570px;
+                width:100%;
+                height:140px;
+                overflow:scroll;
+                position:absolute;
+                background-color: #66ccff;
+                overflow-x: hidden;
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#666666;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding:2px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: bold;
+                color: black;
+
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtable td {
+                border-width: 1px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: bold;
+                color: black;
+
+            }
+            td:hover {background-color: white}
+.containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+
+.details{
+position:absolute;
+
+}
+
+
+.qualities {
+position:absolute;
+border:2px solid #ccc;
+ width:200px;
+ height: 170px;
+ overflow-y: scroll;
+margin : 530px 1000px;
+background-color: white;
+}
+
+.shade {
+position:absolute;
+border:2px solid #ccc;
+ width:200px;
+ height: 230px;
+ overflow-y: scroll;
+margin : 400px 1220px;
+background-color: white;
+}
+
+.windingtype {
+position:absolute;
+border:2px solid #ccc;
+ width:200px;
+ height: 230px;
+ overflow-y: scroll;
+margin : 100px 1220px;
+background-color: white;
+}
+
+body {
+  overflow: hidden; /* Hide scrollbars */
+}
+
+table, td {
+  border: 1px solid black;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/lib/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+	<style type="text/css" class="init">
+
+</style>
+
+
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" language="javascript" src="../resources/demo.js"></script>
+	<script type="text/javascript" class="init">
+	$(document).ready(function() {
+		$('#tableMain').DataTable({
+            info:false,
+            "columnDefs": [{ "width": "20%", "targets": [2,3] },{ "width": "10%", "targets": [0,13] },{ "width": "14%", "targets": 14 }],
+            "dom": '<"top"flp>rt<"bottom"><"clear">'
+
+        });
+	} );
+	</script>
+
+    <style>.dataTables_length select{ width: 30px}</style>
+</head>
+<body style="background-color:#dd99ff;">
+<div  class="details">
+<h3>Details:{{Item}}</h3>
+</div>
+
+    <div class="container" id="wrap" >
+
+        <table class="gridtable" id="tableMain">
+                <thead style="background-color: #FF6B4C;">
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>LotNo</th>
+                        <th>S.Code</th>
+                        <th>Shade</th>
+                        <th>Site</th>
+                        <th>WT</th>
+                        <th>Base</th>
+                        <th>Op. Qty.</th>
+                        <th>Rec. Qty.</th>
+                        <th>Iss. Qty.</th>
+                        <th>Iss. Cops.</th>
+                        <th>Cl. Qty.</th>
+                        <th>Cl. Cops</th>
+                        <th>Cl. Boxes</th>
+                        <th>O. Box Dt.</th>
+                        <th>Prod. Type</th>
+
+                    </tr>
+
+
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataDetail%}
+
+    <tr style="background-color: #66ff66">
+        <td style="text-align:left;">{{ i.LOTCODE  }}</td>
+
+        <td style="text-align:left;">{{ i.SHADECODE  }}</td>
+
+        <td style="text-align:left;">{{ i.SHADE  }}</td>
+
+        <td style="text-align:left;">{{ i.SITE  }}</td>
+
+        <td style="text-align:left;">{{ i.WINDINGTYPE  }}</td>
+
+        <td style="text-align:left;">{{ i.BASE  }}</td>
+
+        <td style="text-align:right;width:30px;" class="clqty">{{ i.OPNETWT }}</td>
+
+        <td style="text-align:right;width:30px;" class="clqty">{{ i.PNETWT }}</td>
+
+        <td style="text-align:right;width:30px;" class="clqty">{{ i.ISSUENETWT }}</td>
+
+        <td style="text-align:right;width:30px;" class="clqty">{{ i.ISSUECOPS }}</td>
+
+        <td style="text-align:right;width:30px;" class="clqty">{{ i.CLNETWT }}</td>
+
+        <td style="text-align:right;width:30px;">{{ i.CLCOPS }}</td>
+
+        <td style="text-align:right;width:30px;">{{ i.CLBOXES }}</td>
+
+
+        <td style="text-align:left;">{{i.OLDESTBOXDATE}}</td>
+        <td style="text-align:left;">{{i.PROD}}</td>
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+            <tfoot style="background-color: #FF6B4C;">
+            <tr>
+                     <th style="text-align:left;width:150px;">TOTAL</th>
+
+        <th style="text-align:right;"></th>
+                        <th style="text-align:right;"></th>
+                        <th style="text-align:right;"></th>
+                        <th style="text-align:right;"></th>
+                        <th style="text-align:right;"></th>
+        <th style="text-align:right;">{{itemopenqtytotal}}</th>
+        <th style="text-align:right;">{{itemrecqtytotal}}</th>
+        <th style="text-align:right;">{{itemissqtytotal}}</th>
+        <th style="text-align:right;">{{itemisscopstotal}}</th>
+                        <th style="text-align:right;">{{itemclqtytotal}}</th>
+                        <th style="text-align:right;">{{itemclcopstotal}}</th>
+                        <th style="text-align:right;">{{itemclboxestotal}}</th>
+                        <th style="text-align:right;"></th>
+        <th style="text-align:right;"></th>
+                </tr>
+            <tr style=" font-family:arial;font-weight: bold;">
+                        <th>LotNo</th>
+                        <th>S.Code</th>
+                        <th>Shade</th>
+                        <th>Site</th>
+                        <th>WT</th>
+                        <th>Base</th>
+                        <th>Op. Qty.</th>
+                        <th>Rec. Qty.</th>
+                        <th>Iss. Qty.</th>
+                        <th>Iss. Cops.</th>
+                        <th>Cl. Qty.</th>
+                        <th>Cl. Cops</th>
+                        <th>Cl. Boxes</th>
+                        <th>O. Box Dt.</th>
+                        <th>Prod. Type</th>
+
+                    </tr>
+
+
+
+</tfoot>
+            </table>
+
+        </div>
+
+<div class="container1" id="wrap1" >
+
+        <table class="gridtable" id="tableMain1">
+                <thead style="background-color:#ffff66">
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th style="text-align:center;width:370px;" >Sites</th>
+                        <th>Opn. Qty.</th>
+                        <th>Rec. Qty.</th>
+                        <th>Iss. Qty.</th>
+                        <th>Iss. Cops.</th>
+                        <th>Cl. Qty.</th>
+                        <th>Cl. Cops.</th>
+                        <th>Cl. Boxes.</th>
+                        <th>Ord.Pend. Qty</th>
+                    </tr>
+
+                <tr>
+
+                    <th style="text-align:left;width:150px;">TOTAL</th>
+
+        <th style="text-align:right;">{{plantopnqtytotal}}</th>
+        <th style="text-align:right;">{{plantrecqtytotal}}</th>
+                    <th style="text-align:right;">{{plantissqtytotal}}</th>
+                    <th style="text-align:right;">{{plantisscopstotal}}</th>
+                    <th style="text-align:right;">{{plantclqtytotal}}</th>
+        <th style="text-align:right;">{{ plantclcopstotal }}</th>
+                    <th style="text-align:right;">{{ plantclboxestotal }}</th>
+                    <th style="text-align:right;">{{ plantordpendqtytotal }}</th>
+                </tr>
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataPlantDetail%}
+
+    <tr>
+        <td style="text-align:left;background-color: #e6b3ff">{{ i.PLANT  }}</td>
+
+        <td style="text-align:right;width:20px;background-color: pink;">{{ i.OPNETWT }}</td>
+
+        <td style="text-align:right;width:20px;background-color: pink;">{{ i.PNETWT }}</td>
+
+        <td style="text-align:right;width:20px;background-color: pink;">{{ i.ISSUENETWT }}</td>
+
+        <td style="text-align:right;width:20px;background-color: #66ff66;">{{ i.ISSUECOPS }}</td>
+
+        <td style="text-align:right;width:20px;background-color: pink;">{{ i.CLNETWT }}</td>
+
+        <td style="text-align:right;width:20px;background-color: #66ff66;">{{ i.CLCOPS }}</td>
+
+        <td style="text-align:right;width:20px;">{{ i.CLBOXES }}</td>
+
+        <td style="text-align:right;width:40px;">{{ i.ORDPENQTY }}</td>
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+<!--<div class="qualities">-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+
+<!--</div>-->
+
+
+<!--<div class="shade">-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+
+<!--</div>-->
+
+<!--<div class="windingtype">-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+<!--    <input type="checkbox" /> This is checkbox <br />-->
+
+<!--</div>-->
+
+<!--<button style="position: absolute; margin:60px 1220px;" type="button" onclick="alert('Hello world!')">Despatch Challans</button>-->
+<!--<button style="position: absolute; margin:60px 1350px;" type="button" onclick="alert('Hello world!')">Exit</button>-->
+<!--<button style="position: absolute; margin:375px 1280px;" type="button" onclick="alert('Hello world!')">Report</button>-->
+<!--<button style="position: absolute; margin:650px 1230px;" type="button" onclick="alert('Hello world!')">UnSold Finished Stock Report</button>-->
+<!--<button style=" position: absolute; margin:680px 1250px;"type="button" onclick="alert('Hello world!')">Finished Stock Report</button>-->
+
+<div>
+<label><b>{%if Exception %}
+<script>alert("Note: No Result found according to your selected criteria ");</script>
+{% endif  %}
+</b></label>
+</div>
+</body>
+
+<script>
+
+document.getElementById("wrap").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+
+document.getElementById("wrap1").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+
+function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tableMain");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+</script>
+
+
+</html>

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+
+<head style="font-family:arial;">
+    <title>Lifting Summary</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+    <meta charset="utf-8" />
+    <style>
+        body{
+            overflow:hidden;
+            margin-top:5px;
+        }
+        .one {
+            display : inline-block;
+            margin-left: 50px;
+            margin-top: 10px;
+        }
+
+        .two {
+            display : inline-block;
+            margin-top: 10px;
+            margin-left: 30px;
+        }
+        .two label{
+            margin-right: 12px;
+        }
+        .container-fluid{
+            height: 50%;
+            border: 1px solid;
+            margin-top: 2px;
+        }
+        .container{
+            width: 100%;
+            height:100%;
+        }
+        .cl-1{
+            width: 100%;
+            height:100%;
+            overflow: auto;
+        }
+        .cl-2{
+            width: 32%;
+            height: 100%;
+            overflow: auto;
+        }
+
+        table.gridtable {
+            font-family: tahoma;
+            font-size: 12px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            text-align: center;
+            overflow: auto;
+        }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #b3b3cc;
+        }
+
+        table.gridtablefooter th {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+        }
+
+        .footer {
+            border-width: 2px;
+            width: 87%;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 5px 0px;
+            border-style: solid;
+            border-color: #666666;
+            font-weight: normal;
+            text-align :left;
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+
+        .containersfooter {
+            margin: 10px auto;
+            width: 88%;
+            height: 50px;
+            font-family: arial;
+        }
+        table thead .itemTotal th{
+            padding: 4px 0px 5px 0px;
+            margin; 4px 0px 5px 0px;
+            background-color: #fcf7ac;
+        }
+        button{
+            background-color: #b3b3cc;
+            width: 100px;
+            height:25px;
+            cursor:pointer;
+        }
+
+    </style>
+    <STYLE>
+        A {
+            text-decoration: none;
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #96b1ff;
+         }
+        .select2 {
+            width: 90%;
+            margin: 0 auto;
+            border-radius: 0 !important;
+            display: block;
+        }
+        .select2-container .select2-selection {
+            height: 8px;
+            overflow: scroll;
+            overflow-x:hidden;
+        }
+        .select2-container--default .select2-selection--multiple {
+            border-radius: 0;
+            line-height: 10px;
+            font-size: 10p;
+            border: 1px solid #fafafa;
+        }
+        .select2-container .select2-results {min-height: 100px; max-height: 100px; overflow-y: auto;}
+        }
+    </STYLE>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+    <!--    disable back-->
+    	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!--    Multi select jQuery ref-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <script>
+        <!--    Display upto max date only-->
+            $(document).ready( function() {
+            var now = new Date();
+
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+            var SDate = {{Syear}}+"-"+'{{Smonth}}'+"-"+'{{Sday}}' ;
+            var EDate = {{Eyear}}+"-"+'{{Emonth}}'+"-"+'{{Eday}}' ;
+
+
+           $('#startdate').val(SDate);
+           $('#startdate').attr('max', SDate);
+           $('#enddate').val(EDate);
+           $('#enddate').attr('max', EDate);
+        });
+
+        <!--    toggle display grid acc/ to button-->
+        $(document).ready(function(){
+            // Set div display to block
+            $("#itm").click(function(){
+                $('#form1').attr('action', 'ContListItemWisefunctions');
+            });
+
+            // Set div display to block
+            $("#agent").click(function(){
+                $('#form1').attr('action', 'ContListAgentWisefunctions');
+            });
+        });
+
+
+       $(document).ready(function() {
+            function disableBack() {
+                window.history.forward()
+            }
+            window.onload = disableBack();
+            window.onpageshow = function(e) {
+                if (e.persisted)
+                    disableBack();
+            }
+        });
+    </script>
+
+
+
+    <SCRIPT>
+        window.onload = function(){
+            document.getElementById("totalAmount").value = "{{TotalAmtExDhara}}";
+            document.getElementById("totalInvAmount").value = "{{TotalInvoiceAmount}}";
+            $("#itemType").select2();
+        }
+       // $('#itemType').multiSelect();
+        //$('#itemType').multiselect({
+        //    columns: 1,
+        //    placeholder: 'Select Languages',
+        //    search: true
+        //});
+
+    </SCRIPT>
+
+</head>
+
+<body style="background-color:lavender;font-family:arial; height:100%; font-family: tahoma; font-size:15px; margin-left:6px;" >
+<h3>Lifting Summary</h3>
+<!--<form action="" id='form1' class="mar"  style="display: inline-block; height: 10%;">-->
+<div style="border: 1px solid; padding: 5px; width: 99%; margin-top:-7px;">
+    <!--     date-->
+    <div>
+        <label for='startdate'><b>Start Date : </b></label>
+        <input style="height:25px;" type='date' id='startdate' name='startdate' value="today" onkeypress="return false" onclick="return false">
+        <label for='startdate'><b>&emsp;End Date :</b></label>
+        <input style="height:25px;" type='date' id='enddate' name='enddate' value="today" onkeypress="return false" onclick="return false">
+        <label for="itemType" style="margin-left:20px;"><b>Item Type: </b></label>
+        <select name="itemType" id="itemType" style="font-weight:bold; width:200px; overflow:auto; display:none;"  multiple >
+            {% for i in columnHeader %}
+<!--            <option value="{{i}}">{{i}}</option>-->
+            {% endfor %}
+            <option value="POY">POY</option>
+            <option value="FDY">FDY</option>
+            <option value="MOY">MOY</option>
+            <option value="MON">MON</option>
+            <option value="DTY">DTY</option>
+            <option value="ATY">ATY</option>
+            <option value="TWD">TWD</option>
+            <option value="BCF">BCF</option>
+            <option value="CAB">CAB</option>
+            <option value="HST">HST</option>
+            <option value="PLY">PLY</option>
+        </select>
+        <button type="button" onclick="applyFunction()" style="width: 125px; font-weight:bold; height:21px; background-color: aliceblue;">Apply Change</button>
+        <label for="ordType" style="margin-left:20px; display:none;"><b>Order Type: </b></label>
+        <select name="ordType" id="ordType" style="font-weight:bold; width:150px; height:30px; overflow:auto; display:none;" >
+            <option value="Allord">All Order Type</option>
+            <option value="dom">Domestic</option>
+            <option value="ex">Export</option>
+            <option value="deem">Deemed Export</option>
+            <option value="job">Jobwork</option>
+            <option value="sez">SEZ</option>
+            <option value="merEx">Merchant Export</option>
+        </select>
+        <input type="text" id="myInput" onkeyup="searchFunction()" style="display: inline-block; float:right;" title="Type Agent Name" placeholder="search for Agent">
+    </div>
+    <br>
+    <div style="display:flex; justify-content: space-between; width: 60%;">
+        <label><b>Broker:</b>
+            <span style="font-weight:bold;margin-left: 5px; color: blue;" id="broker"></span>
+        </label>
+        <label><b>Yarn Type:</b>
+            <span style="font-weight:bold;margin-left: 5px; color: blue;" id="yarntype"></span>
+        </label>
+    </div>
+</div>
+<!--</form>-->
+<div class="container-fluid">
+    <div class="container">
+<!--        Agent group-->
+        <div class="cl-1" >
+            <table class="table table-striped gridtable" id="agentgroup">
+                <thead style="height:1px; position: sticky; top: 0;">
+                    <tr>
+                        <th style="width:280px;">Broker</th>
+                        <th style="width:100px;">Total</th>
+                        {% for i in columnHeader %}
+                        <th style="width:80px;">{{i}}</th>
+                        {% endfor %}
+<!--                        <th style="width:6.5%;">Poy Dope</th>-->
+<!--                        <th style="width:6.5%;">Fdy</th>-->
+<!--                        <th style="width:6.5%;">Fdy Dope</th>-->
+<!--                        <th style="width:6.5%;">Grey</th>-->
+<!--                        <th style="width:6.5%;">Dope Dyed</th>-->
+<!--                        <th style="width:6.5%;">Conv.Dyed</th>-->
+<!--                        <th style="width:6.5%;">BCF</th>-->
+<!--                        <th style="width:6.5%;">HeatSet</th>-->
+<!--                        <th style="width:6.5%;">Cabling</th>-->
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for i in GDataAgentColumnGroup %}
+                    <tr onclick="rowFunction(this)">
+                        <td onclick="myFunction(this)">{{i.BROKER}}</td>
+                        <td onclick="myFunction(this)" style="text-align:right;">{{i.TOTALQTY}}</td>
+<!--                        <td style="text-align:right;">{{i.DTYQNTY}}</td>-->
+                        {% if POYQnty != 0 %}
+                        <td onclick="myFunction(this)" style="text-align:right;">{{i.POYQNTY}}</td>
+                        {% endif %}
+                        {% if FDYQnty != 0 %}
+                        <td onclick="myFunction(this)" style="text-align:right;">{{i.FDYQNTY}}</td>
+                        {% endif %}
+                        {% if MOYQnty != 0 %}
+                        <td onclick="myFunction(this)" style="text-align:right;">{{i.MOYQNTY}}</td>
+                        {% endif %}
+                        {% if MONQnty != 0 %}
+                        <td onclick="myFunction(this)" style="text-align:right;">{{i.MONQNTY}}</td>
+                        {% endif %}
+                        {% if DTYQnty != 0 %}
+                        <td onclick="myFunction(this)" style="text-align: right;">{{i.DTYQNTY}}</td>
+                        {% endif %}
+                        {% if ATYQnty != 0 %}
+                        <td onclick="myFunction(this)" style="text-align: right;">{{i.ATYQNTY}}</td>
+                        {% endif %}
+                        {% if TWDQnty != 0 %}
+                        <td onclick="myFunction(this)" style="text-align: right;">{{i.TWDQNTY}}</td>
+                        {% endif %}
+                        {% if BCFQnty != 0 %}
+                        <td onclick="myFunction(this)" style="text-align: right;">{{i.BCFQNTY}}</td>
+                        {% endif %}
+                        {% if CABQnty != 0 %}
+                        <td onclick="myFunction(this)" style="text-align: right;">{{i.CABQNTY}}</td>
+                        {% endif %}
+                        {% if HSTQnty != 0 %}
+                        <td onclick="myFunction(this)" style="text-align: right;">{{i.HSTQNTY}}</td>
+                        {% endif %}
+                        {% if PLYQnty != 0 %}
+                        <td onclick="myFunction(this)" style="text-align: right;">{{i.PLYQNTY}}</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div style="height: 23%; padding-top: 3px;">
+    <div>
+<!--        ////////// TOTAL  //////////-->
+        <table style=" color: blue;">
+            <tfoot>
+                <tr>
+                    <td style="width:293px; text-align: center;"><b>Total: </b></td>
+                    <td style="width:113px;  text-align: right;">{{TOTALQNTY}}</td>
+                    {% if POYQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{POYQnty}}</td>
+                    {% endif %}
+                    {% if FDYQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{FDYQnty}}</td>
+                    {% endif %}
+                    {% if MOYQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{MOYQnty}}</td>
+                    {% endif %}
+                    {% if MONQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{MONQnty}}</td>
+                    {% endif %}
+                    {% if DTYQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{DTYQnty}}</td>
+                    {% endif %}
+                    {% if ATYQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{ATYQnty}}</td>
+                    {% endif %}
+                    {% if TWDQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{TWDQnty}}</td>
+                    {% endif %}
+                    {% if BCFQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{BCFQnty}}</td>
+                    {% endif %}
+                    {% if CABQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{CABQnty}}</td>
+                    {% endif %}
+                    {% if HSTQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{HSTQnty}}</td>
+                    {% endif %}
+                    {% if PLYQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{PLYQnty}}</td>
+                    {% endif %}
+                </tr>
+            </tfoot>
+        </table>
+        <br>
+<!--        ////////////// Average Rate ///////////////-->
+        <table style="color: blue;">
+            <tfoot>
+                <tr>
+                    <td style="width:293px; text-align: center;"><b>Avg.Rate: </b></td>
+                    <td style="width:113px;  text-align: right;">{{TOTALAvgRate}}</td>
+                    {% if POYQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{POYAvgRate}}</td>
+                    {% endif %}
+                    {% if FDYQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{FDYAvgRate}}</td>
+                    {% endif %}
+                    {% if MOYQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{MOYAvgRate}}</td>
+                    {% endif %}
+                    {% if MONQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{MONAvgRate}}</td>
+                    {% endif %}
+                    {% if DTYQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{DTYAvgRate}}</td>
+                    {% endif %}
+                    {% if ATYQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{ATYAvgRate}}</td>
+                    {% endif %}
+                    {% if TWDQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{TWDAvgRate}}</td>
+                    {% endif %}
+                    {% if BCFQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{BCFAvgRate}}</td>
+                    {% endif %}
+                    {% if CABQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{CABAvgRate}}</td>
+                    {% endif %}
+                    {% if HSTQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{HSTAvgRate}}</td>
+                    {% endif %}
+                    {% if PLYQnty != 0 %}
+                    <td style="width:93px;  text-align: right;">{{PLYAvgRate}}</td>
+                    {% endif %}
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+<!--    <div><b>Avg.Rate: </b></div>-->
+    <br>
+    <div style="width: 70%; margin-left: 5px; color:blue">
+        <div style="display:inline-block;width: 50%;margin-bottom:-10px;">
+            <div style="word-wrap: break-word; width: 196px; display:inline-block;"><b>Total Item Amount (Excluding Dhara Amt): </b></div>
+<!--            <p style="position: absolute;bottom: 35px; font-weight: bold;">(Excluding Dhara Amt)</p>-->
+        <div style="display:inline-block; float: right;">
+            <input type="text" id="totalAmount" onkeypress="return false" style="color:blue; text-align:right; font-weight:bold;">
+        </div>
+        </div>
+        <div style="display:inline-block; float:right;">
+            <label><b>Total Invoice Amount: </b></label>
+            <input type="text" id="totalInvAmount" onkeypress="return false" style="color:blue;text-align:right; font-weight:bold;">
+        </div>
+    </div>
+    <br>
+    <div style="width: 50%;margin: auto;">
+        <button onclick="DetailSummary()"><b>Details </b></button>
+        <button disabled><b>Process </b></button>
+        <button onclick="window.location.href='LiftingSummary.html'"><b>Cancel </b></button>
+    </div>
+</div>
+
+
+<script>
+var optionsToSelect = '{{itemtypeOptSelected}}';
+        //alert(optionsToSelect)
+        var select = document.getElementById( 'itemType' );
+       // alert(select.options.length)
+
+        for ( var i = 0, l = select.options.length, o; i < l; i++ )
+        {
+            o = select.options[i];
+            if ( optionsToSelect.indexOf( o.text ) != -1 )
+            {
+                o.selected = true;
+            }
+        }
+
+
+
+
+    var prev_column = 0
+    var prev_row = 0
+    var prevColumn =0;
+    var prevRow = 0;
+    $(document).ready(function(){
+    $("#agentgroup td").dblclick(function() {
+
+        var column_num = parseInt( $(this).index() );
+        var row_num = parseInt( $(this).parent().index() )+1;
+        var count= 0;
+        //broker yarntype
+
+        if (column_num >1 ){
+            if(column_num != prev_column || row_num != prev_row){
+                //alert(document.getElementById("agentgroup").rows[row_num].cells[column_num].style)
+                if(prev_column > 0){
+                    document.getElementById("agentgroup").rows[prev_row].cells[prev_column].style.border = "1px solid rgb(102, 102, 102)";
+                }
+                document.getElementById("agentgroup").rows[row_num].cells[column_num].style.border = "2px solid yellow";
+                //alert(document.getElementById("agentgroup").rows[row_num].cells[column_num].style.border)
+
+                var brokerName = document.getElementById("agentgroup").rows[row_num].cells[0].innerHTML
+                var yarnType = document.getElementById("agentgroup").rows[0].cells[column_num].innerHTML
+                document.getElementById("broker").innerHTML = brokerName;
+                document.getElementById("yarntype").innerHTML = yarnType;
+
+                if ((document.getElementById("agentgroup").rows[row_num].cells[column_num].innerHTML) == 0){
+                    AlertFunction();
+                    count += 1;
+                }
+            }
+            else{
+                return;
+            }
+            prev_column = parseInt( $(this).index() )
+            prev_row = parseInt( $(this).parent().index() )+1;
+            prevColumn = prev_column;
+            prevRow =  prev_row;
+            if(count !=0){
+                return;
+                count = 0;
+            }
+            // for execute Lifting details on dblclick column
+            var startdate = " ";
+            var enddate = " ";
+            var broker = "";
+            var yarnType= "";
+            broker += "&broker=" + document.getElementById("agentgroup").rows[row_num].cells[0].innerHTML;
+            yarnType += "&yarnType=" + document.getElementById("agentgroup").rows[0].cells[column_num].innerHTML
+            startdate += "&startdate=" + document.getElementById('startdate').value;
+            enddate += "&enddate=" + document.getElementById('enddate').value;
+            //alert(startdate)
+            window.open("LiftingSummaryDetailsMis?="+startdate+enddate+broker+yarnType);
+        }
+    });
+    });
+     var row, column
+     var previousrow = 0 ;
+     var previouscolumn = 0;
+    function myFunction(x){
+        column = x.cellIndex
+        //alert('column='+column)
+    }
+    function rowFunction(x){
+        if(column>1){
+            //alert(column)
+            row = x.rowIndex;
+            //alert('row='+row)
+            if (column != previouscolumn || row != previousrow){
+                document.getElementById("agentgroup").rows[row].cells[column].style.border = "2px solid yellow";
+                document.getElementById("agentgroup").rows[previousrow].cells[previouscolumn].style.border = "1px solid rgb(102, 102, 102)";
+                previousrow = row;
+                previouscolumn = column;
+            }
+        }
+    }
+
+
+    function DetailSummary(){
+        var count = 0;
+        if (column>1){
+            //alert('row='+row + '   column='+column)
+            if(column != prevColumn || row != prevRow){
+                //alert(document.getElementById("agentgroup").rows[row].cells[column].style)
+                if(prevColumn > 0){
+                    document.getElementById("agentgroup").rows[prevRow].cells[prevColumn].style.border = "1px solid rgb(102, 102, 102)";
+                }
+                document.getElementById("agentgroup").rows[row].cells[column].style.border = "2px solid yellow";
+                //alert(document.getElementById("agentgroup").rows[row].cells[column].style.border)
+
+                var brokerName = document.getElementById("agentgroup").rows[row].cells[0].innerHTML
+                var yarnType = document.getElementById("agentgroup").rows[0].cells[column].innerHTML
+                document.getElementById("broker").innerHTML = brokerName;
+                document.getElementById("yarntype").innerHTML = yarnType;
+
+                if ((document.getElementById("agentgroup").rows[row].cells[column].innerHTML) == 0){
+                    AlertFunction();
+                    count += 1;
+                }
+            }
+            else{
+                return;
+            }
+            prevColumn = column;
+            prevRow = row;
+            prev_column = prevColumn;
+            prev_row = prevRow;
+            if(count !=0){
+                return;
+            }
+            // for execute Lifting details on Details button click
+            var startdate = " ";
+            var enddate = " ";
+            var broker = "";
+            var yarnType= "";
+            //var invAmtExDhara = 0;
+            //var InvAmt = 0
+            broker += "&broker=" + document.getElementById("agentgroup").rows[row].cells[0].innerHTML;
+            yarnType += "&yarnType=" + document.getElementById("agentgroup").rows[0].cells[column].innerHTML
+            startdate += "&startdate=" + document.getElementById('startdate').value;
+            enddate += "&enddate=" + document.getElementById('enddate').value;
+            //invAmtExDhara += "&invAmtExDhara=" + document.getElementById('totalAmount').value;
+            //InvAmt += document.getElementById('totalInvAmount').value;
+            //alert(startdate)
+            window.open("LiftingSummaryDetailsMis?="+startdate+enddate+broker+yarnType);
+        }else{
+            return;
+        }
+
+    }
+
+
+//function applyFunction(){
+//    var itemtypes = [];
+//    itemtypes.push(document.getElementById("itemType").value);
+//    alert(itemtypes)
+//}
+
+
+function applyFunction() {
+    //var allVal = '';
+    var startdate = " ";
+    var enddate = " ";
+    var allValArr = [];
+    var allValArr2 = [];
+    var optionValue = "";
+    var optionValue2 = "";
+    $("#itemType :selected").each(function() {
+       // you can use to get the values $(this).val();
+       //allVal += "'" +  $(this).val() + "'" +',';
+       allValArr.push("'" +  $(this).val() + "'");
+       allValArr2.push($(this).val());
+       //$('#itemtype option[value="'" +  $(this).val() + "'"]').attr('selected', true);
+    });
+    //$('#itemtype option[value=allValArr]').attr('selected', true);
+    //allVal = allVal.substring(0, allVal.length - 1);
+    startdate += "&startdate=" + document.getElementById('startdate').value;
+    enddate += "&enddate=" + document.getElementById('enddate').value;
+    optionValue += "&optionValue=" + allValArr
+    optionValue2 += "&optionValue2=" + allValArr2
+            //alert(startdate)
+    window.open("LiftingSummaryProcessSummFunction?="+startdate+enddate+optionValue+optionValue2,'_self');
+    //alert(allValArr);
+}
+
+
+function AlertFunction(){
+    alert('Record Not Found');
+    return;
+}
+
+
+function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("agentgroup");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+</script>
+
+
+</body>
+
+</html>

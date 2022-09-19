@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Finished Stock</title>
+{% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<!--<h1 style="font-family:arial;margin-left: 50px">Bank Cash Voucher</h1>-->
+    <style>
+.container{
+                margin: 40px auto;
+                width:40%;
+                height:350px;
+                overflow:scroll;
+                position:absolute;
+                background-color: #66ccff;
+            }
+.container1{
+                margin-top: 40px;
+                margin-left: 620px;
+                width:58%;
+                height:350px;
+                overflow:scroll;
+                position:absolute;
+                background-color: #66ccff;
+            }
+.container2{
+                margin: 400px auto;
+                width:40%;
+                height:250px;
+                overflow:scroll;
+                position:absolute;
+                background-color: #66ccff;
+            }
+.container3{
+                margin-top: 400px;
+                margin-left: 620px;
+                width:58%;
+                height:250px;
+                overflow:scroll;
+                position:absolute;
+                background-color: #66ccff;
+            }
+
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#666666;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding:2px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #ffff66;
+
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            table.gridtable td {
+                border-width: 1px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: bold;
+
+            }
+            td:hover {background-color: white}
+
+
+.search{
+position:absolute;
+margin-left:1200px;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<body style="background-color:#dd99ff;">
+<div class="search">
+    <input type="text" id="myInput" onkeyup="searchFunction()"  placeholder="Search for Item.." title="Type in a name">
+</div>
+
+<div  class="details">
+
+</div>
+
+    <div class="container" id="wrap" >
+
+        <table class="gridtable" id="tableMain">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>Departrment</th>
+                        <th>Op.Qty</th>
+                        <th>Rec.Qty.</th>
+                        <th>Iss.Qty</th>
+                        <th>Bal.Qty</th>
+                    </tr>
+                    <tr>
+        <th style="text-align:left;width:150px;">TOTAL</th>
+        <th style="text-align:right;"></th>
+        <th style="text-align:right;"></th>
+        <th style="text-align:right;"></th>
+        <th style="text-align:right;">{{deptclqtytotal}}</th>
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataDeptDetail%}
+
+    <tr>
+        <td style="text-align:left;width:250px;display:none;" >{{ i.DEPTCODE  }}</td>
+
+        <td style="text-align:left;width:250px;" class="dept">{{ i.DEPT  }}</td>
+
+        <td style="text-align:right;width:20px;display:None;">{{ i.ID }}</td>
+
+        <td style="text-align:right;width:20px;">{{ i.QUALITYLEVELCODE }}</td>
+
+        <td style="text-align:right;width:30px;" class="clqty">{{ i.CLQTY }}</td>
+
+        <td style="text-align:right;width:30px;" class="clqty">{{ i.CLQTY }}</td>
+
+        <td style="text-align:right;width:30px;">{{ i.BALQTY }}</td>
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+<div class="container1" id="wrap1" >
+
+        <table class="gridtable" id="tableMain1">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>Item</th>
+                        <th>Op.Qty</th>
+                        <th>Rec.Qty.</th>
+                        <th>Iss.Qty</th>
+                        <th>Bal.Qty</th>
+                        <th>LDR</th>
+                        <th>Pigment Shade</th>
+                    </tr>
+
+                <tr>
+
+                    <th style="text-align:left;width:150px;">TOTAL</th>
+
+        <th style="text-align:right;"></th>
+        <th style="text-align:right;"></th>
+        <th style="text-align:right;"></th>
+        <th style="text-align:right;">{{ itemclqtytotal }}</th>
+        <th style="text-align:right;"></th>
+        <th style="text-align:right;"></th>
+
+                </tr>
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataItemDetail%}
+
+    <tr>
+        <td style="text-align:left;" class="lotno">{{ i.PRODUCTNAME  }}</td>
+
+        <td style="text-align:right;width:30px;display:none">{{ i.ID }}</td>
+
+        <td style="text-align:right;width:30px;">{{ i. }}</td>
+
+        <td style="text-align:right;width:30px;display:none">{{ i.DEPT }}</td>
+
+        <td style="text-align:right;width:30px;">{{ i.ORDERQTY }}</td>
+
+        <td style="text-align:right;width:30px;">{{ i. }}</td>
+
+        <td style="text-align:right;width:30px;">{{ i.CLQTY }}</td>
+
+        <td style="text-align:right;width:30px;">{{ i. }}</td>
+
+        <td style="text-align:right;width:30px;">{{ i.SHADE }}</td>
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+ <div class="container2" id="wrap2" >
+
+        <table class="gridtable" id="tableMain2">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>Site</th>
+                        <th>Prev.DayStk</th>
+                        <th>Op.Qty</th>
+                        <th>Rec.Qty.</th>
+                        <th>Iss.Qty</th>
+                        <th>Bal.Qty</th>
+                    </tr>
+                    <tr>
+        <th style="text-align:left;width:150px;">TOTAL</th>
+        <th style="text-align:right;"></th>
+        <th style="text-align:right;"></th>
+        <th style="text-align:right;"></th>
+        <th style="text-align:right;"></th>
+        <th style="text-align:right;">{{plantclqtytotal}}</th>
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataPlantDetail%}
+
+    <tr>
+        <td style="text-align:left">{{ i.SITE  }}</td>
+
+        <td style="text-align:left;">{{ i.  }}</td>
+
+        <td style="text-align:left;">{{ i.PRODUCTNAME  }}</td>
+
+        <td style="text-align:right">{{ i.QUALITYLEVELCODE }}</td>
+
+        <td style="text-align:right" >{{ i.CLQTY }}</td>
+
+        <td style="text-align:right">{{ i.BALQTY }}</td>
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+ <div class="container3" id="wrap3" >
+
+        <table class="gridtable" id="tableMain3">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>Lot. No.</th>
+                        <th>Op.Qty</th>
+                        <th>Rec.Qty.</th>
+                        <th>Iss.Qty</th>
+                        <th>Bal.Qty</th>
+                    </tr>
+                    <tr>
+        <th style="text-align:left;width:150px;">TOTAL</th>
+        <th style="text-align:right;">{{jguyg}}</th>
+        <th style="text-align:right;">{{itemclcopstotal}}</th>
+        <th style="text-align:right;">{{itemclboxestotal}}</th>
+        <th style="text-align:right;">{{lotclqtytotal}}</th>
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataLotDetail%}
+
+    <tr>
+        <td style="text-align:left;width:250px;">{{ i.LOTCODE  }}</td>
+
+        <td style="text-align:right;width:20px;display:None;">{{ i. }}</td>
+
+        <td style="text-align:right;width:20px;">{{ i. }}</td>
+
+        <td style="text-align:right;width:20px;">{{ i. }}</td>
+
+        <td style="text-align:right;width:30px;" class="clqty">{{ i. }}</td>
+
+        <td style="text-align:right;width:30px;">{{ i.CLQTY }}</td>
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+<!--<button style="position: absolute; margin:60px 1220px;" type="button" onclick="alert('Hello world!')">Despatch Challans</button>-->
+<!--<button style="position: absolute; margin:60px 1350px;" type="button" onclick="alert('Hello world!')">Exit</button>-->
+<!--<button style="position: absolute; margin:375px 1280px;" type="button" onclick="alert('Hello world!')">Report</button>-->
+<!--<button style="position: absolute; margin:650px 1230px;" type="button" onclick="alert('Hello world!')">UnSold Finished Stock Report</button>-->
+<!--<button style=" position: absolute; margin:680px 1250px;"type="button" onclick="alert('Hello world!')">Finished Stock Report</button>-->
+
+<div>
+<label><b>{%if Exception %}
+<script>alert("Note: No Result found according to your selected criteria ");</script>
+{% endif  %}
+</b></label>
+</div>
+</body>
+
+<script>
+$( ".dept" ).click(function() {
+ var $this = $(this);
+ var cellIndex = $this.index();
+ let Dept = $this.closest('tr').children().eq(cellIndex-1).html();
+ window.open("RawMaterialStock_ItemDetail?Dept="+Dept,"_self");
+$this.css('background-color', '#00ffff');
+});
+
+$( ".lotno" ).click(function() {
+ var $this = $(this);
+ var cellIndex = $this.index();
+ let Dept = $this.closest('tr').children().eq(cellIndex+3).html();
+ let Item = $this.closest('tr').children().eq(cellIndex+1).html();
+ window.open("RawMaterialStock_LotDetail?Dept="+Dept+"&Item="+Item,"_self");
+$this.css('background-color', '#00ffff');
+});
+document.getElementById("wrap").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+
+document.getElementById("wrap1").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+
+
+$( ".dept" ).click(function() {
+ var $this = $(this);
+ let Dept = $this.closest('tr').children().eq(cellIndex).html();
+ window.open("RawMaterialStock_ItemDetail?Dept="+Dept,"_self");
+$this.css('background-color', '#00ffff');
+});
+
+$( ".ordpendqty" ).click(function() {
+
+ var $this = $(this);
+ let ItemType = $('#itemtype').val();
+ let OrderType = $('#ordertype').val();
+ let Grade = $('#grade').val();
+ let Site = $('#site').val();
+ var cellIndex = $this.index();
+ let ITEMCODE = $this.closest('tr').children().eq(cellIndex-5).html();
+ let Quality = $this.closest('tr').children().eq(cellIndex-4).html();
+ let ItemName = $this.closest('tr').children().eq(cellIndex-6).html();
+ window.open("FinishedStock_ItemDetail_OrdPendQty?itemcode="+ITEMCODE+"&ordertype="+OrderType+"&grade="+Grade+"&site="+Site+"&itemtype="+ItemType+"&quality="+Quality+"&itemname="+ItemName,"_self");
+$this.css('background-color', '#00ffff');
+});
+
+function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tableMain");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+</script>
+
+
+</html>

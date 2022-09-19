@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Despatch Instruction</title>
+ {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Sales Document Register</h1>
+    <style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+        .two{
+            position: absolute;
+            margin-top: 150px;
+    margin-left:50px ;
+}
+        .three{ position: absolute;
+    margin-top: 10px;
+    margin-left:300px ;
+}
+        .four{position: absolute;
+    margin-top: 10px;
+    margin-left:600px ;
+}
+        .five{position: absolute;
+    margin-top: 10px;
+    margin-left:950px ;
+}
+ .six{position: absolute;
+    margin-top: 400px;
+    margin-left:1150px ;
+}
+</style>
+</head>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+	function Company(allComp)
+	{
+		var comp=document.getElementById('Comp');
+		comp.disabled=!!allComp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)&&!Date.parse(endDate)){
+    alert("Please Enter Date");
+        event.preventDefault();
+    }
+    else{
+        if (!Date.parse(startDate)){
+        alert("Please Enter Start Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(endDate)){
+        alert("Please Enter End Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) >= Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+    }
+
+}
+
+	function Bank(allItem)
+	{
+		var comp=document.getElementById("Item");
+		comp.disabled=!!allItem.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+	function DocumentType(allDcmntType)
+	{
+	    var comp = document.getElementById("DcmntType");
+	    comp.disabled =!!allDcmntType.checked;
+	    if (comp.disabled)
+	    {
+	        comp.focus();
+	    }
+	}
+
+    $(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Comp").select2({
+		data:itemlist
+	});
+	});
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Item").select2({
+		data:itemlist
+	});
+	});
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#DcmntType").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready( function() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+   $('#enddate').val(today);
+   $('#startdate').val(today);
+});
+
+</script>
+
+<body style="background-color:Lavender;">
+
+
+<form action='DespatchInstructionRegister' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+<div class="four">
+<label for='Comp'><b>Division:</b></label><br>
+<label for="allComp"> Select All Division Units:</label>
+<input type="checkbox" id="allComp" name="allComp" value=1 onclick="Company(this)">
+
+<br><br>
+<select name='Comp' id= 'Comp'  multiple >
+ {%for i in GDataCompanyCode%}
+<option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="five">
+<label for="Item" ><b>Item Type:</b></label><br>
+<label for="allItem"> Select All Item Type:</label>
+<input type="checkbox" id="allItem" name="allItem" value=1 onclick="Bank(this)"/>
+<br><br>
+<select  name='Item' id='Item' multiple>
+ {%for i in GDataItemCode%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+<div class="one">
+<label for='startdate'><b>Start Date:</b></label><br>
+<input type='date' id='startdate' name='startdate' tabindex="1">
+<br><br>
+<label for='enddate'><b>End Date:</b></label><br>
+<input type='date' id='enddate' name='enddate'  tabindex="2">
+	</div>
+ <!-- Document Type -->
+<div class="three" >
+<label for='DcmntType'><b>Document Type:</b></label>
+<br>
+<label for="allDcmntType"> Select All Document Type:</label>
+<input type="checkbox" id="allDcmntType" name="allDcmntType" value=1 onclick="DocumentType(this)" tabindex="3"/>
+
+<br><br>
+<select name='DcmntType' style="min-width: 140px" id= 'DcmntType'  multiple  tabindex="4">
+<option value=00> 00</option>
+<!--option value=01> 01</option-->
+<option value=02> 02</option>
+<option value=03> 03</option>
+</select>
+</div>
+
+<div class="six">
+<label for='format' ><b>Export To:</b></label>
+<br><br>
+<button type='submit' form='form1' value='PDF' class="mar" >PDF</button>
+</div>
+
+</form>
+<div class="nine">
+<label for='exception'><b>{%if Exception %}
+<script>alert("Please Select Valid Credentials");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>

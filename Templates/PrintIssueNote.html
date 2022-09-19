@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Print Issue Note</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Print Issue Note</h1>
+    <style>
+           .one{position: absolute;
+                    margin-top: 10px;
+                    margin-left:50px ;
+}
+            .two{position: absolute;
+                    margin-top: 10px;
+                    margin-left:550px ;
+}
+           .three{ position: absolute;
+                    margin-top: 10px;
+                    margin-left:750px ;
+}
+
+            .three2{ position: absolute;
+                    margin-top: 100px;
+                    margin-left:50px ;
+}
+            .four{position: absolute;
+                    margin-top: 100px;
+                    margin-left:700px ;
+}
+            .five{position: absolute;
+                    margin-top: 200px;
+                    margin-left:420px ;
+}
+            .six{position: absolute;
+                    margin-top: 200px;
+                    margin-left:790px ;
+}
+            .seven{position: absolute;
+                    margin-top: 450px;
+                    margin-left:50px ;
+}
+            .eight{position: absolute;
+                    margin-top: 400px;
+                    margin-left:50px ;
+}
+#todepartment, #department{
+ width : 95%;
+ }
+
+.select2 {
+    margin: 0 auto;
+    border-radius: 0 !important;
+<!--    display: block;-->
+}
+
+ select {
+    box-sizing: content-box;
+    height: 30px;
+<!--    border: 1px solid #fafafa;-->
+<!--    font-size: 126px;-->
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)&&!Date.parse(endDate)){
+    alert("Please Enter Start Date and End Date");
+        event.preventDefault();
+    }
+    else{
+        if (!Date.parse(startDate)){
+        alert("Please Enter Start Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(endDate)){
+        alert("Please Enter End Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) >= Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+    }
+
+}
+
+
+$(document).ready( function() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+   $('#enddate').val(today);
+   $('#startdate').val(today);
+   $('#enddate').attr('max', today);
+   $('#startdate').attr('max', today);
+});
+
+
+$(document).ready(function () {
+    $("#submit_check").click(function(){
+        var startGrn = $("input[name=strtGrnno]").val();
+        var endGrn = $("input[name=endGrnno]").val();
+        if(startGrn > endGrn){
+            alert("Start G.R.N No. should be less than or equal to End G.R.N No.");
+            event.preventDefault();
+        }
+    });
+    $("#submit_check").click(function(){
+            var comp = $("#department").val();
+            var toDep = $("#todepartment").val();
+            if (comp == 0){
+                alert("Department Name Required")
+                event.preventDefault();
+            }
+            else{
+                if (toDep == 0){
+                    alert("To Department Name Required")
+                    event.preventDefault();
+                }
+            }
+    });
+
+    $("#strtno").click(function(){
+            var comp = $("#strtno").val();
+            if (comp == 0){
+                alert("No Stores Issue No. Found")
+                event.preventDefault();
+            }
+    });
+
+    $("#endno").click(function(){
+            var comp = $("#endno").val();
+            if (comp == 0){
+                alert("No Stores Issue No. Found")
+                event.preventDefault();
+            }
+    });
+
+    $("#department").change(function(){
+        var comp = $("select[name =department]").val();
+        if(comp !=0){
+<!--            $("#op").hide();-->
+            $("#op").wrap('<span/>')
+        }
+    });
+
+    $("#todepartment").change(function(){
+        var comp = $("select[name =todepartment]").val();
+        if(comp !=0){
+<!--            $("#op").hide();-->
+            $("#toop").wrap('<span/>')
+        }
+    });
+
+    $("#department").select2();
+    $("#todepartment").select2();
+    if ex{
+        event.preventDefault();
+    }
+
+});
+
+</script>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='PrintIssueNote_table' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+<!--Date-->
+<div class="one">
+<label for='startdate'><b>Start Date :</b></label>
+<input type='date' id='startdate' name='startdate' value="today">
+
+<label for='enddate'><b>&emsp; End Date :&emsp13;</b></label>
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+<div class="two">
+    <label for="type"><b>Type :</b></label>
+    <select name="type" id="type" style="height: 25px; border-radius: 3px;">
+        <option value="1">Issue</option>
+        <option value="2">Issue Return</option>
+    </select>
+</div>
+
+<!--    StartNo And EndNo -->
+<div class="three">
+    <label for="strtno" ><b>Start No. :</b></label>
+    <select name="strtno" id="strtno" style="height: 25px; border-radius: 3px;">
+        <option value="" id="startop"></option>
+        {%for i in GDataStartGrnNo%}
+        <option value="{{ i.CODE }}">{{ i.CODE }}</option>
+        {% endfor %}
+    </select>
+
+<!--    EndNo-->
+    <label for="endno" ><b>&emsp;&emsp; End No. :</b></label>
+    <select name="endno" id="endno" style="height: 25px; border-radius: 3px;">
+        <option value="" id="endop"></option>
+        {%for i in GDataStartGrnNo%}
+        <option value="{{ i.CODE }}">{{ i.CODE }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<!--    Department-->
+<div class="three2">
+<label  for='department' ><b>Department : &ensp;</b></label>
+    <select  name='department' id='department'    >
+        <option value="" id="op"></option>
+     {%for i in GDataDepartment%}
+        <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}</option>
+    {% endfor %}
+</select>
+</div>
+
+<!--    To Department-->
+<div class="four">
+<label  for='todepartment' ><b>To Department : &ensp;</b></label>
+    <select  name='todepartment' id='todepartment'    >
+        <option value="" id="toop"></option>
+     {%for i in GDataToDepartment%}
+        <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}</option>
+    {% endfor %}
+</select>
+</div>
+
+
+<div class="seven">
+
+<br><br>
+    <label for='format' ><b>Export To:</b></label>
+<button type='submit' form='form1' value='PDF' class="mar" id="submit_check"> Find</button>
+
+</div>
+
+</form>
+<div class="eight">
+<label for='exception' ><b>{%if Exception %}
+<script>alert("No Result Found On Given Criteria");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>
+<!--alert("Please Select Valid Credentials");-->

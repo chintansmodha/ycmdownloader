@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Contract Pending</title>
+{% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<!--<h1 style="font-family:arial;margin-left: 50px">Bank Cash Voucher</h1>-->
+    <style>
+
+.container{
+                margin: 40px 100px;
+                width:40%;
+                height:350px;
+                overflow:scroll;
+                overflow-x: hidden;
+                position:absolute;
+                background-color: #66ccff;
+
+            }
+.container1{
+                margin-top: 40px;
+                margin-left:720px;
+                width:45%;
+                height:350px;
+                overflow:scroll;
+                position:absolute;
+                background-color: #66ccff;
+            }
+.container2{
+                margin-top: 430px;
+                width:99%;
+                height:210px;
+                overflow:scroll;
+                position:absolute;
+                background-color: #66ccff;
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#666666;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding:2px;
+                border-style: solid;
+                border-color: #666666;
+                background-color:#66ff66;
+
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: white}
+.containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+
+select,
+.select2 {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 50px;
+    overflow: scroll;
+    overflow-x:hidden;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 10px;
+    font-size: 10p;
+    border: 1px solid #fafafa;
+}
+.select2-container .select2-results {min-height: 100px; max-height: 100px; overflow-y: auto;}
+
+
+.rdbtn{
+position:absolute;
+margin-top:10px;
+margin-left:250px;
+}
+.type{
+position:absolute;
+margin-top:10px;
+
+}
+.apply{
+position:absolute;
+margin-top:-60px;
+}
+
+.search{
+position:absolute;
+margin-top:10px;
+margin-left:500px;
+}
+
+.details{
+position:absolute;
+margin-top:0px;
+margin-left:720px;
+}
+
+#ordertype{
+width:100px;
+margin-left:0px;
+}
+
+#itemtype{
+width:100px;
+margin-left:0px;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<body style="background-color:#dd99ff;">
+
+<div class="rdbtn">
+<input type="radio" id="item" name="wise" value="Item" onclick="ContractPending_ItemWise()">
+    <label for="item"><b>Item Wise</b></label>
+<input type="radio" id="agent" name="wise" value="Agent" onclick="ContractPending_AgentWise()">
+    <label for="agent"><b>Agent Wise</b></label>
+</div>
+<form action="ContractPending_AgentApplyType" id="form1">
+    <div class="type">
+
+    <label for='ordertype'><b>Order Type:</b></label>
+    <br>
+    <select name='ordertype' id='ordertype'>
+<option value=1 selected>All</option>
+<option value=2 >Local</option>
+<option value=3>Export</option>
+</select><br><br><br>
+
+    <label for='itemtype'><b>Item Type:</b></label><br>
+<select name='itemtype' id='itemtype' multiple >
+ {%for i in GDataItemType%}
+<option value="{{i}}">{{i}}</option>
+{% endfor %}
+</select>
+    <br><br><br><br><br><br><br><br><br><br>
+    <div class="apply">
+<label><b>Apply Type:</b></label>
+<br>
+<button type='submit' form='form1' value='PDF' class="mar" >Apply</button>
+<br>
+    </div>
+
+</div>
+    <div style="margin-top:400px;position:absolute">
+     <label><b>Detail:{{item}}</b> </label>
+</div>
+</form>
+
+<div class="search">
+    <input type="text" id="myInput" onkeyup="searchFunction()"  placeholder="Search for Item Group.." title="Type in a name">
+</div>
+<div  class="details">
+<h3>Details:{{itemgroup}}</h3>
+</div>
+    <div class="container" id="wrap" >
+
+        <table class="gridtable" id="tableMain">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>Agent</th>
+                        <th>Contract Qty.</th>
+                        <th>Despatch Not Given</th>
+                        <th>Goods Not Despatched</th>
+                        <th>Total Pending Deliveries</th>
+                    </tr>
+
+                <tr>
+
+                    <th style="text-align:left;width:150px;">TOTAL</th>
+
+        <th style="text-align:right;">{{ sumcontractqty }}</th>
+
+        <th style="text-align:right;">{{ sumdespnotgn }}</th>
+
+        <th style="text-align:right;">{{ sumgoodnotgn }}</th>
+
+        <th style="text-align:right;">{{ sumtotal }}</th>
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                        {%for i in GDataItemGroup%}
+
+    <tr style="text-align:left;width:150px;">
+        <td style="text-align:left;width:150px;">{{ i.AGENT  }}</td>
+
+        <td style="text-align:right;">{{ i.CONTRACTQTY }}</td>
+
+        <td style="text-align:right;">{{ i.PENDCONTRACTQTY }}</td>
+
+        <td style="text-align:right;">{{ i.DESPORDERQTY }}</td>
+
+        <td style="text-align:right;">{{ i.TOTAL }}</td>
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+<div class="container1" id="wrap1" >
+
+        <table class="gridtable" id="tableMain1">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th style="text-align:center;width:250px;" >Item</th>
+                        <th style="text-align:left;width:90px;">Contract Qty.</th>
+                        <th>Despatch Not Given(A)</th>
+                        <th>Goods Not Despatched(B)</th>
+                        <th>Total Pending Delv.(A+B=C)</th>
+                    </tr>
+ <tr>
+                    <th style="text-align:left;width:150px;">TOTAL</th>
+
+        <th style="text-align:right;">{{ detcontractqty }}</th>
+
+        <th style="text-align:right;">{{ detdespnotgn }}</th>
+
+        <th style="text-align:right;">{{ detgoodnotgn }}</th>
+
+        <th style="text-align:right;">{{ dettotal }}</th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataItemDetail%}
+
+    <tr onclick="subdetails(this)">
+        <td style="text-align:left;width:200px;">{{ i.ITEM  }}</td>
+
+        <td style="text-align:right;">{{ i.CONTRACTQTY }}</td>
+
+        <td style="text-align:right;">{{ i.PENDCONTRACTQTY }}</td>
+
+        <td style="text-align:right;">{{ i.DESPORDERQTY }}</td>
+
+        <td style="text-align:right;">{{ i.TOTAL }}</td>
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+<div class="container2" id="wrap2" >
+
+        <table class="gridtable" id="tableMain2">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>Doc.Type</th>
+                        <th>Cont/Ord No.</th>
+                        <th>Cont/Ord Dt.</th>
+                        <th>Customer</th>
+                        <th>Shade-A</th>
+                        <th>Quantity</th>
+                        <th>Bal.Desp A+B=C</th>
+                        <th>Rate/47.06</th>
+                        <th>DRate</th>
+                        <th>Broker</th>
+                        <th>Refno</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataItemSubDetail%}
+
+    <tr>
+        <td style="text-align:left;width:20px;">{{ i.DOCTYPE  }}</td>
+
+        <td style="text-align:left;width:30px;">{{ i.CODE  }}</td>
+
+        <td style="text-align:left;width:55px;">{{ i.ORDERDATE }}</td>
+
+        <td style="text-align:left;width:100px;">{{ i.CUSTOMER }}</td>
+
+        <td style="text-align:left;width:120px;">{{ i.SHADENAME }}-{{i.SHADECODE}}</td>
+
+        <td style="text-align:right;width:30px;">{{ i.CONTRACTQTY }}</td>
+
+        <td style="text-align:right;width:60px;">{{ i.BALDESP }}</td>
+
+        <td style="text-align:right;width:30px;">{{ i.RATEWITHOUTDHARA }}</td>
+
+        <td style="text-align:right;width:30px">{{ i.DHARARATE }}</td>
+
+        <td style="text-align:center;width:150px;">{{ i.BROKER}}</td>
+
+        <td style="text-align:left;width:40px">{{ i.EXTERNALREFERENCE}}</td>
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+<div>
+<label for ='exception'><b>{%if Exception %}
+<script>alert("Note: No Result found according to your selected criteria ");</script>
+{% endif  %}
+</b></label>
+</div>
+</body>
+
+<script>
+
+var optionsToSelect = '{{ItemType}}';
+var select = document.getElementById( 'itemtype' );
+
+for ( var i = 0, l = select.options.length, o; i < l; i++ )
+{
+  o = select.options[i];
+  if ( optionsToSelect.indexOf( o.text ) != -1 )
+  {
+    o.selected = true;
+  }
+}
+
+document.getElementById("agent").checked = true;
+$(document).ready(function()
+	{
+	$("#itemtype").select2();
+
+	});
+
+document.getElementById("wrap").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+
+document.getElementById("wrap1").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+
+document.getElementById("wrap2").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+
+//add event listener to table rows
+            let thetable = document.getElementById('tableMain').getElementsByTagName('tbody')[0];
+            for (let i = 0; i < thetable.rows.length; i++)
+                {
+                    thetable.rows[i].onclick = function()
+                    {
+                        TableRowClick(this);
+                    };
+                };
+
+            function TableRowClick(therow) {
+                let ItemType = $('#itemtype').val();
+                let ITEMCODE = therow.cells[0].innerHTML;
+                window.open("ContractPending_AgentItemDetail?itemcode="+ITEMCODE+"&itemtype="+ItemType,"_self");
+
+                therow.style.backgroundColor='#00ffff';
+            };
+
+function subdetails(therow) {
+                let ItemType = $('#itemtype').val();
+                let ITEMCODE = therow.cells[0].innerHTML;
+                window.open("ContractPending_AgentItemSubDetail?itemcode="+ITEMCODE+"&itemtype="+ItemType,"_self");
+
+                therow.style.backgroundColor='#00ffff';
+            };
+
+function ContractPending_ItemWise(){
+window.open("ContractPending.html","_self");
+};
+function ContractPending_AgentWise(){
+window.open("ContractPending_AgentWise","_self");
+};
+function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tableMain");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+};
+
+
+
+
+
+</script>
+<script>
+
+</script>
+
+</html>

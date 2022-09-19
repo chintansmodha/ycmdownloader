@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Goods Receipt Note</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Goods Receipt Note</h1>
+    <style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+.two{position: absolute;
+    margin-top: 10px;
+    margin-left:340px ;
+}
+        .three{ position: absolute;
+    margin-top: 10px;
+    margin-left:800px ;
+}
+
+.three2{ position: absolute;
+    margin-top: 7px;
+    margin-left:1000px ;
+}
+.four{position: absolute;
+    margin-top: 100px;
+    margin-left:80px ;
+}
+        .five{position: absolute;
+    margin-top: 200px;
+    margin-left:420px ;
+}
+  .six{position: absolute;
+    margin-top: 200px;
+    margin-left:790px ;
+}
+ .seven{position: absolute;
+    margin-top: 500px;
+    margin-left:50px ;
+}
+.eight{position: absolute;
+    margin-top: 400px;
+    margin-left:50px ;
+}
+
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection{
+    height: 100px;
+    overflow: scroll ;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)&&!Date.parse(endDate)){
+    alert("Please Enter Start Date and End Date");
+        event.preventDefault();
+    }
+    else{
+        if (!Date.parse(startDate)){
+        alert("Please Enter Start Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(endDate)){
+        alert("Please Enter End Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+    }
+
+}
+	function company(allcomp)
+	{
+		var comp=document.getElementById("comp");
+		comp.disabled=!!allcomp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#comp").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready( function() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+   $('#enddate').val(today);
+   $('#startdate').val(today);
+   $('#enddate').attr('max', today);
+   $('#startdate').attr('max', today);
+});
+
+
+$(document).ready(function () {
+$("#submit_check").click(function(){
+        var startGrn = $("input[name=strtGrnno]").val();
+        var endGrn = $("input[name=endGrnno]").val();
+        if(startGrn > endGrn){
+            alert("Start G.R.N No. should be less than or equal to End G.R.N No.");
+            event.preventDefault();
+        }
+    });
+    $("#submit_check").click(function(){
+            var comp = $("#Division").val();
+            if (comp == 0){
+                alert("Company Name Required")
+                event.preventDefault();
+            }
+    });
+    $("#Division").change(function(){
+    var comp = $("#Division").val();
+    if(comp !=0){
+        $("#op").hide();
+    }
+    });
+});
+
+</script>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='PrintGoodsReceiptNote_table' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+<!--Date-->
+<div class="one">
+<label for='startdate'><b>Start Date :</b></label>
+<input type='date' id='startdate' name='startdate' value="today">
+    <br><br>
+<label for='enddate'><b> End Date :</b></label>&emsp13;
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+<!--    Division-->
+<div class="two">
+<label  for='Division' ><b>Division Units: </b></label><br>
+<!--<label for="allDivision">All Division units</label>-->
+<!--<input type="checkbox" id="allDivision" name="allDivision"  value=1 onclick="company(this)"/><br>-->
+    <select  name='Division' id='Division'  style="width: 350px ; height:30px;"  >
+        <option value="" id="op"></option>
+ {%for i in GDataDivision%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<!--    Logical WareHouse-->
+<div class="three">
+ <label for='comp' ><b>&emsp13;LOGICALWAREHOUSE:</b></label>
+ <label for="allcomp">&emsp13; <b>All LOGICALWAREHOUSE</b></label>
+ <input type="checkbox" id="allcomp" name="allcomp" value=1 onclick="company(this)"/> <br>
+ <select  name='comp' id='comp' style="width:430px;" multiple>
+  {%for i in GDataLOGICALWAREHOUSE%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+
+<div class="seven">
+
+<br><br>
+    <label for='format' ><b>Export To:</b></label>
+<button type='submit' form='form1' value='PDF' class="mar" id="submit_check"> Find</button>
+
+</div>
+
+</form>
+<div class="eight">
+<label for='exception'><b>{%if Exception %}
+<script>alert("No Result Found On Given Criteria");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>
+<!--alert("Please Select Valid Credentials");-->

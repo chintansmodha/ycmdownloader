@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html>
+    <head style="font-family:arial;">
+        <title>Item Rate Table</title>
+            {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+        <meta charset="utf-8" />
+        <style>
+            .one{position: absolute;
+                    margin-top: -30px;
+                    margin-left:50px ;
+                }
+             .two{position: absolute;
+                    margin-top: -30px;
+                    margin-left:950px ;
+                }
+            .container{
+                margin: 10px auto;
+                width:90%;
+                height:580px;
+                overflow:scroll;
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #cccccc;
+
+
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+
+
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #33F6FF}
+            .containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+            .pdfbutton{
+               position: absolute;
+               margin-left:10px ;
+               overflow-y: auto;
+    }
+
+       </style>
+        <STYLE>A {text-decoration: none;} </STYLE>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $('#allcomp').prop('checked', true);
+
+</script>
+    </head>
+
+    <body style="background-color:Lavender;font-family:arial;" onload="myFunction()" >
+    <div class="container" id="wrap">&nbsp;
+        <label><b>Date : </b>{{ Date }}</label>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+        <label><b>Location : </b>{{ Location }}</label><br>
+        <table class="gridtable" id="tableMain">
+
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>Item Description</th>
+                        <th>Rate</th>
+                        <th>Column</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {%for i in GDItemSummary%}
+
+    <tr>
+        <td style="text-align:left;" id="Itm">{{ i.ITEM }}</td>
+
+        <td style="text-align:right;" id="Price">{{ i.PRICE }}</td>
+
+        <td style="text-align:right; width:50px" id="Amt">{{ i.COLUMN }}</td>
+
+        <td style="text-align:right; display: none;">{{ Date }}</td>
+
+        <td style="text-align:right; display: none;">{{ i.CODE }}</td>
+
+        <td style="display: none;" align="center" > <input type="checkbox" id="allcomp" name="allcomp" value=1 checked="true" /></td>
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+<label style="margin-left:600px;" ><b>Export To:</b></label>
+    <button type='submit' style="background-color:#808080; color:#ffffff;" onclick="GetSelected()" value='PDF'  ><b>PDF</b></button>
+    <div class="containerfooter">
+<!--        <div class="one">-->
+<!--        <button type='button' style="background-color:#808080; color:#ffffff;" id="select" tabindex="1" ><b>Select All</b></button>-->
+<!--         <button type='button' style="background-color:#808080; color:#ffffff;"  id="deselect" tabindex="2" ><b>Deselect All</b></button>-->
+<!--    </div>-->
+    <table class="gridtable">
+        <thead>
+
+        </thead>
+    </table>
+                    </div>
+
+    <div class="five">
+<label for='exception'><b>{%if Exception %}
+<script>alert("Note: Report Not Form From Given Criteria "); </script>
+{% endif %}
+</b></label>
+</div>
+		<script>
+
+function GetSelected() {
+        //Reference the Table.
+        var grid = document.getElementById("tableMain");
+
+        //Reference the CheckBoxes in Table.
+        var checkBoxes = grid.getElementsByTagName("INPUT");
+        var Item = "";
+        var Price = "";
+        var Column = "";
+        var Date = "";
+        var Code = "";
+
+        //Loop through the CheckBoxes.
+        for (var i = 0; i < checkBoxes.length; i++) {
+            if (checkBoxes[i].checked) {
+                var row = checkBoxes[i].parentNode.parentNode;
+                Item += "&Item=" +row.cells[0].innerHTML;
+                Price += "&Price=" +row.cells[1].innerHTML;
+                Column += "&Column=" +row.cells[2].innerHTML;
+                Date += "&Date=" +row.cells[3].innerHTML;
+                Code += "&Code=" +row.cells[4].innerHTML;
+
+            }
+        }
+
+        //Display selected Row data in Alert Box.
+           if (Item == ""){
+                alert("Please select at least one check box");
+           }else{
+                window.open("ItemRate_PDF?="+Date+Code);
+           }
+
+    }
+
+
+function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tableMain");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }$(".datarow").hide();
+}
+
+
+function myFunction() {
+  $(".datarow").hide();
+}
+		$( document ).ready(function() {
+
+            //collapse and expand sections
+
+            $('.breakrow').click(function(){
+                $(this).nextUntil('tr.breakrow').slideToggle(200);
+            });
+        });
+
+            //add event listener to table rows
+            let thetable = document.getElementById('tableMain').getElementsByTagName('tbody')[0];
+            for (let i = 0; i < thetable.rows.length; i++)
+                {
+                    thetable.rows[i].onclick = function()
+                    {
+                        TableRowClick(this);
+                    };
+                }
+
+            function TableRowClick(therow) {
+                let BUSINESSUNIT = therow.cells[1].innerHTML;
+                let GLACCOUNT = therow.cells[3].innerHTML;
+                let SUPPLIERTYPE = therow.cells[5].innerHTML;
+                let SUPPLIERCODE = therow.cells[6].innerHTML;
+                let OPBAL = therow.cells[7].innerHTML;
+                let DRAMOUNT = therow.cells[8].innerHTML;
+                let CRAMOUNT = therow.cells[9].innerHTML;
+                let CLBAL = therow.cells[10].innerHTML;
+
+                window.open("AdhocLedgerDetail?company="+BUSINESSUNIT+"&account="+GLACCOUNT+
+                "&suppliertype="+SUPPLIERTYPE+
+                "&suppliercode="+SUPPLIERCODE+"&opbalance="+OPBAL+"&debit="+DRAMOUNT+
+                "&credit="+CRAMOUNT+"&clbalance="+CLBAL);
+
+                therow.style.backgroundColor='#00ffff';
+            };
+
+		</script>
+<script>
+document.getElementById("wrap").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+
+</script>
+
+    </body>
+</html>

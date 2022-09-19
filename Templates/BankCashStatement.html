@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Bank Statement</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Bank/Cash Statement</h1>
+    <style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+        .two{
+            position: absolute;
+            margin-top: 150px;
+    margin-left:50px ;
+}
+        .three{position: absolute;
+    margin-top: 10px;
+    margin-left:450px ;
+}
+        .four{position: absolute;
+    margin-top: 10px;
+    margin-left:800px ;
+}
+        .five{position: absolute;
+    margin-top: 10px;
+    margin-left:250px ;
+}
+ .six{position: absolute;
+    margin-top: 400px;
+    margin-left:50px ;
+}
+</style>
+</head>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+	function Company(allComp)
+	{
+		var comp=document.getElementById('Comp');
+		comp.disabled=!!allComp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)&&!Date.parse(endDate)){
+    alert("Please Enter Date");
+        event.preventDefault();
+    }
+    else{
+        if (!Date.parse(startDate)){
+        alert("Please Enter Start Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(endDate)){
+        alert("Please Enter End Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) >= Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+    }
+
+}
+
+	function Bank(allBnk)
+	{
+		var comp=document.getElementById("Bnk");
+		comp.disabled=!!allBnk.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+    $(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Comp").select2({
+		data:itemlist
+	});
+	});
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Bnk").select2({
+		data:itemlist
+	});
+	});
+Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+    });
+        $(document).ready( function() {
+        $('#startdate').val(new Date().toDateInputValue());
+    });
+    $(document).ready( function() {
+        $('#enddate').val(new Date().toDateInputValue());
+    });
+</script>
+
+<body style="background-color:Lavender;">
+
+
+<form action='BankCashStatement' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+<div class="three">
+<label for='Comp'><b>Company:</b></label>
+<label for="allComp"> Select All Company Units:</label>
+<input type="checkbox" id="allComp" name="allComp" value=1 onclick="Company(this)">
+
+<br><br>
+<select name='Comp' id= 'Comp'  multiple >
+ {%for i in GDataItemCode%}
+<option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="four">
+<label for="Bnk" ><b>Bank:</b></label>
+<label for="allBnk"> Select All Banks:</label>
+<input type="checkbox" id="allBnk" name="allBnk" value=1 onclick="Bank(this)"/>
+<br><br>
+<select  name='Bnk' id='Bnk' multiple>
+ {%for i in GDataCompanyCode%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+<div class="one">
+<label for='startdate'><b>Start Date:</b></label><br>
+<input type='date' id='startdate' name='startdate' tabindex = "1">
+<br><br>
+<label for='enddate'><b>End Date:</b></label><br>
+<input type='date' id='enddate' name='enddate' tabindex = "2">
+	</div>
+<div class="five">
+	<label for="Consolidate"><b>Consolidate</b></label>
+    <select name="Consolidate" id="Consolidate" tabindex = "3">
+      <option value=0>No</option>
+      <option value=1>Yes</option>
+    </select>
+	<br><br><br>
+	<label for="A/C Summary"><b>A/C Summary</b></label>
+    <select name='A/C Summary' id="A/C Summary" tabindex = "4">
+      <option value=0>No</option>
+      <option value=1>Yes</option>
+    </select>
+</div>
+    <!--
+<div class="two">
+<label for='reporttype'><b>Report Type:</b></label>
+<br><br>
+<select name='reporttype' id='reporttype'>
+<option value=1 selected>Register</option>
+<option value=2 >Item Summary</option>
+<option value=3>Charge/Tax Summary</option>
+</select>
+</div>-->
+<div class="six">
+<label for='format' ><b>Export To:</b></label>
+<br><br>
+<button type='submit' form='form1' value='PDF' class="mar" >PDF</button>
+</div>
+
+</form>
+<div class="nine">
+<label for='exception'><b>{%if Exception %}
+<script>alert("Please Select Valid Credentials");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>

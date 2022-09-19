@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Pending Despatch Instruction</title>
+ {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Pending Despatch Instruction</h1>
+    <style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+    .two{position: absolute;
+    margin-top: 10px;
+    margin-left:250px ;
+}
+        .three{ position: absolute;
+    margin-top: 10px;
+    margin-left:750px ;
+}
+       .three2{ position: absolute;
+    margin-top: 10px;
+    margin-left:950px ;
+}
+        .four{position: absolute;
+    margin-top: 80px;
+    margin-left:50px ;
+}
+        .five{position: absolute;
+    margin-top: 80px;
+    margin-left:260px ;
+}
+  .six{position: absolute;
+    margin-top: 80px;
+    margin-left:520px ;
+}
+  .seven{position: absolute;
+    margin-top: 80px;
+    margin-left:840px ;
+}
+  .eight{position: absolute;
+    margin-top: 80px;
+    margin-left:1165px ;
+}
+  .nine{position: absolute;
+    margin-top: 300px;
+    margin-left:50px ;
+}
+  .ten{position: absolute;
+               margin-top: 300px;
+    margin-left:370px ;
+}
+  .eleven{
+            position: absolute;
+            margin-top: 300px;
+    margin-left:685px ;
+}
+  .twelve{position: absolute;
+    margin-top: 300px;
+    margin-left:1010px ;
+}
+  .thirteen{position: absolute;
+    margin-top: 550px;
+    margin-left:1150px ;
+}
+</style>
+</head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+	function Company(allComp)
+	{
+		var comp=document.getElementById('Comp');
+		comp.disabled=!!allComp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)&&!Date.parse(endDate)){
+    alert("Please Enter Date");
+        event.preventDefault();
+    }
+    else{
+        if (!Date.parse(startDate)){
+        alert("Please Enter Start Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(endDate)){
+        alert("Please Enter End Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) >= Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+    }
+
+}
+
+	function Bank(allItem)
+	{
+		var comp=document.getElementById("Item");
+		comp.disabled=!!allItem.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+	function DocumentType(allDcmntType)
+	{
+	    var comp = document.getElementById("DcmntType");
+	    comp.disabled =!!allDcmntType.checked;
+	    if (comp.disabled)
+	    {
+	        comp.focus();
+	    }
+	}
+	function Agent(allagent)
+	{
+		var comp=document.getElementById('agent');
+		comp.disabled=!!allagent.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+	function item(allItm)
+	{
+		var comp=document.getElementById('Itm');
+		comp.disabled=!!allItm.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+	function Shade(allshade)
+	{
+		var comp=document.getElementById('shade');
+		comp.disabled=!!allshade.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+	function Grade(allbroker)
+	{
+		var comp=document.getElementById('grade');
+		comp.disabled=!!allgrade.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+	function Party(allprty)
+	{
+		var comp=document.getElementById('prty');
+		comp.disabled=!!allprty.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+	function AgentGroup(allAgentGrp)
+	{
+		var comp=document.getElementById('AgentGrp');
+		comp.disabled=!!allAgentGrp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+    $(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Comp").select2({
+		data:itemlist
+	});
+	});
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Item").select2({
+		data:itemlist
+	});
+	});
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#DcmntType").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#agent").select2({
+		data:itemlist
+	});
+	});
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Itm").select2({
+		data:itemlist
+	});
+	});
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#shade").select2({
+		data:itemlist
+	});
+	});
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#grade").select2({
+		data:itemlist
+	});
+	});
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#prty").select2({
+		data:itemlist
+	});
+	});
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#AgentGrp").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready( function() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+   $('#enddate').val(today);
+   $('#startdate').val(today);
+   $('#enddate').attr('max', today);
+   $('#startdate').attr('max', today);
+});
+
+<!--$(document).ready(function () {-->
+<!--    $("#Report").change(function () {-->
+<!--        var val = $(this).val();-->
+<!--        if (val == "Brokerwise") {-->
+<!--            document.getElementById("Eject").disabled = false;-->
+<!--        } else {-->
+<!--              document.getElementById("Eject").disabled = true;-->
+
+<!--        }-->
+<!--    });-->
+<!--});-->
+
+</script>
+
+<body style="background-color:Lavender;">
+
+
+<form action='DespatchInstructionRegister' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+<!--REPORt TYPE-->
+<div class="one">
+<label for="Report"><b>Report:</b></label>
+    <select name="Report" id="Report">
+    <option value="Brokerwise" >Brokerwise</option>
+    <option value="Datewise">Datewise</option>
+    <option value="Itemwise">Itemwise</option>
+    <option value="Itemshadewise">ItemShadewise</option>
+    <option value="Shadeitemwise">ShadeItemwise</option>
+  </select>
+</div>
+
+<!--DATE-->
+<div class="two">
+<label for='startdate'><b>Start Date:</b></label>
+<input type='date' id='startdate' name='startdate' >
+<label for='enddate'><b>End Date:</b></label>
+<input type='date' id='enddate' name='enddate'  >
+	</div>
+
+<!---- Remarks-->
+<div class="three">
+<label for="Remarks"><b>Remarks:</b></label>
+  <select name="Remarks" id="Remarks">
+    <option value="1">Yes</option>
+    <option value="0">No</option>
+  </select>
+</div>
+
+<!---- Eject-->
+<!--<div class="three2">-->
+<!--<label for="Eject"><b>Eject:</b></label>-->
+<!--  <select name="Eject" id="Eject">-->
+<!--    <option value="1">Yes</option>-->
+<!--    <option value="0">No</option>-->
+<!--  </select>-->
+<!--</div>-->
+
+<!--  Document Type -->
+<div class="four" >
+<label for='DcmntType'><b>Document Type:</b></label><br>
+<label for="allDcmntType"> All Document Types:</label>
+<input type="checkbox" id="allDcmntType" name="allDcmntType" value=1 onclick="DocumentType(this)" />
+
+<br><br>
+<select name='DcmntType' style="min-width: 180px " id= 'DcmntType'  multiple  >
+<option value=00> 00</option>
+<!--option value=01> 01</option-->
+<option value=02> 02</option>
+<option value=03> 03</option>
+</select>
+</div>
+
+    <!--DIVISION-->
+<div class="five">
+<label for='Comp'><b>Division:</b></label><br>
+<label for="allComp"> Select All Division Units:</label>
+<input type="checkbox" id="allComp" name="allComp" value=1 onclick="Company(this)">
+
+<br><br>
+<select name='Comp' id= 'Comp'  multiple >
+ {%for i in GDataCompanyCode%}
+<option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<!-- ITEM TYPE-->
+<div class="six">
+<label for="Item" ><b>Item Type:</b></label><br>
+<label for="allItem"> Select All Item Type:</label>
+<input type="checkbox" id="allItem" name="allItem" value=1 onclick="Bank(this)"/>
+<br><br>
+<select  name='Item' id='Item' multiple>
+ {%for i in GDataItemCode%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<!---- Item-->
+<div class="seven">
+<label for="Itm" ><b>Item:</b></label><br>
+<label for="allItm"> All Items:</label>
+<input type="checkbox" id="allItm" name="allItm" value=1 onclick="item(this)"/>
+<br><br>
+<select  name='Itm' style="width: 300px" id='Itm' multiple>
+ <{%for i in GDataItmCode%}
+<option value="{{ i.LONGDESCRIPTION }} ">{{ i.LONGDESCRIPTION }}-{{ i.ITEMTYPECODE }}</option>
+{% endfor %}>
+</select>
+</div>
+
+    <!---- Grade-->
+<div class="eight">
+<label for="grade" ><b>Grade:</b></label><br>
+<label for="allgrade"> All Grades:</label>
+<input type="checkbox" id="allgrade" name="allgrade" value=1 onclick="Grade(this)"/>
+<br><br>
+<select  name='grade' id='grade' multiple>
+ <{%for i in GDataGradeCode%}
+<option value="{{ i.LONGDESCRIPTION }} ">{{ i.LONGDESCRIPTION }}</option>
+{% endfor %}>
+</select>
+</div>
+
+    <!---- AGENTGroup-->
+<div class="nine">
+<label for="AgentGrp" ><b>Agent Group:</b></label><br>
+<label for="allAgentGrp"> All Agent Groups:</label>
+<input type="checkbox" id="allAgentGrp" name="allAgentGrp" value=1 onclick="AgentGroup(this)"/>
+<br><br>
+<select  name='AgentGrp' id='AgentGrp' multiple>
+ <{%for i in GDataAgentGroupCode%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}>
+</select>
+</div>
+
+<!---- Agent-->
+<div class="ten">
+<label for="agent" ><b>Agent:</b></label><br>
+<label for="allagent"> All Agent:</label>
+<input type="checkbox" id="allagent" name="allagent" value=1 onclick="Agent(this)"/>
+<br><br>
+<select  name='agent' style="width: 300px" id='agent' multiple>
+ <{%for i in GDataAgentCode%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}>
+</select>
+</div>
+
+<!---- Shade-->
+<div class="eleven">
+<label for="shade" ><b>Shade:</b></label><br>
+<label for="allshade"> All Shade:</label>
+<input type="checkbox" id="allshade" name="allshade" value=1 onclick="Shade(this)"/>
+<br><br>
+<select  name='shade' style="width: 300px" id='shade' multiple>
+ <{%for i in GDataShadeCode%}
+<option value="{{ i.LONGDESCRIPTION }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}>
+</select>
+</div>
+
+<!---- party-->
+<div class="twelve">
+<label for="prty" ><b>Party:</b></label><br>
+<label for="allprty"> All Party:</label>
+<input type="checkbox" id="allprty" name="allprty" value=1 onclick="Party(this)"/>
+<br><br>
+<select  name='prty' style="width: 300px" id='prty' multiple>
+ <{%for i in GDataPartyCode%}
+<option value="{{ i.LEGALNAME1 }} ">{{ i.LEGALNAME1 }}</option>
+{% endfor %}>
+</select>
+</div>
+
+
+<div class="thirteen">
+<label for='format' ><b>Export To:</b></label>
+<button type='submit' form='form1' value='PDF' class="mar" > PDF</button>
+</div>
+
+</form>
+<div class="fourteen">
+<label for='exception'><b>{%if Exception %}
+<script>alert("Please Select Valid Credentials");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>

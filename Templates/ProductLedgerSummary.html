@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html>
+    <head style="font-family:arial;">
+        <title>Product Ledger Summary</title>
+            {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+        <meta charset="utf-8" />
+        <style>
+
+            .container{
+                margin: 10px auto;
+                width:90%;
+                height:590px;
+                overflow:scroll;
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:70%;
+                padding: 1px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+
+
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #D8DA5C}
+.containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+
+
+       </style>
+
+
+
+    </head>
+
+    <body style="background-color:Lavender;font-family:tahoma;" onload="myFunction()" >
+
+    <div class="footer" style="margin-top:20px;margin-left:80px;"><b>Period:{{startdate}}    ---    {{enddate}}</b>
+    <input type="text" id="myInput" onkeyup="searchFunction()" style="margin-left:1050px;" placeholder="Search For Product Name.." title="Search For Product Name">
+    </div>
+        <div class="container" id="wrap">
+
+        <table class="gridtable" id="tableMain">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>PlantName</th>
+                        <th>ItemType</th>
+                        <th style="width:600px;">ProductName</th>
+                        <th style="width:100px;">OpQty</th>
+                        <th style="width:100px;">RecQty</th>
+                        <th style="width:100px;">IssQty</th>
+                        <th style="width:100px;">BalQty</tH>
+                        <th>W.H.Code</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataProductLedgerSummary%}
+
+    <tr>
+        <td style="text-align:left;display:none">{{ i.PLANTCODE }}</td>
+
+        <td style="text-align:left;display:none">{{ i.TEMPCODE }}</td>
+
+        <td style="text-align:left">{{ i.PLANTNAME }}</td>
+
+        <td style="text-align:left;">{{ i.ITEMTYPE }}</td>
+
+        <td style="text-align:left;">{{ i.PRODUCTNAME }}</td>
+
+        <td style="text-align:right;">{{ i.OPBAL }}</td>
+
+        <td style="text-align:right;">{{ i.RECQTY }}</td>
+
+        <td style="text-align:right;">{{ i.ISSQTY }}</td>
+
+        <td style="text-align:right;">{{ i.BALQTY }}</td>
+
+        <td style="text-align:left">{{ i.WAREHOUSECODE }}</td>
+
+        <td style="text-align:left;display:none">{{ i.ID }}</td>
+
+        <td style="display:none">{{ i.PLANTNAMESS }}</td>
+
+        <td style="display:none">{{ i.DEPT }}</td>
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+<div class="containerfooter">
+    <table class="gridtable">
+        <thead>
+        <tr style="font-family:arial;">
+                        <th style="width:832px;">TOTAL</th>
+                        <th style="text-align:right;width:112px;">{{OpeningBalance}}</th>
+                        <th style="text-align:right;width:95px;">{{  RecQty }}</th>
+                        <th style="text-align:right;width:101px;">{{  IssQty }}</th>
+                        <th style="text-align:right;width:108px;">{{  ClosingBalance}}</th>
+                        <th style="text-align:right;width:100px;">{{  Closing}}</th>
+
+        </tr>
+        </thead>
+    </table>
+                    </div>
+		<script>
+//document.getElementById("wrap").addEventListener("scroll",function(){
+  // var translate = "translate(0,"+this.scrollTop+"px)";
+  // this.querySelector("thead").style.transform = translate;
+//});
+
+
+
+function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tableMain");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[4];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+            //add event listener to table rows
+            let thetable = document.getElementById('tableMain').getElementsByTagName('tbody')[0];
+            for (let i = 0; i < thetable.rows.length; i++)
+                {
+                    //alert(thetable.rows.length)
+                    thetable.rows[i].onclick = function()
+                    {
+                        TableRowClick(this);
+                    };
+                }
+
+            function TableRowClick(therow) {
+                //alert(document.getElementById("tableMain").rows.length)
+                var b = 1
+                while(b < document.getElementById("tableMain").rows.length){
+                    document.getElementById("tableMain").rows[b].style.backgroundColor='lavender';
+                    b++;
+                }
+                let Warehouse = therow.cells[9].innerHTML;
+                let Company = therow.cells[0].innerHTML;
+                let Template = therow.cells[1].innerHTML;
+                let Item = therow.cells[10].innerHTML;
+                let Opbal = therow.cells[5].innerHTML;
+                let ItemName = therow.cells[4].innerHTML;
+                let PlantName = therow.cells[11].innerHTML;
+                let Dept = therow.cells[12].innerHTML;
+                //alert(Dept)
+                //alert(ItemName)
+
+                let startdate = '{{startdate}}';
+                let enddate = '{{enddate}}';
+                window.open("ProductLedgerDetail?ware="+Warehouse+"&comp="+Company+
+                "&item="+Item+"&startdate="+startdate+"&enddate="+enddate+"&opbal="+Opbal+"&temp="+Template+"&ItemName="+ItemName
+                    +"&PlantName="+PlantName + "&Dept="+Dept);
+                therow.style.backgroundColor='#00ffff';
+            };
+
+		</script>
+
+
+    </body>
+</html>

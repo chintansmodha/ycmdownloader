@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <title>Production</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+    <meta charset="utf-8" />
+    <style>
+        .one {
+            display : inline-block;
+            margin-left: 50px;
+            margin-top: 10px;
+        }
+
+        .two {
+            display : inline-block;
+            margin-top: 10px;
+        }
+        .two input{
+            margin-left: 50px;
+        }
+        .container {
+            margin: 7px 48px auto;
+            width: 65%;
+            height: 300px;
+            overflow: scroll;
+        }
+
+        table.gridtable {
+            margin: 0 auto;
+            width: 100%;
+            overflow: auto;
+            font-family: arial;
+            font-size: 12px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #b3b3cc;
+        }
+
+        table.gridtablefooter th {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+        }
+
+        .footer {
+            border-width: 2px;
+            width: 87%;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 5px 0px;
+            border-style: solid;
+            border-color: #666666;
+            font-weight: normal;
+        }
+
+        tbody tr:hover {
+            opacity: 60%;
+        }
+
+<!--        tbody td{-->
+<!--            width:6%;-->
+<!--        }-->
+
+        .containerfooter {
+            margin: 10px auto;
+            width: 88%;
+            height: 50px;
+            font-family: arial;
+        }
+        tr> td {
+            text-align:right
+        }
+        thead{
+            position: sticky;
+            top: 0;
+        }
+        tr.itemth  th{
+            background: beige;
+            text-align: right;
+            padding: 5px 0px;
+        }
+
+        tr.machineT td{
+            font-weight: bold;
+        }
+    </style>
+    <STYLE>
+        A {
+            text-decoration: none;
+        }
+    </STYLE>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+
+    <script>
+<!--    Display upto max date only-->
+    $(document).ready( function() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = {{year}}+"-"+'{{month}}'+"-"+'{{day}}' ;
+
+
+   $('#startdate').val(today);
+   $('#startdate').attr('max', today);
+   $('#startdates').val(today);
+   $('#startdates').attr('max', today);
+});
+
+$(document).ready( function() {
+    var product = {{product}}
+    $('#Product').val(product);
+});
+
+<!--    toggle display grid acc/ to button-->
+$(document).ready(function(){
+    // Set div display to none
+    $("#proccess").click(function(){
+        $('#form1').attr('action', 'ProccessWisefunctions');
+    });
+
+    // Set div display to block
+    $("#itm").click(function(){
+        $('#form1').attr('action', 'ItemMachinefunctions');
+    });
+
+    // Set div display to block
+    $("#mach").click(function(){
+        $('#form1').attr('action', 'MachineWisefunctions');
+    });
+});
+</script>
+
+</head>
+
+<body style="background-color:lavender;font-family:arial;" onload="bodyFunction()" >
+<form action='ProccessWisefunction' id='form1' class="mar"  style="display: inline-block">
+    <!-- date -->
+    <div class="one">
+        <label for='startdate'><b>Date :</b></label>
+        <input type='date' id='startdate' name='startdate' value="today" disabled>
+        <label for='startdates' style="display:none;"><b>Date :</b></label>
+        <input type='date' id='startdates' name='startdate' value="today" style="display:none">
+    </div>
+    <label for="Product"><b>&nbsp;&nbsp; Product Family :</b></label>
+    <select name="Product" style="height: 25px; cursor: pointer;" id="Product" onchange="choice1(this)">
+        <option value=0 style="display:none;"></option>
+        <option value=1>POY Family</option>
+        <option value=2>BCF Family</option>
+        <option value=3>DTY Family</option>
+    </select>
+    <!-- radio -->
+    <div class="two ">
+        <input type='radio' id='proccess' name="select " value="pro" form='form1' class="mar" onchange="this.form.submit()" tabindex="1" >
+        <label for='proccess' >ProccessWise</label>
+        <input type='radio' id='itm' name="select " value="it" form='form1' class="mar" onchange="this.form.submit()" checked tabindex="2">
+        <label for='itm' >ItemWise</label>
+        <input type='radio' id='mach' name="select " form='form1' class="mar" onchange="this.form.submit()" value="mac" tabindex="3">
+        <label for='mach' >MachineWise</label>
+    </div>
+</form>
+    <input type="text" id="myInput" onkeyup="searchFunction()" style="display: inline-block; margin-left:80px" title="Type item name" placeholder="search for item">
+
+
+
+<!-- Item wise-->
+<div id="itemwise">
+    <div style="width:100%;">
+        <div style="width:80%">
+<!--            <div id="note" style="margin-left:48px;">-->
+<!--                <p><strong>Note:</strong>please click once on slected item to see average in maschine table</p>-->
+<!--            </div>-->
+            <div style="display:flex; margin: 25px 48px auto; width:100%; height:30px; flex-direction: row-reverse; align-item:center;">
+                <div style="border: 1px solid; width:20.3%; color:blue; text-align:center; border-color:grey; padding: 6px 0px; font-size: 11px; margin-right: 18px">
+                    <b>Production From {{fromdate}} - {{Date}}</b>
+                </div>
+                <div style="border: 1px solid; width:20%; margin-right:5px; color:blue; text-align:center; border-color:grey; padding: 6px 0px; font-size: 11px;">
+                    <b>Production For {{Date}}</b>
+                </div>
+                <div style="align-self: flex-end; flex: auto; margin-right: 5px;font-size: small;color: blue; width: 0px;">
+                    <strong style="color:black;">Details:</strong> <span id="Details"></span>
+                </div>
+            </div>
+            <div class="container" style="height:200px; width:100%">
+                <table class="gridtable" id="myTable">
+                    <thead style="height:1px;">
+                    <tr>
+                        <th style="width:204px;">Item</th>
+                        <th style="width: 20px;">Today Production</th>
+                        <th style="width: 20px;">Today II%</th>
+                        <th style="width: 20px;">UpToDt Prodn</th>
+                        <th style="width: 20px;">UpToDt II%</th>
+                        <th style="width: 20px;">Average</th>
+                        <th style="width: 20px;">Ist</th>
+                        <th style="width: 20px;">Weft Use</th>
+                        <th style="width: 20px;">P.Q.</th>
+                        <th style="width: 20px;">SS.</th>
+                        <th style="width: 20px;">Jl.</th>
+                        <th style="width: 20px;">Ist</th>
+                        <th style="width: 20px;">Weft Use</th>
+                        <th style="width: 20px;">P.Q.</th>
+                        <th style="width: 20px;">SS.</th>
+                        <th style="width: 20px;">Jl.</th>
+                    </tr>
+                    </thead>
+                    <tbody style="background-color:rgb(184, 207, 188)">
+                        <tr class="itemth" style="background-color: beige;">
+                            <th style="text-align :left;">Totals</th>
+                            <th>{{toalTodayPro}}</th>
+                            <th>{{totaltoday_11per}}</th>
+                            <th>{{totalUpToDtPro}}</th>
+                            <th>{{totalUpToDtPro_11per}}</th>
+                            <th>{{totalAverage}}</th>
+                            <th>{{totaTodayQuality1}}</th>
+                            <th>0</th>
+                            <th>{{totaTodayQuality2}}</th>
+                            <th>0</th>
+                            <th>0</th>
+                            <th>{{totaUptoQuality1}}</th>
+                            <th>0</th>
+                            <th>{{totaUptoQuality2}}</th>
+                            <th>0</th>
+                            <th>0</th>
+                        </tr>
+                    {%for i in GDataItemSummary%}
+                        <tr class="breakrow" id="itemtr" onclick="myFunctions(this)">
+                            <td style="text-align :left; background-color:lightblue; ">{{i.ITEM}}</td>
+                            <td style="background-color:lightgreen; ">{{i.TODAY_QTY}}</td>
+                            <td style="background-color:lightblue; ">{{i.TODAY_IINDPERC}}</td>
+                            <td style="background-color:pink; ">{{i.UPTODATE_QTY}}</td>
+                            <td style="background-color:lightblue; ">{{i.UPTODATE_IINDPERC}}</td>
+                            <td style="background-color:pink; ">{{i.average}}</td>
+                            <td style="background-color:rgb(200, 241, 147); ">{{i.TODAY_1STQTY}}</td>
+                            <td style="background-color:rgb(200, 241, 147); ">0</td>
+                            <td style="background-color:lightblue; ">{{i.TODAY_PQQTY}}</td>
+                            <td style="background-color:lightblue; ">0</td>
+                            <td style="background-color:lightblue; ">0</td>
+                            <td style="background-color:pink; ">{{i.UPTODATE_1STQTY}}</td>
+                            <td style="background-color:pink; ">0</td>
+                            <td style="background-color:lightblue; ">{{i.UPTODATE_PQQTY}}</td>
+                            <td style="background-color:lightblue; ">0</td>
+                            <td style="background-color:lightblue; ">0</td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <!-- second table-->
+        <div style="width:95%;">
+            <div class="container" style="width:100%;">
+                <table class="gridtable" id="machinetable">
+                    <thead>
+                    <tr>
+                        <th style="width:202px;">Machine</th>
+                        <th style="width:20px;">Today Production</th>
+                        <th style="width:20px;">Today II%</th>
+                        <th style="width:20px;">UpToDt Prodn</th>
+                        <th style="width:20px;">UpToDt II%</th>
+                        <th style="width:20px;">Average</th>
+                        <th style="width:20px;">Ist</th>
+                        <th style="width:20px;">Weft Use</th>
+                        <th style="width:20px;">P.Q.</th>
+                        <th style="width:20px;">SS.</th>
+                        <th style="width:20px;">Jl.</th>
+                        <th style="width:20px;">Ist</th>
+                        <th style="width:20px;">Weft Use</th>
+                        <th style="width:20px;">P.Q.</th>
+                        <th style="width:20px;">SS.</th>
+                        <th style="width:20px;">Jl.</th>
+        <!--                <th>High Prodn.</th>-->
+                        <th style="width:158px;">Department</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background-color: beige;" class="machineT">
+                            <td style="text-align: left;">Totals</td>
+                            <td>{{toalTodayPromach}}</td>
+                            <td>{{totaltoday_11per_mach}}</td>
+                            <td>{{totalUpToDtPromach}}</td>
+                            <td>{{totalUpToDtPro_11per_mach}}</td>
+                            <td>{{totalAverage_mach}}</td>
+                            <td>{{totaTodayQualitymach1}}</td>
+                            <td>0</td>
+                            <td>{{totaTodayQualitymach2}}</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>{{totaUptoQualitymach1}}</td>
+                            <td>0</td>
+                            <td>{{totaUptoQualitymach2}}</td>
+                            <td>0</td>
+                            <td>0</td>
+        <!--                    <td></td>-->
+                            <td ></td>
+                        </tr>
+
+
+                        {% for j in GDataMachine %}
+                        <tr class="datarow" id="machrow" style="display:none;">
+                            <td style="display:none;">{{j.ITEM}}</td>
+                            <td style="text-align:left; background-color:lightblue; ">{{j.MACHINE}}</td>
+                            <td style="background-color:lightgreen;  ">{{j.TODAY_QTY}}</td>
+                            <td style="background-color:lightblue;  ">{{j.TODAY_IINDPERC}}</td>
+                            <td style="background-color:pink;  ">{{j.UPTODATE_QTY}}</td>
+                            <td style="background-color:lightblue;  ">{{j.UPTODATE_IINDPERC}}</td>
+                            <td style="background-color:pink;  ">{{j.mashaverage}}</td>
+                            <td style="background-color:rgb(200, 241, 147);  ">{{j.TODAY_1STQTY}}</td>
+                            <td style="background-color:rgb(200, 241, 147);  "></td>
+                            <td style="background-color:lightblue;  ">{{j.TODAY_PQQTY}}</td>
+                            <td style="background-color:lightblue;  "></td>
+                            <td style="background-color:lightblue;  "></td>
+                            <td style="background-color:pink;  ">{{j.UPTODATE_1STQTY}}</td>
+                            <td style="background-color:pink;  "></td>
+                            <td style="background-color:lightblue;  ">{{j.UPTODATE_PQQTY}}</td>
+                            <td style="background-color:lightblue;  "></td>
+                            <td style="background-color:lightblue;  "></td>
+        <!--                    <td style="background-color:lightblue;"></td>-->
+                            <td style="background-color:lightblue; text-align:left;">{{j.DEPARTMENT}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+<!--script-->
+
+<script>
+function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function bodyFunction(){
+    document.getElementById("myTable").rows[2].cells[0].click();
+}
+
+function myFunctions(x) {
+<!--  alert(document.getElementsById("itemrow").rows[2].innerHTML);-->
+<!--alert(document.getElementById("machinetable").rows[4].cells[0].innerHTML)-->
+<!--alert(document.getElementById("machtable").rows.length)-->
+<!--    var startdate = " "-->
+    var stdt = "";
+    var lastday = 0
+    var mainitems = " "
+    var Product = ""
+    var itemtableitem = ""
+    var machinetableitem = ""
+    let ch  = "";
+    var y = x.rowIndex;
+    var z = document.getElementById("machinetable").rows.length;
+    var lenMaytab = document.getElementById("myTable").rows.length;
+<!--    alert(typeof lenMaytab);-->
+    Product += "&Product=" +document.getElementById("Product").value
+    startdate += "&startdate=" +document.getElementById("startdate").value
+    mainitems += "&mainitems=" +document.getElementById("myTable").rows[y].cells[0].innerHTML
+    stdt += document.getElementById("startdates").value;
+<!--    alert(stdt)-->
+<!--    alert({{day}})-->
+    itemtableitem = itemtableitem + document.getElementById("myTable").rows[y].cells[0].innerHTML
+    lastday += parseInt(stdt.substring(8,10))
+    var s = " " + itemtableitem;
+<!--    Details    top of table -->
+    document.getElementById("Details").innerHTML = s;
+    var b = 2;
+    while (b<lenMaytab){
+        document.getElementById("myTable").rows[b].cells[0].style.backgroundColor="lightblue";
+        document.getElementById("myTable").rows[b].cells[0].style.border = "1px solid #666666";
+        b++;
+    }
+    document.getElementById("myTable").rows[y].cells[0].style.backgroundColor="yellow";
+    document.getElementById("myTable").rows[y].cells[0].style.border = "1px solid black";
+<!--    2px solid black   border-color: #666666-->
+<!--    Total***********************************-->
+    todaymach = 0;
+    uptoDtmach = 0;
+    average = 0;
+    today1st = 0;
+    today2nd = 0;
+    uptoDt1st = 0;
+    uptoDt2nd = 0;
+    var i = 2;
+<!--    alert(document.getElementById("machinetable").rows[1].cells[1].innerHTML)-->
+    while (i <= z){
+        if (itemtableitem == document.getElementById("machinetable").rows[i].cells[0].innerHTML){
+            document.getElementById("machinetable").rows[i].style.display="revert";
+            machinetableitem = machinetableitem + document.getElementById("machinetable").rows[i].cells[0].innerHTML;
+
+            todaymach = todaymach + parseFloat(document.getElementById("machinetable").rows[i].cells[2].innerHTML);
+            document.getElementById("machinetable").rows[1].cells[1].innerHTML = todaymach;
+
+            uptoDtmach = uptoDtmach + parseFloat(document.getElementById("machinetable").rows[i].cells[4].innerHTML);
+            document.getElementById("machinetable").rows[1].cells[3].innerHTML = uptoDtmach;
+
+            average = parseFloat(uptoDtmach/{{day}});
+            document.getElementById("machinetable").rows[1].cells[5].innerHTML = average.toFixed(0);
+
+            today1st = today1st + parseFloat(document.getElementById("machinetable").rows[i].cells[7].innerHTML);
+            document.getElementById("machinetable").rows[1].cells[6].innerHTML = today1st;
+
+            today2nd = today2nd + parseFloat(document.getElementById("machinetable").rows[i].cells[9].innerHTML);
+            document.getElementById("machinetable").rows[1].cells[8].innerHTML = today2nd;
+
+            uptoDt1st = uptoDt1st + parseFloat(document.getElementById("machinetable").rows[i].cells[12].innerHTML);
+            document.getElementById("machinetable").rows[1].cells[11].innerHTML = uptoDt1st;
+
+            uptoDt2nd = uptoDt2nd + parseFloat(document.getElementById("machinetable").rows[i].cells[14].innerHTML);
+            document.getElementById("machinetable").rows[1].cells[13].innerHTML = uptoDt2nd;
+
+            if (todaymach !=0){
+                today11per = Math.round((today2nd * 100)/todaymach)
+                document.getElementById("machinetable").rows[1].cells[2].innerHTML = today11per.toFixed(2);
+            }else{
+                 document.getElementById("machinetable").rows[1].cells[2].innerHTML = todaymach.toFixed(2);
+            }
+
+            if (uptoDtmach !=0){
+                UptoDt11per = Math.round((uptoDt2nd * 100)/uptoDtmach)
+                document.getElementById("machinetable").rows[1].cells[4].innerHTML = UptoDt11per.toFixed(2);
+            }else{
+                 document.getElementById("machinetable").rows[1].cells[4].innerHTML = uptoDtmach.toFixed(2);
+            }
+        }
+        else{
+            document.getElementById("machinetable").rows[i].style.display = "none"
+
+        }
+        i = i + 1;
+    }
+<!--    alert(document.getElementById("machinetable").rows[1].cells[0].innerHTML)-->
+<!--    = uptoDtmach.toFixed(2);-->
+<!--    alert(uptoDtmach.toFixed(2))-->
+
+
+<!--    document.getElementById("Details").innerHTML = "Details: " + document.getElementById("myTable").rows[y].cells[0].innerHTML-->
+<!--	alert(Product)-->
+<!--	window.open("ItemMachinefunction?="+mainitems+startdate+Product, "_self");-->
+<!--	window.location.href='ItemWisefunction';-->
+}
+
+
+function choice1(select) {
+    var Product = " ";
+    var startdates = " ";
+     Product += "&Product=" +(select.options[select.selectedIndex].value);
+     startdate += "&startdate=" +document.getElementById("startdate").value;
+<!--     alert(Product)-->
+<!--     alert(startdates)-->
+     window.open("ItemMachinefunctions?="+Product+startdate, "_self");
+}
+</script>
+</body>
+
+</html>

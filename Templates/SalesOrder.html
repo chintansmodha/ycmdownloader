@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Sales Order</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Stock Order</h1>
+    <style>
+.reporttype{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+        .date{
+            position: absolute;
+            margin-top: 10px;
+    margin-left:50px ;
+}
+        .div{position: absolute;
+    margin-top: 100px;
+    margin-left:50px ;
+    width:300px;
+}
+        .temp{position: absolute;
+    margin-top: 100px;
+    margin-left:400px ;
+}
+        .doc{position: absolute;
+    margin-top: 100px;
+    margin-left:750px ;
+}
+ .export{position: absolute;
+    margin-top: 550px;
+    margin-left:1250px ;
+}
+
+.agent{
+
+    position: absolute;
+    margin-top: 450px;
+    margin-left:50px ;
+
+}
+
+.party{
+
+    position: absolute;
+    margin-top: 450px;
+    margin-left:450px ;
+}
+
+#doc{
+    width: 200px;
+}
+#temp{
+    width: 200px;
+}
+
+
+select,
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 150px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"/></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+   function divdisable(alldivision)
+	{
+		var comp=document.getElementById("div");
+		comp.disabled=!!alldivision.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	};
+
+    function agentdisable(allagents)
+	{
+		var comp=document.getElementById("agent");
+		comp.disabled=!!allagents.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	};
+
+    function partydisable(allpartys)
+	{
+		var comp=document.getElementById("party");
+		comp.disabled=!!allpartys.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	};
+
+    function docdisable(alldocs)
+	{
+		var comp=document.getElementById("doc");
+		comp.disabled=!!alldocs.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	};
+
+    function tempdisable(alltemps)
+	{
+		var comp=document.getElementById("temp");
+		comp.disabled=!!alltemps.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	};
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)){
+    alert("Please Enter Start Date");
+        event.preventDefault();
+    }
+
+    if (!Date.parse(endDate)){
+    alert("Please Enter End Date");
+        event.preventDefault();
+    }
+
+    if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+};
+
+
+    $(document).ready(function()
+	{
+	$("#div").select2();
+	$("#doc").select2();
+    $("#temp").select2();
+    $("#agent").select2();
+    $("#party").select2();
+    
+    /* document.getElementById('type').options.length = 0; */
+	});
+
+
+    
+
+</script>
+    <script>
+        Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+    });
+        $(document).ready( function() {
+        $('#startdate').val(new Date().toDateInputValue());
+    });
+    $(document).ready( function() {
+        $('#enddate').val(new Date().toDateInputValue());
+    });
+
+
+    </script>
+</head>
+<body style="background-color:Lavender;">
+
+
+<form action='SalesOrder' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+<div class="date">
+<label for='startdate'><b>Start Date:</b></label>
+<input type='date' id='startdate' name='startdate'>
+<label for='enddate'><b>End Date:</b></label>
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+
+<div class="div">
+<label for='div' ><b>Division</b></label>
+<label for="alldiv"> Select All Divisions</label>
+<input type="checkbox" id="alldiv" name="alldiv" value=1 onclick="divdisable(this)"/>
+<br><br>
+<select  name='div' id='div' multiple>
+ {%for i in GDataDivision%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="agent">
+    <label for='agent' ><b>Agents:</b></label>
+    <label for="allagent"> Select All Agent</label>
+    <input type="checkbox" id="allagent" name="allagent" value=1 onclick="agentdisable(this)"/>
+    <br><br>
+    <select  name='agent' id='agent' multiple>
+     {%for i in GDataAgent%}
+    <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+    {% endfor %}
+    </select>
+</div>
+
+<div class="party">
+    <label for='party' ><b>Party:</b></label>
+    <label for="allparty"> Select All Party</label>
+    <input type="checkbox" id="allparty" name="allparty" value=1 onclick="partydisable(this)"/>
+    <br><br>
+    <select  name='party' id='party' multiple>
+     {%for i in GDataParty%}
+    <option value="{{ i.NUMBERID }} ">{{ i.LEGALNAME1 }}-{{ i.NUMBERID }}</option>
+    {% endfor %}
+    </select>
+</div>
+
+
+
+
+<div class="doc">
+<label for='doc'><b>Document Type:</b></label>
+<label for="alldoc"> Select All Types</label>
+<input type="checkbox" id="alldoc"  name="alldoc" value=1  onclick="docdisable(this)">
+
+<br><br>
+<select  name='doc' id='doc' class="doc" multiple >
+    {%for i in GDataDocumentType%}
+    <option value="{{ i.DOCUMENTTYPETYPE }} ">{{ i.DOCUMENTTYPETYPE }}</option>
+    {% endfor %}
+</select>
+</div>
+
+<div class="temp">
+<label for='temp' ><b>Template Code:</b></label>
+<label for="alltemp"> Select All Templates</label>
+<input type="checkbox" id="alltemp" name="alltemp" value=1 onclick="tempdisable(this)"/>
+<br><br>
+<select  name='temp' id='temp' multiple >
+ {%for i in GDataTemplate%}
+<option value="{{ i.TEMPLATECODE }} ">{{ i.TEMPLATECODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+
+
+<div class="export">
+<label for='format' ><b>Export To:</b></label>
+<br><br>
+<button type='submit' form='form1' value='PDF' class="mar"  >PDF</button>
+</div>
+
+</form>
+<div class="six">
+<label for='exception'><b>{%if Exception %}
+<script>alert("Please Select Valid Credentials");</script>
+{% endif %}
+</b></label>
+</div>
+<script>
+
+
+
+    function add(event_data){
+    var jigar = document.getElementById("type");
+    alert(event_data);
+    $(jigar).append(event_data);
+};
+
+
+    </script>
+
+</body>
+
+</html>

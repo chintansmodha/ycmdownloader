@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+
+<head style="font-family:arial;">
+    <title>Pending Contracts (AgentWise)</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+    <meta charset="utf-8" />
+    <style>
+        .one {
+            display : inline-block;
+            margin-left: 50px;
+            margin-top: 10px;
+        }
+
+        .two {
+            display : inline-block;
+            margin-top: 10px;
+        }
+        .two input{
+            margin-left: 50px;
+        }
+        .containerss {
+<!--            margin: 7px 48px auto;-->
+<!--            width: 65%;-->
+            height: 300px;
+            overflow:auto;
+        }
+<!--        .containerss thead>tr { position: sticky; top: 0; }-->
+
+        table.gridtable {
+            margin: 0 auto;
+            width: 100%;
+<!--            overflow: auto;-->
+            font-family: tahoma;
+            font-size: 12px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #b3b3cc;
+        }
+
+        table.gridtablefooter th {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+        }
+
+        .footer {
+            border-width: 2px;
+            width: 87%;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 5px 0px;
+            border-style: solid;
+            border-color: #666666;
+            font-weight: normal;
+            text-align :left;
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+
+        .containerssfooter {
+            margin: 10px auto;
+            width: 88%;
+            height: 50px;
+            font-family: arial;
+        }
+        table thead .itemTotal th{
+            padding: 4px 0px 5px 0px;
+            margin; 4px 0px 5px 0px;
+            background-color: #fcf7ac;
+        }
+
+    </style>
+    <STYLE>
+        A {
+            text-decoration: none;
+        }
+        tr:nth-child(odd) {
+            background-color: #96b1ff;
+        }
+
+
+    </STYLE>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+    <script>
+<!--    Display upto max date only-->
+    $(document).ready( function() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+   $('#startdate').val(today);
+   $('#startdate').attr('max', today);
+});
+
+<!--    toggle display grid acc/ to button-->
+$(document).ready(function(){
+    // Set div display to block
+    $("#itm").click(function(){
+        $('#form1').attr('action', 'ContractsPendingMis.html');
+    });
+
+    // Set div display to block
+    $("#agent").click(function(){
+        $('#form1').attr('action', '');
+    });
+});
+
+$(document).ready(function(){
+    if ("{{itemtypeSlct}}" == ""){
+        $('#Itmtype').val("1 ");
+    }else{
+        $('#Itmtype').val("{{itemtypeSlct}}");
+    }
+    if ("{{orderTypeSlct}} " == " "){
+        $('#Ordtype').val("1 ");
+    }else{
+        $('#Ordtype').val("{{orderTypeSlct}} ");
+    }
+
+ });
+
+ $(document).ready(function(){
+     $('th').click(function(){
+        var table = $(this).parents('table').eq(0)
+        var rows = table.find('tr:gt(1)').toArray().sort(comparer($(this).index()))
+        this.asc = !this.asc
+        if (!this.asc){rows = rows.reverse()}
+        for (var i = 1; i < rows.length; i++){
+            table.append(rows[i])
+        }
+    })
+    function comparer(index) {
+        return function(a, b) {
+            var valA = getCellValue(a, index), valB = getCellValue(b, index)
+            return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+        }
+    }
+    function getCellValue(row, index){ return $(row).children('td').eq(index).text() }
+});
+
+</script>
+
+</head>
+
+<body style="background-color:lavender;font-family:arial; height:100%;font-family: tahoma; font-size:15px; margin-left:6px;" onload="bodyFunction()" >
+<form action='' id='form1' class="mar"  style="display: inline-block; height: 10%;">
+    <!-- date -->
+<!--    <div class="one ">-->
+<!--        <label for='startdate'><b>Date :</b></label>-->
+<!--        <input type='date' id='startdate' name='startdate' value="today">-->
+<!--    </div>-->
+
+    <!-- radio -->
+    <div class="two ">
+        <input type='radio' id='itm' name="select " value="it" form='form1' class="mar" onchange="this.form.submit()">
+        <label for='itm' ><b>ItemWise</b></label>
+        <input type='radio' id='agent' name="select " value="agent" form='form1' class="mar" onchange="this.form.submit()" checked>
+        <label for='agent' ><b>AgentWise</b></label>
+    </div>
+
+<!--    item type-->
+        <label for="Itmtype"><b>&nbsp;&nbsp; Item Type :</b></label>
+    <select name="Itmtype" id="Itmtype" style="height: 25px;" onchange="myItemTypFunction(this.value)">
+        <option value="1 ">All</option>
+        {%for i in GDataItemType%}
+        <option value="{{ i.ITMTYPE }} ">{{ i.ITMTYPE }}</option>
+        {% endfor %}
+    </select>
+
+<!--    Order Type-->
+    <label for="Ordtype"><b>&nbsp;&nbsp; Order Type :</b></label>
+    <select name="Ordtype" id="Ordtype" style="height: 25px;" onchange="myOrderTypFunction(this.value)">
+        <option value="1 ">All</option>
+        {%for i in GDataOrderType%}
+        <option value="{{ i.ORDERTYPECDE }} ">{{ i.ORDTYPE }}</option>
+        {% endfor %}
+    </select>
+</form>
+    <input type="text" id="myInput" onkeyup="searchFunction()" style="display: inline-block; margin-left:100px" title="Type agents name" placeholder="search for agents">
+
+    <div style="color:blue">
+                    <strong style="color:black; display:inline">Details:</strong> <span id="Details"></span>
+    </div>
+<!--    Agent  First Table-->
+<div id="itemwise" style="height:88%;">
+    <div class="containerss" style="height:60%; width: 49.7%; display:inline-block; background-color: lightblue;">
+        <table class="gridtable" style="width:100%;" id="itemGrpTable">
+            <thead style="height:1px; position: sticky; top: 0;">
+            <tr >
+                <th style="width:200px" onclick="myHeader(this)">Agents <span style="float:right;" id="span1"></span></th>
+                <th onclick="myHeader(this)">Contract Qty. <span style="float:right;" id="span2"></span></th>
+                <th onclick="myHeader(this)">Despatch Not Given <span style="float:right;" id="span3"></span></th>
+                <th onclick="myHeader(this)">Goods Not Received <span style="float:right;" id="span4"></span></th>
+                <th onclick="myHeader(this)">Total Pending Deliveries <span style="float:right;" id="span5"></span></th>
+            </tr>
+            <tr class="itemTotal" style="padding: 4px 0px 5px 0px;margin: 4px 0px 5px 0px;background-color: #fcf7ac;">
+                <th style="text-align:left; padding-left: 3px;">Totals</th>
+                <th style="text-align:right; padding-right: 3px;">{{ContTotal}}</th>
+                <th style="text-align:right; padding-right: 3px;">{{DespNtGvn}}</th>
+                <th style="text-align:right; padding-right: 3px;">{{GdNtRcvd}}</th>
+                <th style="text-align:right; padding-right: 3px;">{{TotlPndg}}</th>
+            </tr>
+            </thead>
+            <tbody>
+
+                {% for i in GDataItemGroup %}
+                <tr onclick="myItemGrp(this)" >
+                    <td>{{i.BROKER}}</td>
+                    <td style="text-align:right; background-color:#f7b5b5;">{{i.CONTQTY}}</td>
+                    <td style="text-align:right; background-color:#fadcc8;">{{i.DESPATCHNOTGVN}}</td>
+                    <td style="text-align:right; background-color:#f7b5b5;">{{i.GOODSNOTRCVD}}</td>
+                    <td style="text-align:right; background-color:#fadcc8;">{{i.TOTALPDGDELV}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+<!-- second table-->
+    <div class="containerss" style="height:60%; width:49%; display: inline-block; vertical-align:top; margin-left:12px; background-color: lightblue;">
+        <table class="gridtable" style="width:100%" id="itemTable">
+            <thead style="position: sticky; top: 0;">
+            <tr>
+                <th style="display: none;" >Agents<span style="float:right;" id="span6"></span></th>
+                <th style="width:200px" onclick="myHeaderSecond(this)">Item<span style="float:right;" id="span7"></span></th>
+                <th onclick="myHeaderSecond(this)">Contract Qty.<span style="float:right;" id="span8"></span></th>
+                <th onclick="myHeaderSecond(this)">Despatch Not Given(A)<span style="float:right;" id="span9"></span></th>
+                <th onclick="myHeaderSecond(this)">Goods Not Dispatched(B)<span style="float:right;" id="span10"></span></th>
+                <th onclick="myHeaderSecond(this)">Total Pending Deliv.(A+B=C)<span style="float:right;" id="span11"></span></th>
+            </tr>
+            <tr class="itemTotal">
+                <th style="text-align:left; padding-left: 3px;">Totals</th>
+                <th style="text-align:right; padding-right: 3px;">{{ItmContTotal}}</th>
+                <th style="text-align:right; padding-right: 3px;">{{ItmDespNtGvn}}</th>
+                <th style="text-align:right; padding-right: 3px;">{{ItmGdNtRcvd}}</th>
+                <th style="text-align:right; padding-right: 3px;">{{ItmTotlPndg}}</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for j in GDataItem %}
+                <tr id="ItemBreakrow" onclick="myItems(this)">
+                    <td style="display: none;">{{j.BROKER}}</td>
+                    <td>{{j.ITEM}}</td>
+                    <td style="text-align:right; background-color:#f7b5b5;">{{j.CONTQTY}}</td>
+                    <td style="text-align:right; background-color:#fadcc8;">{{j.DESPATCHNOTGVN}}</td>
+                    <td style="text-align:right; background-color:#f7b5b5;">{{j.GOODSNOTRCVD}}</td>
+                    <td style="text-align:right; background-color:#fadcc8;">{{j.TOTALPDGDELV}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+<!-- third table-->
+    <div class="containerss" style="width:100%; height:38%; background-color: lightblue; margin-top: 12px;">
+        <table class="table table-striped gridtable sortable" id="ContDetailTable">
+            <thead style="position: sticky; top: 0;">
+            <tr>
+                <th style="display: none;" >Agents</th>
+                <th style="display: none;" >Item</th>
+                <th >Cont/Ord No.</th>
+                <th style="display: none;" >CONTCOUNTERCODE</th>
+                <th >Cont/Ord Dt</th>
+                <th >Doc. Type</th>
+                <th >Customer</th>
+                <th >Shade</th>
+                <th >Quantity</th>
+                <th >Bal.Desp A+B=C</th>
+                <th >Rate/??</th>
+                <th >DRate</th>
+                <th >Broker</th>
+                <th >Ref No.(Line Your Ref)</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for k in GDataCotno %}
+                <tr id="contBreakrow" onclick="ContractPendingMisView(this)">
+                   <td style="display: none;">{{k.BROKER}}</td>
+                   <td style="display: none;">{{k.ITEM}}</td>
+                   <td>{{k.CONTNO}}</td>
+                   <td style="display: none;">{{k.CONTCOUNTERCODE}}</td>
+                   <td style="text-align:center">{{k.CONTDT}}</td>
+                    <td style="text-align:center">{{k.DCTTYPE}}</td>
+                   <td>{{k.CUSTOMER}}</td>
+                   <td>{{k.SHADE}}</td>
+                   <td style="text-align:right">{{k.QTY}}</td>
+                   <td style="text-align:right">{{k.BALDESP}}</td>
+                   <td style="text-align:right">{{k.RATE}}</td>
+                   <td style="text-align:right">{{k.DRATE}}</td>
+                   <td style="text-align:center">{{k.BROKER}}</td>
+                   <td style="text-align:center">{{k.REFNO}}</td>
+<!--                   <td>{{k.}}</td>-->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+
+function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("itemGrpTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function myItemTypFunction(Itmtype){
+    var orderType = "&orderType=" +document.getElementById("Ordtype").value;
+    var itemType = "&itemType=" +Itmtype;
+    window.open("AgentWisefunctions?="+itemType+orderType,'_self');
+}
+
+function myOrderTypFunction(Ordtype){
+    var itemType = "&itemType=" +document.getElementById("Itmtype").value;
+    var orderType = "&orderType=" +Ordtype;
+    window.open("AgentWisefunctions?="+itemType+orderType,'_self');
+}
+
+function bodyFunction(){
+    document.getElementById("itemGrpTable").rows[2].cells[0].click();
+}
+
+function myItemGrp(x){
+    var y = x.rowIndex;
+    var z = document.getElementById("itemTable").rows.length;
+    var itmgrp = document.getElementById("itemGrpTable").rows[y].cells[0].innerHTML;
+    var s = " " + itmgrp;
+    document.getElementById("Details").innerHTML = s;
+    var lenItmgrptab = document.getElementById("itemGrpTable").rows.length;
+    //**************** totals calculated as per row show ************************************
+    ContractQty = 0
+    DespNtGvn = 0
+    GoodsNtRcvd = 0
+    TotalPndg = 0
+    var b = 2;
+    while (b<lenItmgrptab){
+        if(b%2 != 0){
+            document.getElementById("itemGrpTable").rows[b].cells[0].style.backgroundColor="lightblue";
+        }else{
+            document.getElementById("itemGrpTable").rows[b].cells[0].style.backgroundColor="#96b1ff";
+        }
+        document.getElementById("itemGrpTable").rows[b].cells[0].style.border = "1px solid #666666";
+        b++;
+    }
+    document.getElementById("itemGrpTable").rows[y].cells[0].style.backgroundColor="yellow";
+    document.getElementById("itemGrpTable").rows[y].cells[0].style.border = "1px solid black";
+
+<!--    alert(lenItmgrptab);-->
+    i = 2;
+    while(i<z){
+        if(itmgrp == document.getElementById("itemTable").rows[i].cells[0].innerHTML){
+            document.getElementById("itemTable").rows[i].style.display="revert";
+
+            ContractQty += parseFloat(document.getElementById("itemTable").rows[i].cells[2].innerHTML);
+                            document.getElementById("itemTable").rows[1].cells[1].innerHTML = ContractQty;
+
+            DespNtGvn += parseFloat(document.getElementById("itemTable").rows[i].cells[3].innerHTML);
+                            document.getElementById("itemTable").rows[1].cells[2].innerHTML = DespNtGvn;
+
+            GoodsNtRcvd += parseFloat(document.getElementById("itemTable").rows[i].cells[4].innerHTML);
+                            document.getElementById("itemTable").rows[1].cells[3].innerHTML = GoodsNtRcvd;
+
+            TotalPndg += parseFloat(document.getElementById("itemTable").rows[i].cells[5].innerHTML);
+                            document.getElementById("itemTable").rows[1].cells[4].innerHTML = TotalPndg;
+
+        }else{
+            document.getElementById("itemTable").rows[i].style.display = "none";
+        }
+        i = i + 1;
+    }
+    // ********** First row of item click *********************
+    k = 2;
+    while(k<z){
+        if(itmgrp == document.getElementById("itemTable").rows[k].cells[0].innerHTML){
+            document.getElementById("itemTable").rows[k].cells[1].click();
+            exit();
+        }
+        k = k + 1;
+    }
+
+}
+
+function myItems(x){
+    y = x.rowIndex;
+    var lentItmTab = document.getElementById("itemTable").rows.length;
+    var lentContTab = document.getElementById("ContDetailTable").rows.length;
+    var itmgrp = document.getElementById("itemTable").rows[y].cells[0].innerHTML;
+    var item = document.getElementById("itemTable").rows[y].cells[1].innerHTML;
+    var totalContQty = 0;
+    var totalContQtyMulRate = 0;
+<!--    alert(item);-->
+    var b = 2;
+    while (b<lentItmTab){
+        if(b%2 != 0){
+            document.getElementById("itemTable").rows[b].cells[1].style.backgroundColor="lightblue";
+        }else{
+            document.getElementById("itemTable").rows[b].cells[1].style.backgroundColor="#96b1ff";
+        }
+        document.getElementById("itemTable").rows[b].cells[1].style.border = "1px solid #666666";
+        b++;
+    }
+    document.getElementById("itemTable").rows[y].cells[1].style.backgroundColor="yellow";
+    document.getElementById("itemTable").rows[y].cells[1].style.border = "1px solid black";
+
+    i = 1;
+    while(i<lentContTab){
+        if(itmgrp == document.getElementById("ContDetailTable").rows[i].cells[0].innerHTML){
+            if(item == document.getElementById("ContDetailTable").rows[i].cells[1].innerHTML){
+                document.getElementById("ContDetailTable").rows[i].style.display="revert";
+
+                totalContQtyMulRate += (parseFloat(document.getElementById("ContDetailTable").rows[i].cells[8].innerHTML)
+                                       * (parseFloat(document.getElementById("ContDetailTable").rows[i].cells[10].innerHTML)
+                                       - parseFloat(document.getElementById("ContDetailTable").rows[i].cells[11].innerHTML)));
+
+                totalContQty += parseFloat(document.getElementById("ContDetailTable").rows[i].cells[8].innerHTML);
+            }else{
+                document.getElementById("ContDetailTable").rows[i].style.display="none";
+            }
+        }else{
+                document.getElementById("ContDetailTable").rows[i].style.display="none";
+            }
+        i =i + 1
+    }
+    document.getElementById("ContDetailTable").rows[0].cells[10].innerHTML = 'Rate/' + (totalContQtyMulRate/totalContQty).toFixed(2);
+}
+
+
+
+
+
+function ContractPendingMisView(x){
+    y = x.rowIndex;
+    var i = 1;
+    var contNo = ''
+    var contCounter = ''
+    var src = "&src=" + 'AgentWisefunctions'
+    contNo = "&contNo=" + document.getElementById("ContDetailTable").rows[y].cells[2].innerHTML;
+    contCounter = "&contCounter=" + document.getElementById("ContDetailTable").rows[y].cells[3].innerHTML;
+    while(i<document.getElementById("ContDetailTable").rows.length){
+        if(i%2 != 0){
+            document.getElementById("ContDetailTable").rows[i].style.backgroundColor = "lightblue";
+        }else{
+            document.getElementById("ContDetailTable").rows[i].style.backgroundColor = "rgb(150, 177, 255)";
+        }
+        i += 1;
+    }
+    document.getElementById("ContDetailTable").rows[y].style.backgroundColor="pink";
+    window.open("ContractPendingMisView.html?=" + contNo + contCounter + src);
+}
+
+
+
+
+function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("ContDetailTable");
+  switching = true;
+  //Set the sorting direction to ascending:
+  dir = "asc";
+  //alert(table.rows[1].getElementsByTagName("TD")[n].innerHTML)
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      /*check if the two rows should switch place,
+      based on the direction, asc or desc:*/
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+
+  }
+}
+
+
+
+
+function myHeader(x){
+    var y = x.cellIndex;
+    //alert(y)
+    var z = x.rowIndex;
+    var Th = document.getElementsByTagName("span")[y+1].id;
+    var thposition = Th.slice(4)
+    //alert(thposition)
+    var arrow = document.getElementById(Th).innerHTML;
+    var className = document.getElementById(Th).className;
+    //document.getElementById(Th).innerHTML = "&#8593;"
+    for(i =1; i<12; i +=1){
+        spanId = "span" + i
+        if(i!= Number(thposition)){
+            document.getElementById(spanId).style.display = "None"
+        }else{
+            document.getElementById(spanId).style.display = "revert"
+        }
+    }
+    if(className ==""){
+        //b = "'" + arrow + "'"
+        document.getElementById(Th).className = "fas fa-sort-amount-down-alt"
+    }else{
+        if(className =="fas fa-sort-amount-down-alt"){
+        //b = "'" + arrow + "'"
+        document.getElementById(Th).className = "fas fa-sort-amount-up"
+        }else{
+            document.getElementById(Th).className = "fas fa-sort-amount-down-alt"
+        }
+    }
+}
+
+
+
+
+function myHeaderSecond(y){
+    x = y.cellIndex
+    //alert(x)
+    var Th = document.getElementsByTagName("span")[x+6].id;
+    var thposition = Th.slice(4)
+    //alert(thposition)
+    var arrow = document.getElementById(Th).innerHTML;
+    var className = document.getElementById(Th).className;
+    //document.getElementById(Th).innerHTML = "&#8593;"
+    for(i =1; i<12; i +=1){
+        spanId = "span" + i
+        if(i!= Number(thposition)){
+            document.getElementById(spanId).style.display = "None"
+        }else{
+            document.getElementById(spanId).style.display = "revert"
+        }
+    }
+    if(className ==""){
+        //b = "'" + arrow + "'"
+        document.getElementById(Th).className = "fas fa-sort-amount-down-alt"
+    }else{
+        if(className =="fas fa-sort-amount-down-alt"){
+        //b = "'" + arrow + "'"
+        document.getElementById(Th).className = "fas fa-sort-amount-up"
+        }else{
+            document.getElementById(Th).className = "fas fa-sort-amount-down-alt"
+        }
+    }
+
+}
+
+
+</script>
+
+</body>
+
+</html>

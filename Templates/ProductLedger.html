@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Product Ledger</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Product Ledger</h1>
+    <style>
+.one{position: absolute;
+    margin-top: 100px;
+    margin-left:50px ;
+}
+        .two{
+            position: absolute;
+            margin-top: 10px;
+    margin-left:570px ;
+}
+        .three{position: absolute;
+    margin-top: 400px;
+    margin-left:50px ;
+}
+        .four{position: absolute;
+    margin-top: 10px;
+    margin-left:230px ;
+}
+        .five{position: absolute;
+    margin-top: 10px;
+    margin-left:850px ;
+}
+ .six{position: absolute;
+    margin-top: 400px;
+    margin-left:50px ;
+}
+.yeartype{
+position: absolute;
+    margin-top: 10px;
+    margin-left: 50px;
+
+}
+
+.seven{
+    position: absolute;
+    margin-top: 280px;
+    margin-left:230px ;
+}
+
+.eight{
+    position: absolute;
+    margin-top: 280px;
+    margin-left:750px ;
+}
+
+select,
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 200px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+	function itemtype(allaccount)
+	{
+		var comp=document.getElementById("account");
+		comp.disabled=!!allaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function itemtype1(allsubaccount)
+	{
+		var comp=document.getElementById("subaccount");
+		comp.disabled=!!allsubaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function logicalwarehouse(alllogicalware)
+	{
+		var comp=document.getElementById("logicalware");
+		comp.disabled=!!alllogicalware.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function Grade(allgrade)
+	{
+		var comp=document.getElementById("grade");
+		comp.disabled=!!allgrade.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    var Year = Number(document.getElementById("year").value);
+    //alert(Number(Year) + "-04-01")
+    if (!Date.parse(startDate)){
+    alert("Please Enter Start Date");
+        event.preventDefault();
+    }
+
+    if (!Date.parse(endDate)){
+    alert("Please Enter End Date");
+        event.preventDefault();
+    }
+
+    if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+
+    if ((Date.parse(startDate) < Date.parse(Year-1 + "-04-01"))) {
+        alert("Start Date Should Be Between " + String(Year-1) + "-04-01 " + "and " + Year + "-03-31");
+        event.preventDefault();
+    }
+
+    if ((Date.parse(endDate) > Date.parse(Year + "-03-31"))) {
+        alert("End Date Should Be Between " + String(Year-1) + "-04-01 " + "and " + Year + "-03-31");
+        event.preventDefault();
+    }
+
+     return true;
+}
+	function company(allcomp)
+	{
+		var comp=document.getElementById("unit");
+		comp.disabled=!!allcomp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+    //alert({{YEAR}})
+    const a1 = new Date({{YEAR}}-1+"-04-01");
+    const d2 = new Date({{YEAR}}+"-03-31");
+    $(document).ready(function()
+	{
+    document.getElementById("startdate").value = a1.toISOString().split('T')[0];
+    document.getElementById("enddate").value = d2.toISOString().split('T')[0];
+    $('#enddate').attr('max', d2.toISOString().split('T')[0]);
+    $('#startdate').attr('min', a1.toISOString().split('T')[0]);
+    $('#enddate').attr('min', a1.toISOString().split('T')[0]);
+    $('#startdate').attr('max', d2.toISOString().split('T')[0]);
+	$("#unit").select2();
+	$("#subaccount").select2();
+	$("#account").select2();
+	$("#logicalware").select2();
+	$("#grade").select2();
+
+	});
+
+</script>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='ProductLedgerSummary' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+    <div class="yeartype">
+    <label for='year'><b>Financial Year:</b></label>
+<select name='year' id='year' onchange="updateDate();">
+    {% for i in GDataYear%}
+<option value={{i.CODE}}>{{i.CODE}}</option>
+{%endfor%}
+</select>
+    </div>
+
+<div class="one">
+<label for='startdate'><b>Start Date:</b></label><br>
+<input type='date' id='startdate' name='startdate'>
+<br><br>
+<label for='enddate'><b>End Date:</b></label><br>
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+
+<div class="four">
+<label for='unit' ><b>Plant :</b></label>
+<label for="allcomp"> Select All Plants</label>
+<input type="checkbox" id="allcomp" name="allcomp" value=1 onclick="company(this)"/>
+<br><br>
+<select  name='unit' id='unit' multiple>
+ {%for i in GDataPlant%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="two">
+<label for='account'><b>Item Type:</b></label>
+<label for="allaccount"> Select All Item Types</label>
+<input type="checkbox" id="allaccount" name="allaccount" value=1 onclick="itemtype(this)">
+
+<br><br>
+<select name='account' id='account' multiple >
+ {%for i in GDataItemType%}
+<option value="{{ i.ITEMTYPECODE }}">{{ i.ITEMTYPECODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="five">
+<label for='subaccount'><b>Product:</b></label>
+<label for="allsubaccount"> Select All Products</label>
+<input type="checkbox" id="allsubaccount" name="allsubaccount" value=1 onclick="itemtype1(this)">
+
+<br><br>
+<select name='subaccount' id='subaccount' multiple >
+ {%for i in GDataProduct%}
+<option value="{{ i.ABSUNIQUEID }}">{{ i.LONGDESCRIPTION }}</option>
+{% endfor %}
+</select>
+</div>
+
+
+<div class="seven">
+<label for='logicalware'><b>Logical Warehouse:</b></label>
+<label for="alllogicalware"> Select All Logical Warehouses</label>
+<input type="checkbox" id="alllogicalware" name="alllogicalware" value=1 onclick="logicalwarehouse(this)">
+
+<br><br>
+<select name='logicalware' id='logicalware' multiple >
+ {%for i in GDataLogicalWarehouse%}
+<option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{i.CODE}}</option>
+{% endfor %}
+</select>
+</div>
+
+
+<div class="eight">
+<label for='grade'><b>Grade:</b></label>
+<label for="allgrade"> Select All Grades</label>
+<input type="checkbox" id="allgrade" name="allgrade" value=1 onclick="Grade(this)">
+
+<br><br>
+<select name='grade' id='grade' multiple >
+ {%for i in GDataGrade%}
+<option value="{{ i.SHORTDESCRIPTION }}-{{i.ITEMTYPECODE}}">{{ i.SHORTDESCRIPTION }}-{{i.CODE}}-{{i.ITEMTYPECODE}}</option>
+{% endfor %}
+</select>
+</div>
+
+
+
+<div class="three">
+
+<br><br>
+<button type='submit' form='form1' value='PDF' class="mar" >Process</button>
+</div>
+
+</form>
+<div class="six">
+<label for='exception'><b>{% if Exception %}
+<script>
+var a= '{{Exception}}';
+alert(a);</script>
+{% endif %}
+    <script>
+    function updateDate() {
+    var selectBox = document.getElementById("year");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+    //alert(selectedValue)
+
+    //if(selectedValue == 2022){
+    let d3 = new Date(selectedValue-1+"-04-01");
+    document.getElementById("startdate").value = d3.toISOString().split('T')[0];
+    let d4 = new Date(selectedValue+"-03-31");
+    document.getElementById("enddate").value = d4.toISOString().split('T')[0];
+    $('#enddate').attr('max', d4.toISOString().split('T')[0]);
+    $('#startdate').attr('min', d3.toISOString().split('T')[0]);
+    $('#enddate').attr('min', d3.toISOString().split('T')[0]);
+    $('#startdate').attr('max', d4.toISOString().split('T')[0]);
+
+    //}
+
+   }
+
+
+    </script>
+</b></label>
+</div>
+
+</body>
+
+</html>

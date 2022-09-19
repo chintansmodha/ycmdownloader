@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Finished Stock</title>
+{% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<!--<h1 style="font-family:arial;margin-left: 50px">Bank Cash Voucher</h1>-->
+    <style>
+.container{
+                margin: 60px auto;
+                width:95%;
+                height:490px;
+                overflow:scroll;
+                position:absolute;
+                background-color: #66ccff;
+                overflow-x: hidden;
+            }
+.container1{
+                margin-top: 570px;
+                width:100%;
+                height:140px;
+                overflow:scroll;
+                position:absolute;
+                background-color: #66ccff;
+                overflow-x: hidden;
+            }
+
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#666666;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding:2px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #ffff66;
+
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtable td {
+                border-width: 1px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: bold;
+
+            }
+            td:hover {background-color: white}
+.containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+
+            select,
+.select2 {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 50px;
+    overflow: scroll;
+    overflow-x:hidden;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 10px;
+    font-size: 10p;
+    border: 1px solid #fafafa;
+}
+
+
+
+.rdbtn{
+position:absolute;
+margin-top:10px;
+margin-left:10px;
+}
+
+.itemtype{
+position:absolute;
+margin-left:500px;
+}
+
+.ordertype{
+position:absolute;
+margin-left:680px;
+}
+
+#grade{
+width:70px;
+
+}
+#itemtype{
+width:100px;
+
+}
+#site{
+width:150px;
+}
+.today{
+position:absolute;
+margin-left:10px;
+}
+
+.site{
+position:absolute;
+margin-left:850px;
+}
+
+
+.grade{
+position:absolute;
+margin-left:1050px;
+}
+
+.search{
+position:absolute;
+margin-left:1200px;
+}
+
+.class{
+position:absolute;
+}
+
+.qualities {
+position:absolute;
+border:2px solid #ccc;
+ width:200px;
+ height: 170px;
+ overflow-y: scroll;
+margin : 530px 1000px;
+background-color: white;
+}
+
+.shade {
+position:absolute;
+border:2px solid #ccc;
+ width:200px;
+ height: 230px;
+ overflow-y: scroll;
+margin : 400px 1220px;
+background-color: white;
+}
+
+.windingtype {
+position:absolute;
+border:2px solid #ccc;
+ width:200px;
+ height: 230px;
+ overflow-y: scroll;
+margin : 100px 1220px;
+background-color: white;
+}
+body{
+overflow-x: hidden;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
+<script>
+    $(document).ready(function()
+	{
+        $("#itemtype").select2();
+            $("#ordertype").select2();
+            $("#site").select2();
+            $("#grade").select2();
+	});
+</script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+	<style type="text/css" class="init">
+
+</style>
+
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<style>.dataTables_length select{ width: 30px}</style>
+    </head>
+<body style="background-color:#dd99ff;">
+<form action="FinishedStock_Apply"  id="form1">
+    <div class="today">
+       <label for='datenow'><b>As Date On:</b></label>
+        <input type="date" id="datenow" name="datenow">
+        <script>
+   document.getElementById("datenow").value = '{{startdate}}';
+</script>
+    </div>
+<div class="itemtype">
+    <label for='itemtype'><b>Item Type:</b></label>
+<select name='itemtype' id='itemtype' multiple>
+ {%for i in GDataItemTypeCode%}
+<option value="{{i.ITEMTYPE}}">{{i.ITEMTYPE}}</option>
+{% endfor %}
+</select>
+</div>
+
+<!-- <div class="ordertype">
+    <label for='ordertype'><b>Stock Type:</b></label>
+    <select name='ordertype' id='ordertype' multiple>
+
+</select>
+</div> -->
+
+    <div class="site">
+     <label for='site'><b>Sites:</b></label>
+    <select name='site' id='site' multiple>
+ {%for i in GDataPlantCode%}
+<option value="{{i.CODE}}-{{i.PLANT}}">{{i.CODE }}-{{i.PLANT}}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="grade">
+      <label for='grade'><b>Grade:</b></label>
+    <select name='grade' id='grade' multiple>
+{%for i in GDataQualityLevelCode%}
+<option value="-{{i.CODE}}">-{{i.CODE}}</option>
+{% endfor %}
+    </select>
+</div>
+</form>
+<button style="position:absolute;margin-top:30px;margin-left:1250px" type='submit' form='form1' value='PDF' class="mar">Apply</button>
+<div class="search">
+    <input type="text" id="myInput" onkeyup="searchFunction()"  placeholder="Search for Item.." title="Type in a name">
+</div>
+
+<div  class="details">
+
+</div>
+
+    <div class="container" id="wrap" >
+
+        <table class="gridtable" id="tableMain">
+                <thead>
+                    <tr>
+                        <th style="text-align:left;width:150px;">TOTAL</th>
+                        <th style="display:none;">tp</th>
+                        <th style="display:none;">tp</th>
+                        <th style="text-align:right;"></th>
+                                        <th style="text-align:right;"></th>
+                        <th style="text-align:right;">{{itemopenqtytotal}}</th>
+                        <th style="text-align:right;">{{itemrecqtytotal}}</th>
+                        <th style="text-align:right;">{{itemissqtytotal}}</th>
+                        <th style="text-align:right;">{{itemisscopstotal}}</th>
+                                        <th style="text-align:right;">{{itemclqtytotal}}</th>
+                                        <th style="text-align:right;">{{itemclcopstotal}}</th>
+                                        <th style="text-align:right;">{{itemclboxestotal}}</th>
+                                        <th style="text-align:right;">{{itemorderpendqtytotal}}</th>
+                        <th style="text-align:right;"></th>
+                                </tr>
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th style="width: 80px;">Items</th>
+                        <th style="display:none;">tp</th>
+                        <th style="display:none;">tp</th>
+                        <th>Qlt.</th>
+                        <th>Site</th>
+                        <th>Opn. Qty.</th>
+                        <th>Rec. Qty.</th>
+                        <th>Iss. Qty.</th>
+                        <th>Iss. Cops.</th>
+                        <th>Cl. Qty.</th>
+                        <th>Cl. Cops</th>
+                        <th>Cl. Boxes</th>
+                        <th>O.P.Qty</th>
+                        <th>Sel</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataDetail%}
+
+    <tr>
+        <td style="text-align:left;" class="clqty">{{ i.PRODUCT  }}</td>
+
+        <td style="text-align:right;display:none;">{{ i.ITEMCODE }}</td>
+
+        <td style="text-align:right;display:none;">{{ i.ID }}</td>
+
+        <td style="text-align:right;" class="clqty">{{ i.QLT }}</td>
+
+        <td style="text-align:left;background-color: #e6b3ff;" class="clqty">{{ i.SITE }}</td>
+
+        <td style="text-align:right;background-color: pink;" class="clqty">{{ i.OPNETWT }}</td>
+
+        <td style="text-align:right;background-color: pink;" class="clqty">{{ i.PNETWT }}</td>
+
+        <td style="text-align:right;background-color: pink;" class="clqty">{{ i.ISSUENETWT }}</td>
+
+        <td style="text-align:right;background-color: #66ff66;" class="clqty">{{ i.ISSUECOPS }}</td>
+
+        <td style="text-align:right;background-color: pink;" class="clqty">{{ i.CLNETWT }}</td>
+
+        <td style="text-align:right;background-color: #66ff66;" class="clqty">{{ i.CLCOPS }}</td>
+
+        <td style="text-align:right;" class="clqty">{{ i.CLBOXES }}</td>
+
+        <td style="text-align:right;" class="ordpendqty">{{ i.ORDPENQTY }}</td>
+
+        <td style="text-align:right;"></td>
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+                <tfoot>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>Items</th>
+                        <th style="display:none;">tp</th>
+                        <th style="display:none;">tp</th>
+                        <th>Qlt.</th>
+                        <th>Site</th>
+                        <th>Opn. Qty.</th>
+                        <th>Rec. Qty.</th>
+                        <th>Iss. Qty.</th>
+                        <th>Iss. Cops.</th>
+                        <th>Cl. Qty.</th>
+                        <th>Cl. Cops</th>
+                        <th>Cl. Boxes</th>
+                        <th>Ord.Pend. Qty</th>
+                        <th>Sel</th>
+
+                    </tr>
+
+
+                </tfoot>
+
+            </table>
+
+        </div>
+
+
+<div class="container1" id="wrap1" >
+
+        <table class="gridtable" id="tableMain1">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th style="text-align:center;width:370px;" >Sites</th>
+                        <th>Opn. Qty.</th>
+                        <th>Rec. Qty.</th>
+                        <th>Iss. Qty.</th>
+                        <th>Iss. Cops.</th>
+                        <th>Cl. Qty.</th>
+                        <th>Cl. Cops.</th>
+                        <th>Cl. Boxes.</th>
+                        <th>Ord.Pend. Qty</th>
+                    </tr>
+
+                <tr>
+
+                    <th style="text-align:left;width:150px;">TOTAL</th>
+
+        <th style="text-align:right;">{{plantopnqtytotal}}</th>
+        <th style="text-align:right;">{{plantrecqtytotal}}</th>
+                    <th style="text-align:right;">{{plantissqtytotal}}</th>
+                    <th style="text-align:right;">{{plantisscopstotal}}</th>
+                    <th style="text-align:right;">{{plantclqtytotal}}</th>
+        <th style="text-align:right;">{{ plantclcopstotal }}</th>
+                    <th style="text-align:right;">{{ plantclboxestotal }}</th>
+                    <th style="text-align:right;">{{ plantordpendqtytotal }}</th>
+                </tr>
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataPlantDetail%}
+
+    <tr>
+        <td style="text-align:left;background-color: #e6b3ff">{{ i.SITE  }}</td>
+
+        <td style="text-align:right;width:20px;background-color: pink;">{{ i.OPNETWT }}</td>
+
+        <td style="text-align:right;width:20px;background-color: pink;">{{ i.PNETWT }}</td>
+
+        <td style="text-align:right;width:20px;background-color: pink;">{{ i.ISSUENETWT }}</td>
+
+        <td style="text-align:right;width:20px;background-color: #66ff66;">{{ i.ISSUECOPS }}</td>
+
+        <td style="text-align:right;width:20px;background-color: pink;">{{ i.CLNETWT }}</td>
+
+        <td style="text-align:right;width:20px;background-color: #66ff66;">{{ i.CLCOPS }}</td>
+
+        <td style="text-align:right;width:20px;">{{ i.CLBOXES }}</td>
+
+        <td style="text-align:right;width:40px;">{{ i.ORDPENQTY }}</td>
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+<div>
+<label><b>{%if Exception %}
+<script>alert("Note: No Result found according to your selected criteria ");</script>
+{% endif  %}
+</b></label>
+</div>
+
+<script type="text/javascript" class="init">
+
+        $(document).ready(function()
+            {
+            $('#tableMain').DataTable({
+            info:false,
+            "paging":   false,
+            searching: false,
+            "columnDefs": [{ "width": "3%", "targets": [3,13] },{ "width": "12%", "targets": 4 }
+            ,{ "width": "25%", "targets": 0 },{ "width": "5%", "targets":[5,12] }]
+
+        });
+
+
+            });
+
+        var optionsToSelect = '{{ItemType}}';
+        var select = document.getElementById( 'itemtype' );
+
+        for ( var i = 0, l = select.options.length, o; i < l; i++ )
+        {
+          o = select.options[i];
+          if ( optionsToSelect.indexOf( o.text ) != -1 )
+          {
+            o.selected = true;
+          }
+        }
+
+        var optionsToSelect = '{{Site}}';
+        var select = document.getElementById( 'site' );
+
+        for ( var i = 0, l = select.options.length, o; i < l; i++ )
+        {
+          o = select.options[i];
+          if ( optionsToSelect.indexOf( o.value ) != -1 )
+          {
+            o.selected = true;
+          }
+        }
+
+
+        var optionsToSelect = '{{Grade}}';
+        var select = document.getElementById( 'grade' );
+
+        for ( var i = 0, l = select.options.length, o; i < l; i++ )
+        {
+          o = select.options[i];
+          if ( optionsToSelect.indexOf( o.text ) != -1 )
+          {
+            o.selected = true;
+          }
+        }
+        document.getElementById("wrap").addEventListener("scroll",function(){
+           var translate = "translate(0,"+this.scrollTop+"px)";
+           this.querySelector("thead").style.transform = translate;
+        });
+
+        document.getElementById("wrap1").addEventListener("scroll",function(){
+           var translate = "translate(0,"+this.scrollTop+"px)";
+           this.querySelector("thead").style.transform = translate;
+        });
+
+
+        $( ".clqty" ).click(function() {
+
+         var $this = $(this);
+         let ItemType = $('#itemtype').val();
+         let OrderType = $('#ordertype').val();
+         let Grade = $('#grade').val();
+         let Site = $('#site').val();
+         let date = $('#datenow').val();
+         var cellIndex = $this.index();
+
+         let ITEMCODE = $this.closest('tr').children().eq(2).html();
+         let Quality = $this.closest('tr').children().eq(3).html();
+         let ItemName = $this.closest('tr').children().eq(1).html();
+         let ItemCode = $this.closest('tr').children().eq(0).html();
+         window.open("FinishedStock_ItemDetail_ClosingQty?itemcode="+ITEMCODE+"&ordertype="+OrderType
+         +"&grade="+Grade+"&site="+Site+"&itemtype="+ItemType+"&quality="+Quality+"&itemname="+ItemName+"&itemcodee="+ItemCode+"&startdate="+date,"_self");
+        $this.css('background-color', '#00ffff');
+        });
+
+        $( ".ordpendqty" ).click(function() {
+
+         var $this = $(this);
+         let ItemType = $('#itemtype').val();
+         let OrderType = $('#ordertype').val();
+         let Grade = $('#grade').val();
+         let Site = $('#site').val();
+         var cellIndex = $this.index();
+         let ITEMCODE = $this.closest('tr').children().eq(2).html();
+         let Quality = $this.closest('tr').children().eq(3).html();
+         let ItemName = $this.closest('tr').children().eq(1).html();
+         let Product = $this.closest('tr').children().eq(0).html();
+         window.open("FinishedStock_ItemDetail_OrdPendQty?itemcode="+ITEMCODE+"&ordertype="+OrderType+"&grade="+Grade+"&site="+Site+"&itemtype="+ItemType+"&quality="+Quality+"&itemname="+ItemName+"&product="+Product,"_self");
+        $this.css('background-color', '#00ffff');
+        });
+
+        function searchFunction() {
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("tableMain");
+          tr = table.getElementsByTagName("tr");
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            }
+          }
+        }
+
+</script>
+
+</body>
+</html>

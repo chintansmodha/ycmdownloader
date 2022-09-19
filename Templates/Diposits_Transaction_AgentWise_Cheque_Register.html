@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Diposits Transcation</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <style>
+select,
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 200px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+
+
+</style>
+</head>
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+    <title >Agent-Wise Collection (Company-Wise / Consolidatated) </title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <h1 style="font-family:arial;margin-left: 50px"></h1>
+    <style>
+        .one{
+            position: absolute;
+            margin-top: 100px;
+            margin-left:50px ;
+}
+        .two{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:250px ;
+}
+        .three{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:650px ;
+}
+        .four{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:1150px ;
+}
+        .five{
+            position: absolute;
+            margin-top: 400px;
+            margin-left:50px ;
+            overflow-y: auto;
+}
+
+        .six{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:50px ;
+}
+
+#comp{
+ width:280px;
+}
+
+#party{
+ width:280px;
+ height:50px;
+}
+
+#desp{
+ width:280px;
+}
+
+
+select,
+.select2 {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+     height: 100px;
+     overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+}
+
+.select3 {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select3-container .select3-selection {
+     height: 50px;
+     overflow: scroll;
+}
+.select3-container--default .select3-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+}
+
+</style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+
+ 	function company(allcomp)
+ 	{
+ 	 	alert("company click");
+
+ 		var comp=document.getElementById("comp");
+ 		comp.disabled=!!allcomp.checked;
+ 		if (comp.disabled)
+ 		{
+			comp.focus();
+ 		}
+ 	}
+
+ 	function broker(allbroker)
+ 	{
+ 	alert("broker click");
+ 		var broker=document.getElementById("broker");
+ 		broker.disabled=!!allbroker.checked;
+ 		if (broker.disabled)
+ 		{
+ 			broker.focus();
+ 		}
+ 	}
+
+	function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)){
+      alert("Please Enter Start Date");
+      event.preventDefault();
+     }
+
+     if (!Date.parse(endDate)){
+     alert("Please Enter End Date");
+         event.preventDefault();
+     }
+
+    if((Date.parse(startDate) > Date.parse(endDate))) {
+          alert("End date should be greater than Start date");
+         event.preventDefault();
+     }
+      return true;
+}
+
+
+ 	$(document).ready(function()
+ 	{
+ 	$("#comp").select2();
+ 	$("#broker").select2();
+
+ 	});
+
+
+
+</script>
+    <script>
+            Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+    });
+        $(document).ready( function() {
+        $('#startdate').val(new Date().toDateInputValue());
+    });
+    $(document).ready( function() {
+        $('#enddate').val(new Date().toDateInputValue());
+    });
+
+</script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+         hideonload();
+    });
+
+        function myFunction(value) {
+            var x = document.getElementById("myDIV");
+            if (value==5){
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                }
+            }else{
+                x.style.display = "none";
+            }
+        }
+</script>
+<script>
+        function hideonload(){
+<!--            var x = document.getElementById("myDIV");-->
+            x.style.display = "none";
+        }
+    </script>
+
+<body>
+<div class="vspacer20"></div>
+<div class="container">
+    <div class="row">
+        <div class='col-sm-16'>
+            <div class="panel panel-primary col-sm-16">
+                <div class="panel-heading">Agent-Wise Cheque Collection Register </div>
+                <!--<form action='PendingPurchaseRegister' id='PendingPurchaseReportForm' target="_blank" class="mar" method="get">-->
+                <form action='DepositeTransactionAgentChequeCollectionRegister' id='form1' class="mar" onsubmit=" date(event);" target="_blank" >
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="col-xs-3">
+                                <div>
+                                    <label>Start Date</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div>
+                                    <label>End Date</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div>
+                                    <label>Consolidated</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-xs-3">
+                                <input type ='date' id='startdate' name='startdate'>
+                            </div>
+                            <div class="col-xs-3">
+                                <input type='date' id='enddate' name='enddate'>
+                            </div>
+                            <div class="col-xs-3">
+
+<!--                                <select id="reporttype" name="reporttype" class="form-control"  onmousedown="this.value='';"  onchange="myFunction(this.value);">-->
+                                <select id="reporttype" name="reporttype" class="form-control"  >
+                                    <option value=0 selected>Both</option>
+                                    <option value=1 >Adjusted</option>
+                                    <option value=2 >UnAdjusted</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="allcompany" name="allcompany" onclick="company(this)"
+                                                  value="1"/><b>Select All Company </b>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-3" id="myDIV">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="allbroker" name="allbroker"   onclick="broker(this)"
+                                                  value="1"><b>Select All Broker Group</b>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="form-group" >
+                                    <select name='comp' id='comp' multiple class="form-control">
+                                        {%for  i in GDataCompany%}
+                                        <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="form-group" >
+                                    <select name='broker' id='broker' multiple class="form-control">
+                                        {%for i in GDataBrokerGroup%}
+                                        <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}</option>
+                                        {%endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+                            </div>
+                            <div class="col-xs-4">
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="text-right">
+                                    <label>Generate Report : </label>
+                                    <button type="submit" id="submit" value="Submit" class="btn btn-primary">PDF
+                                    </button>
+                                    <!--                                    <button class="btn btn-primary">Excel</button>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class= "five">
+    <label for ='exception'><b>{%if Exception %}
+        <script>alert("Note: No Result found according to your selected criteria ");</script>
+        {% endif  %}
+    </b></label>
+</div>
+</body>
+
+</html>

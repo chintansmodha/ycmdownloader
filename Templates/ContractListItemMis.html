@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+
+<head style="font-family:arial;">
+    <title>Contract List Item Wise</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .one {
+            display : inline-block;
+            margin-left: 50px;
+            margin-top: 10px;
+        }
+
+        .two {
+            display : inline-block;
+            margin-top: 10px;
+            margin-left: 30px;
+        }
+        .two label{
+            margin-right: 12px;
+        }
+        .containerss{
+            width: 100%;
+            height:100%;
+            display: flex;
+            justify-content: space-between;
+            overflow: auto;
+        }
+        .cl-1{
+            width: 32%;
+            height: 50%;
+            overflow: auto;
+        }
+        .cl-2{
+            width: 66%;
+            height: 100%;
+        }
+
+        table.gridtable {
+            margin: 0 auto;
+            width: 100%;
+            font-family: tahoma;
+            font-size: 12px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #b3b3cc;
+        }
+
+        table.gridtablefooter th {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+        }
+
+        .footer {
+            border-width: 2px;
+            width: 87%;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 5px 0px;
+            border-style: solid;
+            border-color: #666666;
+            font-weight: normal;
+            text-align :left;
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+
+        .containersfooter {
+            margin: 10px auto;
+            width: 88%;
+            height: 50px;
+            font-family: arial;
+        }
+        table thead .itemTotal th{
+            padding: 4px 0px 5px 0px;
+            margin; 4px 0px 5px 0px;
+            background-color: #fcf7ac;
+        }
+        tfoot{
+            background-color: #fcf7ac;
+            position: sticky;
+            bottom: 0;
+        }
+        table.gridtable tfoot tr td:first-child{
+            border-right: 1px solid #fcf7ac;
+        }
+        table.gridtable tbody tr:hover{
+            background: aqua;
+        }
+
+    </style>
+    <STYLE>
+        A {
+            text-decoration: none;
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #c5d4ff;
+         }
+         .table-striped tbody tr:nth-of-type(even) {
+            background-color: #b5b5ff;
+         }
+         button{
+            position: absolute;
+            bottom: 10%;
+            justify-content: center;
+            text-align: center;
+            left: 20%;
+            width: 60px;
+            height: 30px;
+            font-size: larger;
+            font-family: tahoma;
+            font-weight: 500;
+            background: gray;
+         }
+    </STYLE>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+<!--    disable back-->
+    	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+    <script>
+        <!--    Display upto max date only-->
+            $(document).ready( function() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var SDate = {{Syear}}+"-"+'{{Smonth}}'+"-"+'{{Sday}}' ;
+    var EDate = {{Eyear}}+"-"+'{{Emonth}}'+"-"+'{{Eday}}' ;
+
+
+   $('#startdate').val(SDate);
+   $('#startdate').attr('max', SDate);
+   $('#enddate').val(EDate);
+   $('#enddate').attr('max', EDate);
+});
+
+        <!--    toggle display grid acc/ to button-->
+        $(document).ready(function(){
+            // Set div display to block
+            $("#itm").click(function(){
+                $('#form1').attr('action', 'ContListItemWisefunctions');
+            });
+
+            // Set div display to block
+            $("#agent").click(function(){
+                $('#form1').attr('action', 'ContListAgentWisefunctions');
+            });
+        });
+
+
+$(document).ready(function() {
+            function disableBack() {
+                window.history.forward()
+            }
+            window.onload = disableBack();
+            window.onpageshow = function(e) {
+                if (e.persisted)
+                    disableBack();
+            }
+        });
+
+
+        //*************Sorting Table
+
+    </script>
+
+</head>
+
+<body style="background-color:lavender;font-family:arial; height:100%; font-family: tahoma; font-size:15px; margin-left:6px; margin-top:0px" onload="myFunction()" >
+
+<form action="" id='form1' class="mar"  style="display: inline-block; height: 13%;">
+<!--     date-->
+    <div class="one ">
+        <label for='startdate'><b>Start Date : </b></label>
+        <input style="height:25px;" type='date' id='startdate' name='startdate' value="today" onclick="return false" onkeypress="return false">
+        <label for='startdate'><b>&emsp;End Date :</b></label>
+        <input style="height:25px;" type='date' id='enddate' name='enddate' value="today" onclick="return false" onkeypress="return false">
+    </div>
+
+    <!-- radio -->
+    <div class="two ">
+        <input type='radio' id='itm' name="select " value="it" form='form1' class="mar" onchange="this.form.submit()" checked>
+        <label for='itm' ><b>ItemWise</b></label>
+        <input type='radio' id='agent' name="select " value="agent" form='form1' class="mar" onchange="this.form.submit()">
+        <label for='agent' ><b>AgentWise</b></label>
+    </div>
+    <input type="search" id="myInput" onkeyup="searchFunction()" style="display: inline-block; margin-left:100px" title="Type item group name" placeholder="search for item group">
+</form>
+<div class="container-fluid" style="height: 85%;">
+    <div class="containerss">
+<!--        item group-->
+        <div class="cl-1">
+            <table class="table table-striped gridtable sortable" style="width:100%;" id="itemGrpTable">
+                <thead style="height:1px; position: sticky; top: 0;">
+                    <tr>
+                        <th style="width:70%;" >Item Group  </th>
+                        <th style="text-align:right;">Contract Qty. </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for i in GDataItemGroup %}
+                    <tr onclick="myItemGrp(this)" >
+                        <td>{{i.ITMGRP}}</td>
+                        <td style="text-align:right;">{{i.CONTQTY}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td style="font-weight:bold;text-align:left;">Total</td>
+                        <td style="font-weight:bold;text-align:right;">{{ContTotal}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+<!--        item-->
+        <div class="cl-2">
+            <div style="width:100%; height:50%; display: flex; justify-content: space-between;">
+                <div style="width:48%; height:100%; overflow: auto;">
+                    <table class="table table-striped gridtable sortable" style="width:100%;" id="itemTable">
+                        <thead style="height:1px; position: sticky; top: 0;">
+                            <tr>
+                                <th style="display:none;"></th>
+                                <th style="width:70%;" >Item Name </th>
+                                <th style="text-align:right;">Contract Qty. </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for i in GDataItem %}
+                            <tr onclick="myItem(this)" >
+                                <td style="display:none;">{{i.ITMGRP}}</td>
+                                <td>{{i.ITEM}}</td>
+                                <td style="text-align:right;">{{i.CONTQTY}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td style="font-weight:bold;text-align:left;">Total</td>
+                                <td style="font-weight:bold;text-align:right;"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+    <!--        Agent-->
+                <div style="width:48%; height:100%; overflow: auto;">
+                    <table class="table table-striped gridtable sortable" style="width:100%;" id="agentTable">
+                        <thead style="height:1px; position: sticky; top: 0;">
+                            <tr>
+                                <th style="display:none;"></th>
+                                <th style="display:none;"></th>
+                                <th style="width:70%;" >Agent </th>
+                                <th style="text-align:right;">Contract Qty. </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for i in GDataAgent %}
+                            <tr onclick="myAgent(this)" >
+                                <td style="display: None">{{i.ITMGRP}}</td>
+                                <td style="display: None">{{i.ITEM}}</td>
+                                <td >{{i.AGENT}}</td>
+                                <td style="text-align:right;">{{i.CONTQTY}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td style="font-weight:bold;text-align:left;">Total</td>
+                                <td style="font-weight:bold;text-align:right;"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+<!--            contNo-->
+            <div style="height:42%; margin-top: 3%;overflow:auto;">
+                <table class="table table-striped gridtable sortable" style="width:100%;" id="contTable">
+                    <thead style="height:1px; position: sticky; top: 0;">
+                        <tr>
+                            <th style="display:none;"></th>
+                            <th style="display:none;"></th>
+                            <th style="display:none;"></th>
+                            <th >Cont No. </th>
+                            <th style="display:none;"></th>
+                            <th>Doc.Type</th>
+                            <th>Ord.Type</th>
+                            <th style="width:55Px;">Date </th>
+                            <th >Rate </th>
+                            <th >RD </th>
+                            <th >Contract  Qty</th>
+                            <th>Consignee</th>
+                            <th>Customer</th>
+                            <th>Company</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for i in GDataCont %}
+                        <tr ondblclick="ContractPendingMisView(this)">
+                            <td style="display: None">{{i.ITMGRP}}</td>
+                            <td style="display: None">{{i.ITEM}}</td>
+                            <td style="display: None">{{i.AGENT}}</td>
+                            <td>{{i.CONTNO}}</td>
+                            <td style="display:none;">{{i.COUNTER}}</td>
+                            <td style="text-align: center;">{{i.DCMNTTYPE}}</td>
+                            <td style="text-align: center;">{{i.ORDTYPE}}</td>
+                            <td style="text-align:center;">{{i.CONTDT}}</td>
+                            <td style="width:80px; text-align:right;">{{i.RATE}}</td>
+                            <td style="width:40px; text-align:right;">{{i.RD}}</td>
+                            <td style="text-align:right;">{{i.CONTQTY}}</td>
+                            <td>{{i.CONSINEE}}</td>
+                            <td>{{i.CUSTOMER}}</td>
+                            <td>{{i.COMPANY}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td style="font-weight:bold;text-align:left;" colspan="5">Total</td>
+                            <td style="font-weight:bold;text-align:right;" colspan="2"></td>
+                            <td style="font-weight:bold;text-align:right;" colspan="4"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <button onclick="javascript:window.close();opener.window.focus();" > Exit</button>
+</div>
+
+
+
+
+<script>
+
+function myFunction(){
+    document.getElementById("itemGrpTable").rows[1].cells[0].click();
+
+}
+
+
+
+
+    function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("itemGrpTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length-1; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+
+
+
+function myItemGrp(x){
+    var y = x.rowIndex;
+    //alert(y)
+    var z = document.getElementById("itemTable").rows.length;
+    //alert(z)
+    var itmgrp = document.getElementById("itemGrpTable").rows[y].cells[0].innerHTML;
+    //alert(itmgrp)
+    var lenItmgrptab = document.getElementById("itemGrpTable").rows.length;
+    //alert(lenItmgrptab)
+    //**************** totals calculated as per row show ************************************
+    //alert(document.getElementById("itemGrpTable").rows[y].cells[0].style.backgroundColor)
+    ContractQty = 0
+    var b = 1;
+    while (b<lenItmgrptab-1){
+        if(document.getElementById("itemGrpTable").rows[b].cells[0].style.backgroundColor=="yellow"){
+            var color = document.getElementById("itemGrpTable").rows[b].cells[1].style.backgroundColor;
+            document.getElementById("itemGrpTable").rows[b].cells[0].style.backgroundColor = color;
+        }
+        document.getElementById("itemGrpTable").rows[b].cells[0].style.border = "1px solid #666666";
+        b++;
+    }
+    document.getElementById("itemGrpTable").rows[y].cells[0].style.backgroundColor="yellow";
+    document.getElementById("itemGrpTable").rows[y].cells[0].style.border = "1px solid black";
+
+    //alert(document.getElementById("itemTable").rows[1].cells[0].innerHTML);
+    i = 1;
+    while(i<z-1){
+        if(itmgrp == document.getElementById("itemTable").rows[i].cells[0].innerHTML){
+            document.getElementById("itemTable").rows[i].style.display="revert";
+
+            ContractQty += parseFloat(document.getElementById("itemTable").rows[i].cells[2].innerHTML);
+                            document.getElementById("itemTable").rows[z-1].cells[1].innerHTML = ContractQty;
+
+        }else{
+            document.getElementById("itemTable").rows[i].style.display = "none";
+        }
+        i = i + 1;
+    }
+    // ********** First row of item click *********************
+    k = 1;
+    while(k<z-1){
+        if(itmgrp == document.getElementById("itemTable").rows[k].cells[0].innerHTML){
+            document.getElementById("itemTable").rows[k].cells[1].click();
+            exit();
+        }
+        k = k + 1;
+    }
+
+}
+
+
+
+function myItem(x){
+    var y = x.rowIndex;
+    //alert(y)
+    var z = document.getElementById("agentTable").rows.length;
+    //alert(z)
+    var itmgrp = document.getElementById("itemTable").rows[y].cells[0].innerHTML;
+    var item = document.getElementById("itemTable").rows[y].cells[1].innerHTML;
+    //alert(itmgrp)
+    //alert(itm)
+    var lenitemTable = document.getElementById("itemTable").rows.length;
+    //**************** totals calculated as per row show ************************************
+    ContractQty = 0
+    var b = 1;
+    while (b<lenitemTable-1){
+        if(document.getElementById("itemTable").rows[b].cells[1].style.backgroundColor=="yellow"){
+            var color = document.getElementById("itemTable").rows[b].cells[2].style.backgroundColor;
+            document.getElementById("itemTable").rows[b].cells[1].style.backgroundColor = color;
+        }
+        document.getElementById("itemTable").rows[b].cells[1].style.border = "1px solid #666666";
+        b++;
+    }
+    document.getElementById("itemTable").rows[y].cells[1].style.backgroundColor="yellow";
+    document.getElementById("itemTable").rows[y].cells[1].style.border = "1px solid black";
+
+    //alert(document.getElementById("itemTable").rows[1].cells[0].innerHTML);
+    i = 1;
+    while(i<z-1){
+        if(itmgrp == document.getElementById("agentTable").rows[i].cells[0].innerHTML){
+            if(item == document.getElementById("agentTable").rows[i].cells[1].innerHTML){
+                document.getElementById("agentTable").rows[i].style.display="revert";
+
+            ContractQty += parseFloat(document.getElementById("agentTable").rows[i].cells[3].innerHTML);
+                            document.getElementById("agentTable").rows[z-1].cells[1].innerHTML = ContractQty;
+            }else{
+                document.getElementById("agentTable").rows[i].style.display="none";
+            }
+
+        }else{
+            document.getElementById("agentTable").rows[i].style.display = "none";
+        }
+        i = i + 1;
+    }
+    // ********** First row of item click *********************
+    k = 1;
+    while(k<z-1){
+        if(itmgrp == document.getElementById("agentTable").rows[k].cells[0].innerHTML){
+            if(item == document.getElementById("agentTable").rows[k].cells[1].innerHTML){
+                //alert(document.getElementById("agentTable").rows[k].cells[2].innerHTML)
+                document.getElementById("agentTable").rows[k].cells[2].click();
+                exit();
+            }
+        }
+        k = k + 1;
+    }
+
+}
+
+
+
+
+function myAgent(x){
+    var y = x.rowIndex;
+    //alert(y)
+    var z = document.getElementById("contTable").rows.length;
+    //alert(z)
+    var itmgrp = document.getElementById("agentTable").rows[y].cells[0].innerHTML;
+    var item = document.getElementById("agentTable").rows[y].cells[1].innerHTML;
+    var agent = document.getElementById("agentTable").rows[y].cells[2].innerHTML;
+    //alert(itmgrp)
+    //alert(itm)
+    var lenagentTable = document.getElementById("agentTable").rows.length;
+    //**************** totals calculated as per row show ************************************
+    ContractQty = 0
+    var b = 1;
+    while (b<lenagentTable-1){
+        if(document.getElementById("agentTable").rows[b].cells[2].style.backgroundColor=="yellow"){
+            var color = document.getElementById("agentTable").rows[b].cells[3].style.backgroundColor;
+            document.getElementById("agentTable").rows[b].cells[2].style.backgroundColor = color;
+        }
+        document.getElementById("agentTable").rows[b].cells[2].style.border = "1px solid #666666";
+        b++;
+    }
+    document.getElementById("agentTable").rows[y].cells[2].style.backgroundColor="yellow";
+    document.getElementById("agentTable").rows[y].cells[2].style.border = "1px solid black";
+
+    //alert(document.getElementById("agentTable").rows[1].cells[0].innerHTML);
+    i = 1;
+    while(i<z-1){
+        if(itmgrp == document.getElementById("contTable").rows[i].cells[0].innerHTML){
+            if(item == document.getElementById("contTable").rows[i].cells[1].innerHTML){
+                if(agent == document.getElementById("contTable").rows[i].cells[2].innerHTML){
+                    document.getElementById("contTable").rows[i].style.display="revert";
+
+                    ContractQty += parseFloat(document.getElementById("contTable").rows[i].cells[10].innerHTML);
+                                document.getElementById("contTable").rows[z-1].cells[1].innerHTML = ContractQty;
+                }else{
+                    document.getElementById("contTable").rows[i].style.display="none";
+                }
+            }else{
+                document.getElementById("contTable").rows[i].style.display="none";
+            }
+
+        }else{
+            document.getElementById("contTable").rows[i].style.display = "none";
+        }
+        i = i + 1;
+    }
+
+}
+
+
+
+
+
+
+//***************View Table
+function ContractPendingMisView(x){
+    y = x.rowIndex;
+    //alert(y)
+    //alert(document.getElementById("contTable").rows.length)
+    var i = 1;
+    //alert(document.getElementById("contTable").rows[y].style.backgroundColor);
+    var contNo = ''
+    var contCounter = ''
+    var src = "&src=" + 'ContractListItemMis.html';
+    contNo = "&contNo=" + document.getElementById("contTable").rows[y].cells[3].innerHTML;
+    contCounter = "&contCounter=" + document.getElementById("contTable").rows[y].cells[4].innerHTML;
+    while(i<document.getElementById("contTable").rows.length-1){
+        if(document.getElementById("contTable").rows[i].style.backgroundColor=="pink"){
+            var color = document.getElementById("contTable").rows[i+1].style.backgroundColor;
+            document.getElementById("contTable").rows[i].style.backgroundColor = color;
+        }
+        i += 1;
+    }
+    document.getElementById("contTable").rows[y].style.backgroundColor="pink";
+    //alert(document.getElementById("contTable").rows[y].style.backgroundColor);
+    window.open("ContractPendingMisView.html?=" + contNo + contCounter + src);
+}
+
+</script>
+
+</body>
+
+</html>

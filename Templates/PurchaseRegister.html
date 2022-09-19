@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Purchase Register</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Purchase Register</h1>
+    <style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+        .two{
+            position: absolute;
+            margin-top: 10px;
+    margin-left:250px ;
+}
+        .three{position: absolute;
+    margin-top: 400px;
+    margin-left:50px ;
+}
+        .four{position: absolute;
+    margin-top: 10px;
+    margin-left:450px ;
+}
+        .five{position: absolute;
+    margin-top: 10px;
+    margin-left:800px ;
+}
+ .six{position: absolute;
+    margin-top: 400px;
+    margin-left:50px ;
+}
+
+select,
+.select2 {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 200px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+	function itemtype(alltype)
+	{
+		var comp=document.getElementById("type");
+		comp.disabled=!!alltype.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)){
+    alert("Please Enter Start Date");
+        event.preventDefault();
+    }
+
+    if (!Date.parse(endDate)){
+    alert("Please Enter End Date");
+        event.preventDefault();
+    }
+
+    if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+}
+
+	function company(allcomp)
+	{
+		var comp=document.getElementById("unit");
+		comp.disabled=!!allcomp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+    $(document).ready(function()
+	{
+	$("#unit").select2();
+	$("#type").select2();
+
+	});
+
+	Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+    });
+        $(document).ready( function() {
+        $('#startdate').val(new Date().toDateInputValue());
+    });
+    $(document).ready( function() {
+        $('#enddate').val(new Date().toDateInputValue());
+    });
+</script>
+</head>
+<body style="background-color:Lavender;">
+
+
+<form action='PurchaseRegister' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+<div class="one">
+<label for='reporttype'><b>Report Type:</b></label>
+<br><br>
+<select name='reporttype' id='reporttype'>
+<option value=1 selected>Register</option>
+<option value=2 >Item Summary</option>
+<option value=3>Charge/Tax Summary</option>
+</select>
+</div>
+
+    <div class="two">
+<label for='startdate'><b>Start Date:</b></label><br>
+<input type='date' id='startdate' name='startdate'>
+<br><br>
+<label for='enddate'><b>End Date:</b></label><br>
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+
+<div class="four">
+<label for='unit' ><b>Company Unit:</b></label>
+<label for="allcomp"> Select All Company Units</label>
+<input type="checkbox" id="allcomp" name="allcomp" value=1 onclick="company(this)"/>
+<br><br>
+<select  name='unit' id='unit' multiple>
+ {%for i in GDataCompanyCode%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="five">
+<label for='type'><b>Item Type:</b></label>
+<label for="alltype"> Select All Items Types</label>
+<input type="checkbox" id="alltype" name="alltype" value=1 onclick="itemtype(this)">
+
+<br><br>
+<select name='type' id='type' multiple >
+ {%for i in GDataItemCode%}
+<option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+
+<div class="three">
+<label for='format' ><b>Export To:</b></label>
+<br><br>
+<button type='submit' form='form1' value='PDF' class="mar" >PDF</button>
+</div>
+
+</form>
+<div class="six">
+<label for='exception'><b>{%if Exception %}
+<script>alert("Please Select Valid Credentials");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>

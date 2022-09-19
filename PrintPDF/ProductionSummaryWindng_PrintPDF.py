@@ -1,0 +1,387 @@
+import textwrap
+
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
+from datetime import date
+from babel.numbers import format_number , format_currency , format_decimal
+
+pdfmetrics.registerFont(TTFont('MyOwnArial', 'arial.ttf'))
+pdfmetrics.registerFont(TTFont('MyOwnArialBold', 'arialbd.ttf'))
+
+c = canvas.Canvas("1.pdf")
+d = 750
+i = 0
+pageno = 0
+
+divisioncode = []
+Department = []
+Itemname = []
+ShadeName = []
+ShadeCode =  []
+LotNo = []
+ItmBoxes = 0
+ItmCops = 0
+ItmGross = 0
+ItmTare = 0
+ItmNetwt = 0
+CompBoxes = 0
+CompCops = 0
+CompGross = 0
+CompTare = 0
+CompNetwt = 0
+DeptBoxes = 0
+DeptCops = 0
+DeptGross = 0
+DeptTare = 0
+DeptNetwt = 0
+
+def page():
+    global pageno
+    pageno = pageno + 1
+    return pageno
+
+
+def fonts(size):
+    global c
+    c.setFont("MyOwnArial", size)
+
+def boldfonts(size):
+    global c
+    c.setFont("MyOwnArialBold", size)
+
+def dvalue():
+    global d
+    d = d - 5
+    return d
+
+def dvalueincrease():
+    global d
+    d = d + 10
+    return d
+
+def header(stdt, etdt, divisioncode):
+    fonts(15)
+    c.setFillColorRGB(0, 0, 0)
+    c.drawCentredString(300, 800, divisioncode[-1])
+    fonts(9)
+    c.drawString(10, 800, str((date.today()).strftime('%d %b %Y')))
+    c.drawCentredString(300, 780, "Item Winding Wise Production Summary From " + str(stdt.strftime('%d-%m-%Y')) + " To " + str(
+        etdt.strftime('%d-%m-%Y')) )
+    # c.drawString(10, 780, "Document Type: ")
+    p = page()
+    c.drawString(540, 780, "Page No." + str(p))
+    c.line(0, 775, 600, 775)
+    c.line(0, 755, 600, 755)
+    # Upperline in header
+    c.drawString(10, 760, "LotNo. & WT")
+    c.drawString(120, 760, "Boxes")
+    c.drawString(190, 760, "Cops")
+    c.drawString(290, 760, "Gross Wt")
+    c.drawString(390, 760, "Tare Wt")
+    c.drawString(490, 760, "Net wt")
+    c.drawString(565, 760, "Perc")
+
+
+def data(result, d):
+    fonts(7)
+    c.drawString(10, d, str(result['LOTWT']))
+    c.drawAlignedString(140, d, str(result['BOXES']))
+    c.drawAlignedString(210, d, str(result['COPS']))
+    c.drawAlignedString(315, d, str(result['GROSSWT']))
+    c.drawAlignedString(410, d, str(result['TAREWT']))
+    c.drawAlignedString(510, d, str(result['NETWT']))
+    DepartmentTotal(result)
+
+
+def logic(result):
+    global divisioncode
+    global Department
+    global Itemname
+    global LotNo
+    divisioncode.append(result['COMPNAME'])
+    Department.append(result['DEPARTMENT'])
+    Itemname.append(result['PRODUCT'])
+    LotNo.append(result['LOTNO'])
+
+def newpage():
+    global d
+    d = 750
+    return d
+
+def newrequest():
+    global divisioncode
+    global Department
+    global Itemname
+    global LotNo
+    global pageno
+    divisioncode = []
+    Department = []
+    Itemname = []
+    LotNo = []
+    pageno = 0
+
+def ItemTotal(result):
+    global ItmBoxes, ItmCops, ItmGross
+    global ItmTare, ItmNetwt
+    ItmBoxes = ItmBoxes + int(result['BOXES'])
+    ItmCops = ItmCops + int(result['COPS'])
+    ItmGross = ItmGross + float(result['GROSSWT'])
+    ItmTare = ItmTare + float(result['TAREWT'])
+    ItmNetwt = ItmNetwt + float(result['NETWT'])
+
+def ItemClean():
+    global ItmBoxes, ItmCops, ItmGross
+    global ItmTare, ItmNetwt
+    ItmBoxes = 0
+    ItmCops = 0
+    ItmGross = 0
+    ItmTare = 0
+    ItmNetwt = 0
+
+def CompanyTotal(result):
+    global CompBoxes, CompCops, CompGross
+    global CompTare, CompNetwt
+    CompBoxes = CompBoxes + int(result['BOXES'])
+    CompCops = CompCops + int(result['COPS'])
+    CompGross = CompGross + float(result['GROSSWT'])
+    CompTare = CompTare + float(result['TAREWT'])
+    CompNetwt = CompNetwt + float(result['NETWT'])
+
+def CompanyClean():
+    global CompBoxes, CompCops, CompGross
+    global CompTare, CompNetwt
+    CompBoxes = 0
+    CompCops = 0
+    CompGross = 0
+    CompTare = 0
+    CompNetwt = 0
+
+def DepartmentTotal(result):
+    global DeptBoxes, DeptCops, DeptGross
+    global DeptTare, DeptNetwt
+    DeptBoxes = DeptBoxes + int(result['BOXES'])
+    DeptCops = DeptCops + int(result['COPS'])
+    DeptGross = DeptGross + float(result['GROSSWT'])
+    DeptTare = DeptTare + float(result['TAREWT'])
+    DeptNetwt = DeptNetwt + float(result['NETWT'])
+
+def DepartmentClean():
+    global DeptBoxes, DeptCops, DeptGross
+    global DeptTare, DeptNetwt
+    DeptBoxes = 0
+    DeptCops = 0
+    DeptGross = 0
+    DeptTare = 0
+    DeptNetwt = 0
+
+
+def textsize(c, result, d, stdt, etdt,Box,Cop,Grosswt,Tarewt,NETwt):
+    d = dvalue()
+    logic(result)
+    global i
+    # str('{0:1.3f}'.format(
+
+    if len(divisioncode) == 1:
+        ItemClean()
+        CompanyClean()
+        header(stdt, etdt, divisioncode)
+        boldfonts(7)
+        c.drawCentredString(300, d, Department[-1])
+        d = dvalue()
+        d = dvalue()
+        c.drawString(10, d, Itemname[-1])
+        d = dvalue()
+        d = dvalue()
+        data(result, d)
+        ItemTotal(result)
+        CompanyTotal(result)
+        # ******************* PERCENTAGE ************************
+        if int(NETwt[i]) != 0:
+            percentage = (float(result['NETWT'])/(float(NETwt[i]))) * 100
+            c.drawAlignedString(580, d, str(round(percentage)) + '%')
+        else:
+            c.drawAlignedString(580, d, '0%')
+        # *******************************************************
+
+    elif divisioncode[-1] == divisioncode[-2]:
+        if Department[-1] == Department[-2]:
+            if Itemname[-1] == Itemname[-2]:
+                if LotNo[-1] == LotNo[-2]:
+                    data(result, d)
+                    ItemTotal(result)
+                    CompanyTotal(result)
+                    # ******************* PERCENTAGE ************************
+                    if int(NETwt[i]) != 0:
+                        percentage = (float(result['NETWT']) / (float(NETwt[i]))) * 100
+                        c.drawAlignedString(580, d, str(round(percentage)) + '%')
+                    else:
+                        c.drawAlignedString(580, d, '0%')
+                    # *******************************************************
+
+                else:
+                    boldfonts(7)
+                    c.drawString(30, d, "Lot-wise Total :")
+                    c.drawAlignedString(140, d, str(Box[i]))
+                    c.drawAlignedString(210, d, str(Cop[i]))
+                    c.drawAlignedString(315, d, str('{0:1.3f}'.format(Grosswt[i])))
+                    c.drawAlignedString(410, d, str('{0:1.3f}'.format(Tarewt[i])))
+                    c.drawAlignedString(510, d, str('{0:1.3f}'.format(NETwt[i])))
+                    d = dvalue()
+                    d = dvalue()
+                    d = dvalue()
+                    i = i + 1
+                    data(result, d)
+                    ItemTotal(result)
+                    CompanyTotal(result)
+                    fonts(7)
+                    # ******************* PERCENTAGE ************************
+                    if int(NETwt[i]) != 0:
+                        percentage = (float(result['NETWT']) / (float(NETwt[i]))) * 100
+                        c.drawAlignedString(580, d, str(round(percentage)) + '%')
+                    else:
+                        c.drawAlignedString(580, d, '0%')
+                    # *******************************************************
+
+            else:
+                boldfonts(7)
+                c.drawString(30, d, "Lot-wise Total :")
+                c.drawAlignedString(140, d, str(Box[i]))
+                c.drawAlignedString(210, d, str(Cop[i]))
+                c.drawAlignedString(315, d, str('{0:1.3f}'.format(Grosswt[i])))
+                c.drawAlignedString(410, d, str('{0:1.3f}'.format(Tarewt[i])))
+                c.drawAlignedString(510, d, str('{0:1.3f}'.format(NETwt[i])))
+                d = dvalue()
+                d = dvalue()
+                c.drawString(30, d, "Item-wise Total :")
+                c.drawAlignedString(140, d, str(ItmBoxes))
+                c.drawAlignedString(210, d, str(ItmCops))
+                c.drawAlignedString(315, d, str('{0:1.3f}'.format(ItmGross)))
+                c.drawAlignedString(410, d, str('{0:1.3f}'.format(ItmTare)))
+                c.drawAlignedString(510, d, str('{0:1.3f}'.format(ItmNetwt)))
+                ItemClean()
+                d = dvalue()
+                d = dvalue()
+                d = dvalue()
+                c.drawString(10, d, Itemname[-1])
+                d = dvalue()
+                d = dvalue()
+                i = i + 1
+                data(result, d)
+                ItemTotal(result)
+                CompanyTotal(result)
+                fonts(7)
+                # ******************* PERCENTAGE ************************
+                if int(NETwt[i]) != 0:
+                    percentage = (float(result['NETWT']) / (float(NETwt[i]))) * 100
+                    c.drawAlignedString(580, d, str(round(percentage)) + '%')
+                else:
+                    c.drawAlignedString(580, d, '0%')
+                # *******************************************************
+
+        else:#department Change
+            boldfonts(7)
+            c.drawString(30, d, "Lot-wise Total :")
+            c.drawAlignedString(140, d, str(Box[i]))
+            c.drawAlignedString(210, d, str(Cop[i]))
+            c.drawAlignedString(315, d, str('{0:1.3f}'.format(Grosswt[i])))
+            c.drawAlignedString(410, d, str('{0:1.3f}'.format(Tarewt[i])))
+            c.drawAlignedString(510, d, str('{0:1.3f}'.format(NETwt[i])))
+            d = dvalue()
+            d = dvalue()
+            c.drawString(30, d, "Item-wise Total :")
+            c.drawAlignedString(140, d, str(ItmBoxes))
+            c.drawAlignedString(210, d, str(ItmCops))
+            c.drawAlignedString(315, d, str('{0:1.3f}'.format(ItmGross)))
+            c.drawAlignedString(410, d, str('{0:1.3f}'.format(ItmTare)))
+            c.drawAlignedString(510, d, str('{0:1.3f}'.format(ItmNetwt)))
+            d = dvalue()
+            d = dvalue()
+            c.drawString(30, d, "Dept-wise Total :")
+            c.drawAlignedString(140, d, str(DeptBoxes))
+            c.drawAlignedString(210, d, str(DeptCops))
+            c.drawAlignedString(315, d, str('{0:1.3f}'.format(DeptGross)))
+            c.drawAlignedString(410, d, str('{0:1.3f}'.format(DeptTare)))
+            c.drawAlignedString(510, d, str('{0:1.3f}'.format(DeptNetwt)))
+            ItemClean()
+            DepartmentClean()
+            d = dvalue()
+            d = dvalue()
+            d = dvalue()
+            c.drawCentredString(300, d, Department[-1])
+            d = dvalue()
+            d = dvalue()
+            c.drawString(10, d, Itemname[-1])
+            d = dvalue()
+            d = dvalue()
+            i = i + 1
+            data(result, d)
+            ItemTotal(result)
+            CompanyTotal(result)
+            # ******************* PERCENTAGE ************************
+            if int(NETwt[i]) != 0:
+                percentage = (float(result['NETWT']) / (float(NETwt[i]))) * 100
+                c.drawAlignedString(580, d, str(round(percentage)) + '%')
+            else:
+                c.drawAlignedString(580, d, '0%')
+            # *******************************************************
+
+    elif divisioncode[-1] != divisioncode[-2]:
+        boldfonts(7)
+        c.drawString(30, d, "Lot-wise Total :")
+        c.drawAlignedString(140, d, str(Box[i]))
+        c.drawAlignedString(210, d, str(Cop[i]))
+        c.drawAlignedString(315, d, str('{0:1.3f}'.format(Grosswt[i])))
+        c.drawAlignedString(410, d, str('{0:1.3f}'.format(Tarewt[i])))
+        c.drawAlignedString(510, d, str('{0:1.3f}'.format(NETwt[i])))
+        d = dvalue()
+        d = dvalue()
+        c.drawString(30, d, "Item-wise Total :")
+        c.drawAlignedString(140, d, str(ItmBoxes))
+        c.drawAlignedString(210, d, str(ItmCops))
+        c.drawAlignedString(315, d, str('{0:1.3f}'.format(ItmGross)))
+        c.drawAlignedString(410, d, str('{0:1.3f}'.format(ItmTare)))
+        c.drawAlignedString(510, d, str('{0:1.3f}'.format(ItmNetwt)))
+        d = dvalue()
+        d = dvalue()
+        c.drawString(30, d, "Dept-wise Total :")
+        c.drawAlignedString(140, d, str(DeptBoxes))
+        c.drawAlignedString(210, d, str(DeptCops))
+        c.drawAlignedString(315, d, str('{0:1.3f}'.format(DeptGross)))
+        c.drawAlignedString(410, d, str('{0:1.3f}'.format(DeptTare)))
+        c.drawAlignedString(510, d, str('{0:1.3f}'.format(DeptNetwt)))
+        d = dvalue()
+        d = dvalue()
+        c.drawString(30, d, "Company Total :")
+        c.drawAlignedString(140, d, str(CompBoxes))
+        c.drawAlignedString(210, d, str(CompCops))
+        c.drawAlignedString(315, d, str('{0:1.3f}'.format(CompGross)))
+        c.drawAlignedString(410, d, str('{0:1.3f}'.format(CompTare)))
+        c.drawAlignedString(510, d, str('{0:1.3f}'.format(CompNetwt)))
+        ItemClean()
+        CompanyClean()
+        DepartmentClean()
+        c.showPage()
+        d = newpage()
+        d = dvalue()
+        header(stdt, etdt, divisioncode)
+        boldfonts(7)
+        c.drawCentredString(300, d, Department[-1])
+        d = dvalue()
+        d = dvalue()
+        c.drawString(10, d, Itemname[-1])
+        d = dvalue()
+        d = dvalue()
+        i = i + 1
+        data(result, d)
+        ItemTotal(result)
+        CompanyTotal(result)
+        fonts(7)
+        # ******************* PERCENTAGE ************************
+        if int(NETwt[i]) != 0:
+            percentage = (float(result['NETWT']) / (float(NETwt[i]))) * 100
+            c.drawAlignedString(580, d, str(round(percentage)) + '%')
+        else:
+            c.drawAlignedString(580, d, '0%')
+        # *******************************************************
+

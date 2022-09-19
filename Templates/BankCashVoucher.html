@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Bank Cash Voucher</title>
+{% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<!--<h1 style="font-family:arial;margin-left: 50px">Bank Cash Voucher</h1>-->
+    <style>
+.container{
+                margin: 320px auto;
+                width:98%;
+                height:350px;
+                overflow:scroll;
+                position:absolute;
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding:2px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #b0c5e6;
+
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #D8DA5C}
+.containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+
+
+        .comp{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:50px ;
+}
+
+        .type{
+            position: absolute;
+            margin-top: 10px;
+            margin-left: 450px;
+}
+        .broker{
+            position: absolute;
+            margin-top: 110px;
+            margin-left: 450px;
+
+}
+        .amt{
+            position: absolute;
+            margin-top: 10px;
+            margin-left: 550px;
+
+}
+        .tdsappamt{
+            position: absolute;
+            margin-top: 270px;
+            margin-left: 500px;
+}
+        .tds{
+            position: absolute;
+            margin-top: 270px;
+            margin-left: 340px;
+}
+        .tdsamt{
+            position: absolute;
+            margin-top: 270px;
+            margin-left: 880px;
+}
+        .tdsgl{
+            position: absolute;
+            margin-top: 270px;
+            margin-left: 50px;
+}
+
+        .bank{
+            position: absolute;
+            margin-top: 60px;
+            margin-left: 50px;
+}
+        .sumhead{
+            position: absolute;
+            margin-top: 60px;
+            margin-left: 450px;
+}
+     .party{
+            position: absolute;
+            margin-top: 110px;
+            margin-left: 50px;
+}
+        .chqno{
+            position: absolute;
+            margin-top: 220px;
+            margin-left: 550px;
+}
+        .chqdate{
+            position: absolute;
+            margin-top: 220px;
+            margin-left: 800px;
+}
+        .narr{
+            position: absolute;
+            margin-top: 10px;
+            margin-left: 850px;
+            overflow:scroll;
+}
+        .vchno{
+            position: absolute;
+            margin-top: 220px;
+            margin-left: 50px;
+}
+        .vchdate{
+            position: absolute;
+            margin-top: 220px;
+            margin-left: 300px;
+
+}
+        .refno{
+            position: absolute;
+            margin-top: 170px;
+            margin-left: 50px;
+}
+        .refdate{
+            position: absolute;
+            margin-top: 170px;
+            margin-left: 300px;
+}
+        .recodate{
+            position: absolute;
+            margin-top: 170px;
+            margin-left: 550px;
+}
+        .curstate{
+            position: absolute;
+            margin-top: 170px;
+            margin-left: 810px;
+}
+        .docstate{
+            position: absolute;
+            margin-top: 170px;
+            margin-left: 1010px;
+}
+        .nineteen{
+            position: absolute;
+            margin-top: 580px;
+            margin-left: 50px;
+}
+#comp{
+ width:350px;
+}
+#bank{
+    width:350px;
+}
+#party{
+    width:350px;
+}
+#sumhead{
+    width:350px;
+}
+#broker{
+    width:350px;
+}
+#narr{
+    width:250px;
+    height:100px;
+}
+
+#type{
+    width:80px;
+}
+#tds{
+    width:80px;
+}
+#curstate{
+width:80px;
+}
+
+#docstate{
+width:80px;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+ 	function company(allcomp)
+ 	{
+ 		var comp=document.getElementById("comp");
+ 		comp.disabled=!!allcomp.checked;
+ 		if (comp.disabled)
+ 		{
+			comp.focus();
+ 		}
+ 	}
+
+     function party()
+ 	{
+ 		var party=document.getElementById("party");
+ 		if (party.disabled)
+ 		{
+  			party.focus();
+ 		}
+	}
+
+ 	function desp()
+ 	{
+ 		var desp=document.getElementById("desp");
+ 		if (desp.disabled)
+ 		{
+ 			desp.focus();
+ 		}
+ 	}
+
+	function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)){
+      alert("Please Enter Start Date");
+      event.preventDefault();
+     }
+
+     if (!Date.parse(endDate)){
+     alert("Please Enter End Date");
+         event.preventDefault();
+     }
+
+    if((Date.parse(startDate) > Date.parse(endDate))) {
+          alert("End date should be greater than Start date");
+         event.preventDefault();
+     }
+      return true;
+}
+
+</script>
+
+<body style="background-color:Lavender;">
+
+
+<form action='BankCashVoucherTable' id='form1' class="mar" onsubmit=" date(event);" target="_blank" style="font-family:arial;">
+
+<div class="comp">
+<label for='comp'><b>Company:</b></label>
+    <BR>
+<input type='text' id='comp' name='comp'>
+</div>
+
+<div class="bank">
+<label for='bank'><b>Bank:</b></label>
+    <br>
+<input type='text' id='bank' name='bank'>
+</div>
+
+
+<div class="party">
+<label for='party'><b>Party:</b></label>
+    <br>
+<input type='text' id='party' name='party'>
+</div>
+
+
+    <div class="sumhead">
+<label for='sumhead'><b>Sum Head:</b></label>
+    <br>
+<input type='text' id='sumhead' name='sumhead'>
+</div>
+
+        <div class="broker">
+<label for='broker'><b>Broker:</b></label>
+    <br>
+<input type='text' id='broker' name='sumhead'>
+</div>
+
+    <div class="type">
+<label for='type'><b>Type:</b></label>
+<br>
+<select name='type' id='type'>
+</select>
+</div>
+
+
+<div class="amt">
+<label for='amt'><b>Amount:</b></label><br>
+<input type="number" id="amt" name="amt">
+<br> <br>
+</div>
+
+
+<div class="chqno">
+<label for='chqno'><b>Chq. No:</b></label>
+<input type='text' id='chqno' name='chqno'>
+</div>
+
+<div class="chqdate">
+<label for='chqdate'><b>Chq. Date:</b></label>
+<input type ='date' id='chqdate' name='chqdate'>
+<br> <br>
+</div>
+
+<div class="narr">
+<label for='narr'><b>Narration:</b></label><br>
+<input type="text" id="narr" name="narr">
+<br> <br>
+</div>
+
+<div class="vchno">
+<label for='vchno'><b>Vch. No:</b></label>
+<input type='text' id='vchno' name='vchno'>
+</div>
+
+<div class="vchdate">
+<label for='vchdate'><b>Vch. Date:</b></label>
+<input type ='date' id='vchdate' name='vchdate'>
+<br> <br>
+</div>
+
+<div class="refno">
+<label for='refno'><b>Ref. No:</b></label>
+<input type='text' id='refno' name='refno'>
+</div>
+
+<div class="refdate">
+<label for='refdate'><b>Ref. Date:</b></label>
+<input type ='date' id='refdate' name='refdate'>
+<br> <br>
+</div>
+
+<div class="recodate">
+<label for='recodate'><b>Reco. Date:</b></label>
+<input type ='date' id='recodate' name='recodate'>
+<br> <br>
+</div>
+
+           <div class="curstate">
+<label for='curstate'><b>Curr. Status:</b></label>
+<input type='text' id='curstate' name='curstate'>
+</div>
+
+           <div class="docstate">
+<label for='docstate'><b>Doc. Status:</b></label>
+<input type='text' id='docstate' name='docstate'>
+</div>
+
+
+       <div class="tdsgl">
+<label for='tdsgl'><b>TDS GlCode:</b></label>
+<input type='text' id='tdsgl' name='tdsgl'>
+</div>
+
+   <div class="tds">
+<label for='tds'><b>TDS %:</b></label>
+<input type='text' id='tds' name='tds'>
+</div>
+
+     <div class="tdsamt">
+<label for='tdsamt'><b>TDS Amount:</b></label>
+<input type='text' id='tdsamt' name='tds'>
+</div>
+
+
+    <div class="tdsappamt">
+<label for='tdsappamt'><b>TDS Applicable Amount:</b></label>
+<input type='text' id='tdsappamt' name='tds'>
+</div>
+
+<div class="container" id="wrap" >
+
+        <table class="gridtable" id="tableMain">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>A/C HEAD</th>
+                        <th>LEDGER ACCOUNT</th>
+                        <th>SUB LEDGER</th>
+                        <th>TYPE</th>
+                        <th>REF No.</th>
+                        <th>REF DATE</th>
+                        <th>DR/CR</th>
+                        <th>INR AMOUNT</th>
+                        <th>DOC. AMT.</th>
+                        <th>CURR.</th>
+                        <th>DETAIL REMARKS</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataBankCashVoucher%}
+
+    <tr>
+        <td style="text-align:left;width:60px;">{{ i.ACHEAD  }}</td>
+
+        <td style="text-align:left;">{{ i.FDL_LEDGERACCOUNT }}</td>
+
+        <td style="text-align:left;">{{ i.FDL_SUBLEDGER }}</td>
+
+        <td style="text-align:center;width:70px;">{{ i.PAYMENTTYPE }}</td>
+
+        <td style="text-align:left;">{{ i. }}</td>
+
+        <td style="text-align:center;">{{ i. }}</td>
+
+        <td style="text-align:left;">{{ i.DRCR }}</td>
+
+        <td style="text-align:right;">{{ i.AMOUNT }}</td>
+
+        <td style="text-align:right;">{{ i.CURR_AMT}}</td>
+
+        <td style="text-align:center;width:30px;">{{ i.CURRANCY}}</td>
+
+        <td style="text-align:left;">{{ i.DETAIL_REMARKS}}</td>
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+</form>
+
+<div class= "nineteen">
+<label for ='exception'><b>{%if Exception %}
+<script>alert("Note: No Result found according to your selected criteria ");</script>
+{% endif  %}
+</b></label>
+</div>
+</body>
+
+<script>
+document.getElementById("wrap").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+
+document.getElementById("comp").value = '{{result.COMPANY}}';
+document.getElementById("comp").disabled=1;
+
+document.getElementById("bank").value = '{{result.BANKNAME}}';
+document.getElementById("bank").disabled=1;
+
+document.getElementById("party").value = '{{result.PARTY}}';
+document.getElementById("party").disabled=1;
+
+document.getElementById("sumhead").value = '{{result.SUMMHEAD}}';
+document.getElementById("sumhead").disabled=1;
+
+document.getElementById("broker").value = '{{result.BROKER}}';
+document.getElementById("broker").disabled=1;
+
+document.getElementById("vchno").value = {{result.VOUCHERNO}};
+document.getElementById("vchno").disabled=1;
+
+document.getElementById("vchdate").value = '{{result.VOUCHERDATE}}';
+document.getElementById("vchdate").disabled=1;
+
+document.getElementById("amt").value = {{result.HEADAMOUNT}};
+document.getElementById("amt").disabled=1;
+
+$("select#type").append( $("<option>").val("value").html("{{type}}"));
+document.getElementById("type").selectedIndex = 0; //Option 10
+document.getElementById("type").disabled=1;
+
+document.getElementById("refno").value = '{{result.REFNO}}';
+document.getElementById("refno").disabled=1;
+
+document.getElementById("refdate").value = '{{result.REFDATE}}';
+document.getElementById("refdate").disabled=1;
+
+document.getElementById("chqno").value = '{{result.CHQNO}}';
+document.getElementById("chqno").disabled=1;
+
+document.getElementById("chqdate").value = '{{result.CHQDATE}}';
+document.getElementById("chqdate").disabled=1;
+
+document.getElementById("narr").value = '{{result.REMARKS}}';
+document.getElementById("narr").disabled=1;
+
+document.getElementById("tdsgl").value = '{{result.TDSGLCODE}}';
+document.getElementById("tdsgl").disabled=1;
+
+document.getElementById("tds").value = '{{result.TDS}}';
+document.getElementById("tds").disabled=1;
+
+document.getElementById("tdsamt").value = '{{result.TDSAMOUNT}}';
+document.getElementById("tdsamt").disabled=1;
+
+document.getElementById("tdsappamt").value = '{{result.TDSAPPLICABLEAMOUNT}}';
+document.getElementById("tdsappamt").disabled=1;
+
+document.getElementById("curstate").value = '{{result.CURRENTSTATUS}}';
+document.getElementById("curstate").disabled=1;
+
+document.getElementById("docstate").value = '{{result.DOCSTATUS}}';
+document.getElementById("docstate").disabled=1;
+</script>
+
+
+</html>

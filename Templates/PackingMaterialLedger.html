@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title>Packing Material Ledger</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Packing Material Ledger</h1>
+    <style>
+        .one{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:50px ;
+}
+        .two{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:650px ;
+}
+        .three{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:1050px ;
+}
+        .four{
+            position: absolute;
+            margin-top: 200px;
+            margin-left:50px ;
+}
+
+        .five{
+            position: absolute;
+            margin-top: 10px;
+            margin-left:250px ;
+}
+
+        .six{
+            position: absolute;
+            margin-top: 400px;
+            margin-left:50px ;
+}
+        .seven{
+            position: absolute;
+            margin-top: 400px;
+            margin-left:50px ;
+}
+
+        .eight{
+            position: absolute;
+            margin-top: 350px;
+            margin-left:50px ;
+}
+
+        .nine{
+            position: absolute;
+            margin-top: 200px;
+            margin-left:250px ;
+}
+#comp{
+    width:350px;
+}
+
+#party{
+    width:350px;
+}
+select,
+.select2 {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 100px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+	function company(allcomp)
+	{
+		var company=document.getElementById("comp");
+		company.disabled=!!allcomp.checked;
+		if (company.disabled)
+		{
+			company.focus();
+		}
+	}
+
+	function partys(allparty)
+	{
+		var party=document.getElementById("party");
+		party.disabled=!!allparty.checked;
+		if (party.disabled)
+		{
+			party.focus();
+		}
+	}
+
+	function items(allitem)
+	{
+		var item=document.getElementById("item");
+		item.disabled=!!allitem.checked;
+		if (item.disabled)
+		{
+			item.focus();
+		}
+	}
+
+	function palletetypes(allpalletetype)
+	{
+		var palletetype=document.getElementById("palletetype");
+		palletetype.disabled=!!allpalletetype.checked;
+		if (palletetype.disabled)
+		{
+			palletetype.focus();
+		}
+	}
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)){
+    alert("Please Enter Start Date");
+        event.preventDefault();
+    }
+
+    if (!Date.parse(endDate)){
+    alert("Please Enter End Date");
+        event.preventDefault();
+    }
+
+    if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+}
+
+    $(document).ready(function()
+	{
+	$("#comp").select2();
+	$("#party").select2();
+	$("#item").select2();
+	$("#palletetype").select2();
+	});
+
+	$(document).ready(function () {
+    $("#reporttype").change(function () {
+        var val = $(this).val();
+        if (val == 3)   {
+                  $("#yes").attr("disabled", true);
+                  $("#sum").val(1);
+        } else {
+                  $("#yes").attr("disabled", false);
+                  }
+       });
+    });
+
+</script>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='PackingMaterialLedger' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+
+<div class="one">
+<label for='reporttype'><b>Report Type:</b></label>
+<br>
+<select name='reporttype' id='reporttype'>
+<option value=1 selected>Supplier Wise</option>
+<option value=2 >Customer Wise</option>
+<option value=3 >All</option>
+</select>
+</div>
+
+<div class="two">
+<label for='party' ><b>Party:</b></label>
+<label for="allparty"> Select All Party</label>
+<input type="checkbox" id="allparty" name="allparty" value=1 onclick="partys(this)"/>
+<br><br>
+<select  name='party' id='party' multiple>
+ {%for i in GDataParty%}
+<option value="{{ i.NUMBERID }} ">{{ i.LEGALNAME1 }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="three" style="display: none;">
+<label for='item'><b>Item:</b></label>
+<label for="allitem"> Select All Items</label>
+<input type="checkbox" id="allitem" name="allitem" value=1 onclick="items(this)">
+
+<br><br>
+<select name='item' id='item' multiple >
+ {%for i in GDataItem%}
+<option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="four">
+<label for='startdate'><b>Start Date:</b></label><br>
+<input type='date' id='startdate' name='startdate'>
+<br><br>
+<label for='enddate'><b>End Date:</b></label><br>
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+<div class="five">
+<label for='comp'><b>Company:</b></label>
+<label for="allcomp"> Select All Companies</label>
+<input type="checkbox" id="allcomp" name="allcomp" value=1 onclick="company(this)">
+
+<br><br>
+<select name='comp' id='comp' multiple >
+ {%for i in GDataCompany%}
+<option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="nine">
+<label for='palletetype' ><b>Pallete Type:</b></label>
+<label for="allpalletetype"> Select All Pallete Types</label>
+<input type="checkbox" id="allpalletetype" name="allpalletetype" value=1 onclick="palletetypes(this)"/>
+<br><br>
+<select  name='palletetype' id='palletetype' multiple>
+ {%for i in GDataPalleteType%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }} - {{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="six">
+<br><br>
+<button type='submit' form='form1' value='PDF' class="mar" >Process</button>
+</div>
+
+<div class="eight">
+<label for='sum'><b>Summary:</b></label>
+<br>
+<select name='sum' id='sum'>
+    <option value=1 selected>No</option>
+    <option value=2 id="yes" >Yes</option>
+</select>
+</div>
+
+</form>
+<div class="seven">
+<label for='exception'><b>{%if Exception %}
+<script>alert("Please Select Valid Credentials");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>

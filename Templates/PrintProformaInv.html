@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Print Proforma Invoice </title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+    <style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+
+.one2{position: absolute;
+    margin-top: 10px;
+    margin-left:650px ;
+}
+
+.two{position: absolute;
+    margin-top:80px;
+    margin-left:50px ;
+}
+        .three{ position: absolute;
+    margin-top: 80px;
+    margin-left:360px ;
+}
+
+.four{position: absolute;
+    margin-top: 80px;
+    margin-left:518px ;
+}
+        .five{position: absolute;
+    margin-top: 80px;
+    margin-left:845px ;
+}
+.six{position: absolute;
+    margin-top: 80px;
+    margin-left:1055px ;
+}
+.seven{position: absolute;
+    margin-top: 300px;
+    margin-left:380px ;
+}
+.eight{position: absolute;
+    margin-top: 300px;
+    margin-left:710px ;
+}
+.nine{position: absolute;
+    margin-top: 300px;
+    margin-left:1040px ;
+}
+
+.ten{position: absolute;
+    margin-top: 400px;
+    margin-left:920px ;
+}
+
+.select2 {
+    width: 500px !important;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 200px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 13p;
+    border: 1px solid #fafafa;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)&&!Date.parse(endDate)){
+    alert("Please Enter Start Date and End Date");
+        event.preventDefault();
+    }
+    else{
+        if (!Date.parse(startDate)){
+        alert("Please Enter Start Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(endDate)){
+        alert("Please Enter End Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater Or Equall To Start date");
+        event.preventDefault();
+    }
+     return true;
+    }
+
+}
+
+function Company(allunit)
+	{
+		var Comp=document.getElementById("unit");
+		Comp.disabled=!!allunit.checked;
+		if (Comp.disabled)
+		{
+			Comp.focus();
+		}
+	}
+
+    $(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#unit").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready( function() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+   $('#enddate').val(today);
+   $('#startdate').val(today);
+   $('#enddate').attr('max', today);
+   $('#startdate').attr('max', today);
+});
+
+</script>
+    <h1 style="font-family:arial;margin-left: 50px;">Print Proforma Invoice</h1>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='PrintProformaInvGrid' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+
+    <!--Date-->
+<div class="one">
+<label for='startdate'><b>Start Date:</b></label>
+<input type='date' id='startdate' name='startdate'>
+
+<label for='enddate'><b>&emsp; &emsp; End Date:</b></label>
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+<!--    Report Type-->
+<div class="one2">
+<label for='type'><b>Report Type :</b></label>
+    <select name="type" id="type">
+        <option value="ProformaInv">Proforma Invoice</option>
+        <option value="PackingLiPre">Packing List(PreShipment)</option>
+<!--        <option value="PackingLiPos">Packing List(PostShipment)</option>-->
+        <option value="CustomPre">Custom (PreShipment) Invoice</option>
+        <option value="Commercial">Commercial (PostShipment) Invoice</option>
+        <option value="Instructions">B/L Instructions</option>
+        <option value="Certificate">Certificate Of Origin</option>
+        <option value="Annexure">Annexure - 1</option>
+    </select>
+</div>
+
+
+<!--    Company-->
+<div class="two">
+ <label for='unit' ><b>&emsp13;Company :</b></label><br>
+ <label for="allunit">&emsp13; All Company</label>
+ <input type="checkbox" id="allunit" name="allunit" value=1 onclick="Company(this)"/> <br>
+ <select  name='unit' id='unit'  multiple>
+   {%for i in GDataCompany%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+
+<div class="ten">
+<br><br>
+    <label for='format' ><b>Export To:</b></label>
+<button type='submit' style="background-color:#808080; color:#ffffff;" form='form1' value='FIND' class="mar" id="submit_check" > FIND</button>
+</div>
+
+</form>
+<div class="eight">
+<label for='exception'><b>{%if Exception %}
+<script>alert("No Record Found In Given Criteria");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>

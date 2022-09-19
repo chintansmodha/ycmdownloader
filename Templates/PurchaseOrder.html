@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Print Purchase Order</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+    <style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+
+.one2{position: absolute;
+    margin-top: 10px;
+    margin-left:650px ;
+}
+
+.two{position: absolute;
+    margin-top: 10px;
+    margin-left:650px ;
+}
+        .three{ position: absolute;
+    margin-top: 80px;
+    margin-left:381px ;
+}
+
+.four{position: absolute;
+    margin-top: 80px;
+    margin-left:703px ;
+}
+        .five{position: absolute;
+    margin-top: 80px;
+    margin-left:1034px ;
+}
+  .six{position: absolute;
+    margin-top: 10px;
+    margin-left:900px ;
+}
+ .seven{position: absolute;
+    margin-top: 300px;
+    margin-left:380px ;
+}
+.eight{position: absolute;
+    margin-top: 300px;
+    margin-left:710px ;
+}
+.nine{position: absolute;
+    margin-top: 300px;
+    margin-left:1040px ;
+}
+
+.ten{position: absolute;
+    margin-top: 400px;
+    margin-left:920px ;
+}
+
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 200px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 13p;
+    border: 1px solid #fafafa;
+}
+select {
+    box-sizing: content-box;
+    height: 30px;
+    border: 1px solid black !important;
+    font-size: 16px;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)&&!Date.parse(endDate)){
+    alert("Please Enter Start Date and End Date");
+        event.preventDefault();
+    }
+    else{
+        if (!Date.parse(startDate)){
+        alert("Please Enter Start Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(endDate)){
+        alert("Please Enter End Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater Or Equall To Start date");
+        event.preventDefault();
+    }
+     return true;
+    }
+
+}
+
+
+	$(document).ready( function() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+   $('#enddate').val(today);
+   $('#startdate').val(today);
+   $('#enddate').attr('max', today);
+   $('#startdate').attr('max', today);
+});
+$(document).ready(function () {
+$("#submit_check").click(function(){
+            var com = $("#comp").val();
+            if (com == 0){
+                alert("Company Name Required For Search")
+                event.preventDefault();
+            }
+    });
+    $("#comp").change(function(){
+    var com = $("#comp").val();
+    if(com !=0){
+        $("#op").hide();
+    }
+    });
+});
+
+
+</script>
+    <h1 style="font-family:arial;margin-left: 50px;">Print Purchase Order</h1>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='PurchaseOrder' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+
+    <!--Date-->
+<div class="one">
+<label for='startdate'><b>Start P.O Date:</b></label>
+<input type='date' id='startdate' name='startdate'>
+
+<label for='enddate'><b>&emsp; &emsp; End P.O Date:</b></label>
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+<!--    printer-->
+<!--<div class="one2">-->
+<!--    <label for="print" ><b>Printer : </b></label>-->
+<!--    <select name="print" id="print">-->
+<!--        <option  value="laser">Laser</option>-->
+<!--        <option  value="dotmtrx">DotMatrix</option>-->
+<!--    </select>-->
+<!--</div>-->
+
+<!--    Company-->
+<div class="two">
+ <label for='comp' ><b>&emsp13;Company:</b></label>
+ <select  name='comp' id='comp' style="width: 350px" >
+        <option value="" id="op"></option>
+  {%for i in GDataCompany%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+
+<div class="ten">
+
+<br><br>
+    <label for='format' ><b>Export To:</b></label>
+<button type='submit' style="background-color:#808080; color:#ffffff;" form='form1' value='PDF' class="mar" id="submit_check" > FIND</button>
+</div>
+
+</form>
+<div class="eight">
+<label for='exception'><b>{%if Exception %}
+<script>alert("No Result Found");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>

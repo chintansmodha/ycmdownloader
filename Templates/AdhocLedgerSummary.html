@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html>
+    <head style="font-family:arial;">
+        <title>AdhocLedger Summary</title>
+            {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+        <meta charset="utf-8" />
+        <style>
+
+            .container{
+                margin: 10px auto;
+                width:90%;
+                height:590px;
+                overflow:scroll;
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:70%;
+                padding: 1px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+
+
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #D8DA5C}
+.containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+
+
+       </style>
+
+
+    </head>
+
+    <body style="background-color:Lavender;font-family:arial;" onload="myFunction()" >
+
+    <div class="footer" style="margin-top:20px;margin-left:80px;"><b>Period:{{startdate}}-{{enddate}}</b>
+    <input type="text" id="myInput" onkeyup="searchFunction()" style="margin-left:1100px;" placeholder="Search for Account.." title="Type in a name">
+    </div>
+        <div class="container" id="wrap">
+
+        <table class="gridtable" id="tableMain">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>Company</th>
+                        <th>Account</th>
+                        <th>Sub-Account</th>
+                        <th>Op.Balance</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                        <th>Closing Balance</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDAdhocSummary%}
+
+    <tr>
+        <td style="display:none">{{ i.BUSINESSCODE }}</td>
+
+        <td style="display:none">{{ i.GLCODE }}</td>
+
+        <td style="display:none">{{ i.SUBACCOUNTCODE }}</td>
+
+        <td style="display:none">{{ i.YEARCODE }}</td>
+
+        <td style="text-align:left;">{{ i.BUSINESSUNIT }}</td>
+
+        <td style="text-align:left;">{{ i.GLACCOUNT }}</td>
+
+        <td style="text-align:left;">{{ i.SUBACCOUNT }}</td>
+
+        <td style="text-align:right;width:150px;">{{ i.OP }}</td>
+
+        <td style="text-align:right;width:150px;">{{ i.DR }}</td>
+
+        <td style="text-align:right; width:150px;">{{ i.CR }}</td>
+
+        <td style="text-align:right; width:150px;">{{ i.CL }}</td>
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+<div class="containerfooter">
+    <table class="gridtable">
+        <thead>
+        <tr style="font-family:arial;">
+
+                        <th style="font-family:arial;">TOTAL</th>
+                        <th style="text-align:right;width:150px;">{{OpeningBalance}}</th>
+                        <th style="text-align:right;width:150px;">{{  Debit }}</th>
+                        <th style="text-align:right;width:150px;">{{  Credit }}</th>
+                        <th style="text-align:right;width:150px;">{{  ClosingBalance}}</th>
+        </tr>
+        </thead>
+    </table>
+                    </div>
+		<script>
+
+function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tableMain");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[5];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+            //add event listener to table rows
+            let thetable = document.getElementById('tableMain').getElementsByTagName('tbody')[0];
+            for (let i = 0; i < thetable.rows.length; i++)
+                {
+                    thetable.rows[i].onclick = function()
+                    {
+                        TableRowClick(this);
+                    };
+                }
+
+            function TableRowClick(therow) {
+                let Businessunitcode = therow.cells[0].innerHTML;
+                let Accountcode =  therow.cells[1].innerHTML;
+                let Subaccountcode = therow.cells[2].innerHTML;
+                let Yearcode = therow.cells[3].innerHTML;
+                let Company = therow.cells[4].innerHTML;
+                let Account = therow.cells[5].innerHTML;
+                let Subaccount = therow.cells[6].innerHTML;
+                let Opbal = therow.cells[7].innerHTML;
+                let startdate = '{{startdate}}';
+                let enddate = '{{enddate}}';
+
+                window.open("AdhocLedgerDetail?Businessunitcode="+Businessunitcode+"&Accountcode="+Accountcode+
+                "&Subaccountcode="+Subaccountcode+"&Yearcode="+Yearcode+
+                "&Company="+Company+"&Account="+Account+"&Subaccount="+Subaccount+
+                "&Opbal="+Opbal+"&startdate="+startdate+"&enddate="+enddate);
+
+                therow.style.backgroundColor='#00ffff';
+            };
+
+		</script>
+
+
+    </body>
+</html>

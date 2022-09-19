@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Adhoc Ledger</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Adhoc Ledger</h1>
+    <style>
+        .one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+        .one2{position: absolute;
+    margin-top: 10px;
+    margin-left:580px ;
+}
+        .two{position: absolute;
+    margin-top: 90px;
+    margin-left:50px ;
+}
+        .three{
+            position: absolute;
+            margin-top: 90px;
+    margin-left:380px ;
+}
+        .four{position: absolute;
+    margin-top: 90px;
+    margin-left:850px ;
+}
+        .five{position: absolute;
+    margin-top: 400px;
+    margin-left:50px ;
+}
+
+ .six{position: absolute;
+    margin-top: 400px;
+    margin-left:50px ;
+}
+
+
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 200px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+	function itemtype(allaccount)
+	{
+		var comp=document.getElementById("account");
+		comp.disabled=!!allaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function itemtype1(allsubaccount)
+	{
+		var comp=document.getElementById("subaccount");
+		comp.disabled=!!allsubaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)&&!Date.parse(endDate)){
+    alert("Please Enter Start Date and End Date");
+        event.preventDefault();
+    }
+    else{
+        if (!Date.parse(startDate)){
+        alert("Please Enter Start Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(endDate)){
+        alert("Please Enter End Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+    }
+
+}
+	function company(allcomp)
+	{
+		var comp=document.getElementById("unit");
+		comp.disabled=!!allcomp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+    $(document).ready(function()
+	{
+	$("#unit").select2();
+	$("#subaccount").select2();
+	$("#account").select2();
+
+	});
+	$(document).ready(function(){
+
+	$("#Summary").change(function () {
+        var val = $(this).val();
+        if (val == 1) {
+                $("#Address").attr("disabled", false);
+                $("#Eject").attr("disabled", true);
+                $("#Eject").val(0);
+                $("#Narration").attr("disabled", true);
+                $("#Narration").val(0);
+        } else {
+                  $("#Address").val(0);
+                  $("#Address").attr("disabled", true);
+                  $("#Eject").attr("disabled", false);
+                  $("#Narration").attr("disabled", false);
+        }
+    });
+
+    $("#compmerge").click(function() {
+         $("#compmerge").val($(this).is(':checked'));
+         });
+    $("#mergesubacc").click(function() {
+         $("#mergesubacc").val($(this).is(':checked'));
+         });
+
+    $("#compmerge").change(function () {
+        var val = $(this).val();
+        if (val == "true") {
+                $("#mergesubacc").attr("disabled", true);
+                $("#Summary").attr("disabled", true);
+                $("#Summary").val(0);
+                $("#Address").val(0);
+                $("#Address").attr("disabled", true);
+                if ($("#TxnSumm").val() == 1){
+                    $("#Eject").attr("disabled", true);
+                    $("#Narration").attr("disabled", true);
+                } else {
+                    $("#Eject").attr("disabled", false);
+                    $("#Narration").attr("disabled", false);
+                }
+
+
+        } else {
+              $("#mergesubacc").attr("disabled", false);
+              if ($("#TxnSumm").val() == 1){
+                    $("#Summary").attr("disabled", true);
+              } else {
+                    $("#Summary").attr("disabled", false);
+              }
+        }
+
+    });
+
+    $("#mergesubacc").change(function () {
+        var val = $(this).val();
+        if (val == "true") {
+                $("#compmerge").attr("disabled", true);
+                $("#allsubaccount").attr("disabled", true);
+                $("#1").attr("disabled", true);
+                $("#Summary").val(0);
+                $("#Address").attr("disabled", true);
+                $("#Address").val(0);
+                if ($("#TxnSumm").val() == 1){
+                    $("#Eject").attr("disabled", true);
+                    $("#Narration").attr("disabled", true);
+                    $("#Summary").attr("disabled", true);
+                } else {
+                    $("#Eject").attr("disabled", false);
+                    $("#Narration").attr("disabled", false);
+                    $("#Summary").attr("disabled", false);
+                }
+
+        } else {
+                  $("#compmerge").attr("disabled", false);
+                  $("#allsubaccount").attr("disabled", false);
+                  $("#1").attr("disabled", false);
+                  if ($("#TxnSumm").val() == 1){
+                    $("#Eject").attr("disabled", true);
+                    $("#Narration").attr("disabled", true);
+                    $("#Summary").attr("disabled", true);
+                } else {
+                    $("#Eject").attr("disabled", false);
+                    $("#Narration").attr("disabled", false);
+                    $("#Summary").attr("disabled", false);
+                }
+        }
+    });
+
+    $("#TxnSumm").change(function () {
+        var val = $(this).val();
+        if (val == 1) {
+                $("#Summary").attr("disabled", true);
+                $("#Summary").val(0)
+                $("#Address").attr("disabled", true);
+                $("#Address").val(0);
+                $("#Eject").attr("disabled", true);
+                $("#Eject").val(0);
+                $("#Narration").attr("disabled", true);
+                $("#Narration").val(0);
+        } else {
+                  $("#Summary").attr("disabled", false);
+                  $("#Eject").attr("disabled", false);
+                  $("#Narration").attr("disabled", false);
+                  if ($("#compmerge").val() == "true"){
+                        $("#Summary").attr("disabled", true);
+                  } else {
+                        $("#Summary").attr("disabled", false);
+                  }
+        }
+    });
+
+	});
+
+
+</script>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='AdhocLedger' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+
+<div class="one">
+<label for='startdate'><b>Start Date :</b></label>
+<input type='date' id='startdate' name='startdate'>
+<label for='enddate'><b>&emsp; End Date :</b></label>
+<input type='date' id='enddate' name='enddate'>
+</div>
+<!--    Summary-->
+<div class="one2">
+    <label for="Summary" ><b>Summary : </b></label>
+    <select name="Summary" id="Summary">
+        <option value="0" selected>No</option>
+    <option id = '1' value="1">Yes</option>
+    </select>
+<!--    Eject-->
+    <label for="Eject" ><b>&emsp; Eject : </b></label>
+    <select name="Eject" id="Eject">
+        <option value="0">No</option>
+    <option value="1">Yes</option>
+    </select>
+<!--    Narration-->
+    <label for="Narration" ><b>&emsp; Narration : </b></label>
+    <select name="Narration" id="Narration">
+        <option value="0">No</option>
+    <option value="1">Yes</option>
+    </select>
+    <!--    Address-->
+    <label for="Address" ><b>&emsp; Address : </b></label>
+    <select name="Address" id="Address" disabled>
+        <option value="0" >No</option>
+    <option value="1">Yes</option>
+    </select>
+    <label for="TxnSumm" ><b>&emsp; Txn Summ : </b></label>
+    <select name="TxnSumm" id="TxnSumm" >
+        <option value="0" >No</option>
+    <option value="1">Yes</option>
+    </select>
+</div>
+
+<div class="two">
+<label for='unit' ><b>&emsp13;Company Unit:</b></label><br>
+<label for="allcomp">&emsp13; All Company Units</label>
+<input type="checkbox" id="allcomp" name="allcomp" value=1 onclick="company(this)"/> <br>
+<label for="compmerge" >&emsp13; Merge Companies</label>
+<input type="checkbox" id="compmerge" name="compmerge" value="false" />
+<br><br>
+<select  name='unit' id='unit' style="width: 320px;" multiple>
+ {%for i in GDataCompany%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="three">
+<label for='account'><b>&emsp13;Account:</b></label><br>
+<label for="allaccount">&emsp13; All Accounts</label>
+<input type="checkbox" id="allaccount" name="allaccount" value=1 onclick="itemtype(this)"/>
+
+<br><br><br>
+<select name='account' id='account' multiple >
+ {%for i in GDataAccount%}
+<option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="four">
+<label for='subaccount'><b>&emsp13;Sub-Account:</b></label><br>
+<label for="allsubaccount">&emsp13; All Sub-Accounts</label>
+<input type="checkbox" id="allsubaccount" name="allsubaccount" value=1 onclick="itemtype1(this)"/><br>
+<label for="mergesubacc">&emsp13; Merge Sub-Accounts</label>
+<input type="checkbox" id="mergesubacc" name="mergesubacc" value="false" />
+
+<br><br>
+<select name='subaccount' id='subaccount' style="width: 500px;" multiple >
+ {%for i in GDataSubAccount%}
+<option value="{{ i.NUMBERID }}">{{ i.LEGALNAME1 }}-{{ i.NUMBERID }}</option>
+{% endfor %}
+</select>
+</div>
+
+
+
+<div class="five">
+
+<br><br>
+    <label for='format' ><b>Export To:</b></label>
+<button type='submit' form='form1' value='PDF' class="mar" > PDF</button>
+</div>
+
+</form>
+<div class="six">
+<label for='exception'><b>{%if Exception %}
+<script>alert("Please Select Valid Credentials");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>

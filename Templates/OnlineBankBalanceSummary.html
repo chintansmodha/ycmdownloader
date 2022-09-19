@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html>
+    <head style="font-family:arial;">
+        <title>Online Bank Balance</title>
+            {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+        <meta charset="utf-8" />
+        <style>
+
+            .container{
+                margin: 10px auto;
+                width:90%;
+                height:500px;
+                overflow:scroll;
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+
+
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #D8DA5C}
+.containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+
+
+       </style>
+
+
+    </head>
+
+    <body style="background-color:Lavender;font-family:arial;" onload="myFunction()" >
+<h1 style="font-family:arial;margin-left: 50px">Online Bank Balance</h1>
+    <div class="footer" style="margin-top:20px;margin-left:80px;"><b>Period:{{startdate}}-{{enddate}}</b></div>
+    <div class="container" id="wrap">
+
+        <table class="gridtable" id="tableMain">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>Bank</th>
+                        <th>Company</th>
+                        <th>Op.Bal</th>
+                        <th>Receipts</th>
+                        <th>Payment</th>
+                        <th>Cl.Bal</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                        {%for i in GDataOnlineBankBalance%}
+
+    <tr>
+        <td style="text-align:left;">{{ i.BANKNAME }}</td>
+
+        <td style="text-align:left;">{{ i.BUSINESSUNITNAME }}</td>
+
+        <td style="text-align:right;width:100px;">{{ i.OPBAL }}</td>
+
+        <td style="text-align:right;width:100px;">{{ i.RECEIPTS }}</td>
+
+        <td style="text-align:right;width:100px;">{{ i.PAYMENTS }}</td>
+
+        <td style="text-align:right;width:100px;">{{ i.CLBAL }}</td>
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+<div class="containerfooter">
+    <table class="gridtable">
+        <thead>
+        <tr style="font-family:arial;">
+
+                        <th style="font-family:arial;">TOTAL</th>
+                        <th style="text-align:right;width:100px;">{{OpeningBalance}}</th>
+                        <th style="text-align:right;width:100px;">{{  Receipt }}</th>
+                        <th style="text-align:right;width:100px;">{{  Payment }}</th>
+                        <th style="text-align:right;width:100px;">{{  ClosingBalanced }}</th>
+        </tr>
+        </thead>
+    </table>
+                    </div>
+<script>
+document.getElementById("wrap").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+</script>
+		<script>
+
+            //add event listener to table rows
+            let thetable = document.getElementById('tableMain').getElementsByTagName('tbody')[0];
+            for (let i = 0; i < thetable.rows.length; i++)
+                {
+                    thetable.rows[i].onclick = function()
+                    {
+                        TableRowClick(this);
+                    };
+                }
+
+            function TableRowClick(therow) {
+                let BUSINESSUNIT = therow.cells[1].innerHTML;
+                let GLACCOUNT = therow.cells[3].innerHTML;
+                let SUPPLIERTYPE = therow.cells[5].innerHTML;
+                let SUPPLIERCODE = therow.cells[6].innerHTML;
+                let OPBAL = therow.cells[7].innerHTML;
+                let DRAMOUNT = therow.cells[8].innerHTML;
+                let CRAMOUNT = therow.cells[9].innerHTML;
+                let CLBAL = therow.cells[10].innerHTML;
+
+                window.open("AdhocLedgerDetail?company="+BUSINESSUNIT+"&account="+GLACCOUNT+
+                "&suppliertype="+SUPPLIERTYPE+
+                "&suppliercode="+SUPPLIERCODE+"&opbalance="+OPBAL+"&debit="+DRAMOUNT+
+                "&credit="+CRAMOUNT+"&clbalance="+CLBAL);
+
+                therow.style.backgroundColor='#00ffff';
+            };
+
+		</script>
+
+
+    </body>
+</html>

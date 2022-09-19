@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Agent Lifting Details / Summary </title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+    <style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+
+.one2{position: absolute;
+    margin-top: 10px;
+    margin-left:600px ;
+}
+
+.two{position: absolute;
+    margin-top:80px;
+    margin-left:50px ;
+}
+        .three{ position: absolute;
+    margin-top: 80px;
+    margin-left:310px ;
+}
+
+.four{position: absolute;
+    margin-top: 80px;
+    margin-left:570px ;
+}
+        .five{position: absolute;
+    margin-top: 80px;
+    margin-left:880px ;
+}
+.six{position: absolute;
+    margin-top: 300px;
+    margin-left:50px ;
+}
+.seven{position: absolute;
+    margin-top: 80px;
+    margin-left:1140px ;
+}
+.eight{position: absolute;
+    margin-top: 300px;
+    margin-left:360px ;
+}
+.nine{position: absolute;
+    margin-top: 300px;
+    margin-left:1040px ;
+}
+
+.ten{position: absolute;
+    margin-top: 400px;
+    margin-left:920px ;
+}
+
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 150px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 13p;
+    border: 1px solid #fafafa;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)&&!Date.parse(endDate)){
+    alert("Please Enter Start Date and End Date");
+        event.preventDefault();
+    }
+    else{
+        if (!Date.parse(startDate)){
+        alert("Please Enter Start Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(endDate)){
+        alert("Please Enter End Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater Or Equall To Start date");
+        event.preventDefault();
+    }
+     return true;
+    }
+
+}
+
+function BROKERGROUP(allBrokerGrp)
+	{
+		var Comp=document.getElementById("BrokerGrp");
+		Comp.disabled=!!allBrokerGrp.checked;
+		if (Comp.disabled)
+		{
+			Comp.focus();
+		}
+	}
+
+function BROKER(allBroker)
+	{
+		var Comp=document.getElementById("Broker");
+		Comp.disabled=!!allBroker.checked;
+		if (Comp.disabled)
+		{
+			Comp.focus();
+		}
+	}
+
+function PLANT(allPlant)
+	{
+		var Comp=document.getElementById("Plant");
+		Comp.disabled=!!allPlant.checked;
+		if (Comp.disabled)
+		{
+			Comp.focus();
+		}
+	}
+
+function YARN(allYarn)
+	{
+		var Comp=document.getElementById("Yarn");
+		Comp.disabled=!!allYarn.checked;
+		if (Comp.disabled)
+		{
+			Comp.focus();
+		}
+	}
+
+function ITEM(allitm)
+	{
+		var Comp=document.getElementById("itm");
+		Comp.disabled=!!allitm.checked;
+		if (Comp.disabled)
+		{
+			Comp.focus();
+		}
+	}
+
+function QUALITY(allQlty)
+	{
+		var Comp=document.getElementById("Qlty");
+		Comp.disabled=!!allQlty.checked;
+		if (Comp.disabled)
+		{
+			Comp.focus();
+		}
+	}
+
+function PARTY(allParty)
+	{
+		var Comp=document.getElementById("Party");
+		Comp.disabled=!!allParty.checked;
+		if (Comp.disabled)
+		{
+			Comp.focus();
+		}
+	}
+
+    $(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#BrokerGrp").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Broker").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Plant").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Yarn").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#itm").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Qlty").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Party").select2({
+		data:itemlist
+	});
+	});
+
+
+	$(document).ready( function() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+   $('#enddate').val(today);
+   $('#startdate').val(today);
+   $('#enddate').attr('max', today);
+   $('#startdate').attr('max', today);
+});
+
+$(document).ready( function() {
+    $('#reportOrdder').change(function(){
+        var value = $('#reportOrdder').val()
+        if (value == 'finalsumm'){
+            $('#summ').attr('disabled', true);
+            $('#mergeplant').attr('disabled', true);
+            $('#summ').val(0);
+            $('#mergeplant').val(0);
+        }
+        else{
+            $('#summ').attr('disabled', false);
+            $('#mergeplant').attr('disabled', false);
+        }
+    });
+});
+
+</script>
+    <h1 style="font-family:arial;margin-left: 50px;">Agent Lifting Details / Summary</h1>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='AgentLifting' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+
+    <!--Date-->
+<div class="one">
+<label for='startdate'><b>Start Date:</b></label>
+<input type='date' id='startdate' name='startdate'>
+
+<label for='enddate'><b>&emsp;End Date:</b></label>
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+<!--    Report Type-->
+<div class="one2">
+    <label for="Date" style="display:none;"><b>Date: </b></label>
+    <select name="Date" id="Date" style="display:none;">
+        <option value="billDt">Bill Date</option>
+        <option value="issueDt">Issue Date</option>
+    </select>
+    <label for='reportOrdder'><b>&ensp; Report Order :</b></label>
+    <select name="reportOrdder" id="reportOrdder">
+        <option value="partyWise">Party Wise</option>
+        <option value="itemWise">Item Wise</option>
+        <option value="finalsumm">Final Summary</option>
+    </select>
+    <label for="mergeplant"><b>&ensp;Merge Plant: </b></label>
+    <select name="mergeplant" id="mergeplant">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+    </select>
+    <label for="summ"><b>&ensp;Summary: </b></label>
+    <select name="summ" id="summ">
+        <option value="0">No</option>
+        <option value="1">Yes</option>
+    </select>
+</div>
+
+<!-- Broker Group    -->
+<div class="two">
+ <label for='BrokerGrp' ><b>&emsp13;Broker Group :</b></label><br>
+ <label for="allBrokerGrp">&emsp13; All Broker Groups</label>
+ <input type="checkbox" id="allBrokerGrp" name="allBrokerGrp" value=1 onclick="BROKERGROUP(this)"/> <br>
+ <select  name='BrokerGrp' id='BrokerGrp' style="width:250px;" multiple>
+   {%for i in GDataBrokerGroup%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--    Broker-->
+<div class="three">
+ <label for='Broker' ><b>&emsp13;Broker :</b></label><br>
+ <label for="allBroker">&emsp13; All Brokers</label>
+ <input type="checkbox" id="allBroker" name="allBroker" value=1 onclick="BROKER(this)"/> <br>
+ <select  name='Broker' id='Broker' style="width:250px;" multiple>
+   {%for i in GDataBroker%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--Plant    -->
+<div class="four">
+ <label for='Plant' ><b>&emsp13;Plant :</b></label><br>
+ <label for="allPlant">&emsp13; All Plants</label>
+ <input type="checkbox" id="allPlant" name="allPlant" value=1 onclick="PLANT(this)"/> <br>
+ <select  name='Plant' id='Plant' style="width:300px;" multiple>
+   {%for i in GDataPlant%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--Party    -->
+<div class="five">
+ <label for='Party' ><b>&emsp13;Party :</b></label><br>
+ <label for="allParty">&emsp13; All Parties</label>
+ <input type="checkbox" id="allParty" name="allParty" value=1 onclick="PARTY(this)"/> <br>
+ <select  name='Party' id='Party' style="width:250px;" multiple>
+   {%for i in GDataParty%}
+          <option value="{{ i.NUMBERID }} ">{{ i.LEGALNAME1 }}-{{ i.NUMBERID }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--    Item -->
+<div class="six" >
+ <label for='itm' ><b>&emsp13;Item :</b></label><br>
+ <label for="allitm">&emsp13; All Items</label>
+ <input type="checkbox" id="allitm" name="allitm" value=1 onclick="ITEM(this)"/> <br>
+ <select  name='itm' id='itm' style="width:300px;" multiple>
+   {%for i in GDataItem%}
+          <option value="{{ i.ABSUNIQUEID }} ">{{ i.LONGDESCRIPTION }}-{{ i.ABSUNIQUEID }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--    Item Type-->
+<div class="seven">
+ <label for='Yarn' ><b>&emsp13;Item Type :</b></label><br>
+ <label for="allYarn">&emsp13; All Item Types</label>
+ <input type="checkbox" id="allYarn" name="allYarn" value=1 onclick="YARN(this)"/> <br>
+ <select  name='Yarn' id='Yarn' style="width:150px;" multiple>
+   {%for i in GDataItemType%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--    Quality-->
+<div class="eight">
+ <label for='Qlty' ><b>&emsp13;Quality :</b></label><br>
+ <label for="allQlty">&emsp13; All Qualities</label>
+ <input type="checkbox" id="allQlty" name="allQlty" value=1 onclick="QUALITY(this)"/> <br>
+ <select  name='Qlty' id='Qlty' style="width:150px;" multiple>
+   {%for i in GDataItemQuality%}
+          <option value="{{ i.LONGDESCRIPTION }} ">{{ i.LONGDESCRIPTION }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+
+
+<div class="ten">
+<br><br>
+    <label for='format' ><b>Export To:</b></label>
+<button type='submit' style="background-color:#808080; color:#ffffff;" form='form1' value='PDF' class="mar" id="submit_check" > PDF</button>
+</div>
+
+</form>
+<div class="eight">
+<label for='exception'><b>{%if Exception %}
+<script>alert("No Report Found In Given Criteria");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>

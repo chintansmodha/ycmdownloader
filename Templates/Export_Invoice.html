@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Export Invoice Register</title>
+        {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
+    <script>
+    function company(selectallcompany)
+	{
+		var comp=document.getElementById("selcompany");
+		comp.disabled=!!selectallcompany.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+	function party(selectallparty)
+	{
+		var comp=document.getElementById("selparty");
+		comp.disabled=!!selectallparty.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function itemcategory(checkboxallcategory)
+	{
+		var goods=document.getElementById("checkboxgoods");
+		var capital=document.getElementById("checkboxcapitalgoods");
+		var service=document.getElementById("checkboxservice");
+		goods.checked=!!checkboxallcategory.checked;
+		capital.checked=!!checkboxallcategory.checked;
+		service.checked=!!checkboxallcategory.checked;
+	}
+    function validate(event){
+    alert("from validation");
+        date(event);
+        var scompany=document.forms["UnBilledGRNRegisterForm"][selcompany];
+        alert("value of company : "+scompany);
+                if (scompany.selectedIndex < 1) {
+                    alert("Please select company.");
+                    scompany.focus();
+                    return false;
+                }
+                else{
+                    alert("from validation else ");
+                }
+    }
+
+ 	$(document).ready(function()
+        {
+            var selcompanylist=[];
+            $("#selcompany").select2(
+                {
+                    data:selcompanylist
+                }
+            );
+        }
+    );
+
+	$(document).ready(function()
+        {
+            var selitemlist=[];
+            $("#selitem").select2(
+                {
+                    data:selitemlist
+                }
+            );
+        }
+    );
+ $(document).ready(function()
+	{
+	var itemlist=[];
+	$("#selparty").select2({
+		data:itemlist
+	});
+	});
+
+Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+});
+    $(document).ready( function() {
+    $('#startdate').val(new Date().toDateInputValue());
+});
+$(document).ready( function() {
+    $('#enddate').val(new Date().toDateInputValue());
+});
+
+function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)){
+    alert("Please Enter Start Date");
+        event.preventDefault();
+    }
+
+    if (!Date.parse(endDate)){
+    alert("Please Enter End Date");
+        event.preventDefault();
+    }
+
+    if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+}
+
+
+
+
+    </script>
+
+    <style>
+select,
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 200px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+
+
+</style>
+</head>
+
+<body>
+
+<!-- go through this below site -->
+<!--******* http://eonasdan.github.io/bootstrap-datetimepicker/Installing/ ****-->
+<div class="vspacer20"></div>
+<div class="container">
+    <div class="row">
+        <div class='col-sm-16'>
+            <div class="panel panel-primary col-sm-16">
+                <div class="panel-heading">Export Invoice</div>
+                <form action='Export_InvoiceRegister' id='Export_InvoiceRegisterForm' onsubmit=" date(event);"
+                      class="mar"
+                      method="get" target="_blank">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div>
+                                    <label>Company</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div>
+                                    <label>Party</label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="selectallcompany" name="selectallcompany"
+                                                  onclick="company(this)" value="1">Select All Company </Center>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="selectallparty" name="selectallparty"
+                                                  onclick="party(this)" value="1">Select All Party </Center>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <select name='selcompany' id='selcompany' class="form-control" multiple>
+                                        {%for i in company%}
+                                        <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.code }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <select name='selparty' id='selparty' multiple class="form-control">
+                                    {%for i in party%}
+                                    <option value="{{ i.NUMBERID }}">{{ i.LEGALNAME1 }}-{{ i.NUMBERID }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div>
+                                    <label>From Date</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div>
+                                    <label>To Date</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div>
+                                    <label>Report Type </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div>
+                                    <input type='date' id='startdate' name='startdate'>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <div class='input-group date' id='datetimeFrom'>
+                                        <input type='date' id='enddate' name='enddate'>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <div class='input-group date' id='datetimeTo'>
+                                        <select id="SortByReportType" name="SortByReportType" class="form-control">
+                                            <option value="1">Shipment Detail - Order No. Wise</option>
+                                            <option value="2">Shipment Detail - Buyer Wise</option>
+                                            <option value="3">Shipment Detail - Item Wise</option>
+                                            <option value="4">Invoice Without Shipping Bill No</option>
+                                            <option value="5">Complete List with Shipping Bill Details of Invoice</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-xs-12">
+                            <div class="text-right">
+                                <label>Generate Report : </label>
+                                <button type="submit" id="submit" value="Submit" class="btn btn-primary">Generate
+                                </button>
+                                <!--                                    <button class="btn btn-primary">Excel</button>-->
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+
+            </form>
+            <div class="six">
+                <label for='exception'><b>{%if Exception %}
+                    <script>alert("Note : No Record found according to your selected criteria");</script>
+                    {% endif %}
+                </b></label>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/moment.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+		$(function () {
+			$('#datetimeFrom').datepicker();
+			$('#datetimeTo').datepicker();
+		});
+
+
+
+
+
+
+
+
+
+</script>
+</body>

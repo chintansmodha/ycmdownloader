@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html>
+<head style="font-family:arial;">
+    <title>Retanable list Challan Table</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <script>
+    $(document).ready(function() {
+    $('#tableMain').DataTable();
+} );
+</script>
+
+
+    <meta charset="utf-8" />
+    <style>
+
+            .container{
+                margin: 10px auto;
+                width:90%;
+                height:610px;
+                overflow:scroll;
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #cccccc;
+
+
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+
+
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #D8DA5C}
+            .containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+            .pdfbutton{
+               position: absolute;
+               margin-left:10px ;
+               overflow-y: auto;
+    }
+            .btnsize{
+             font-size: 20px;
+             }
+
+       </style>
+    <STYLE>A {text-decoration: none;} </STYLE>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+    </script>
+
+</head>
+
+<!--<body style="background-color:#cccccc;font-family:arial;" onload="myFunction()" >-->
+<body style="background-color:#cccccc;font-family:arial;" onload="myFunction()" >
+<div class="container" id="wrap">
+    <table class="gridtable" id="tableMain" name="tableMain" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+
+        <tr style=" font-family:arial;font-weight: bold;">
+            <th>INV. NO.</th>
+            <th>CHALLAN DATE</th>
+            <th>Quanitity</th>
+            <th>PRINT</th>
+        </tr>
+        </thead>
+        <tbody>
+        {%for i in GRetunable%}
+
+
+        <tr style="text-align:left;background-color:powderblue;">
+            <td style="text-align:left;">{{ i.CHALLANNO }}</td>
+            <td style="text-align:left;">{{ i.CHALLANDATE }}</td>
+            <td style="text-align:right;">{{ i.QUANTITY }}</td>
+<!--            <td style="text-align:left;">{{i.CUSTOMER}}</td>-->
+<!--            <td style="text-align:right;">time</td>-->
+<!--            <td style="text-align:right;">print date</td>-->
+            <td align="center"><input type="checkbox" id="allcomp" name="allcomp" value=1></td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+<div class="row">
+
+    <div class="col-xs-11">
+        <div class="text-right">
+            <div class="checkbox">
+                <label><input type="checkbox" id="selectallprogressstatus"
+                              name="selectallprogressstatus"
+                              onclick="progressstatus(this)" value="1">Select All Challan </Center>
+                </label>
+                <label  ><b>Export To:</b></label>
+                <button type='submit' onclick="GetSelected()" value='PDF' class="btn btn-primary">PDF</button>
+            </div>
+
+        </div>
+        <div class="containerfooter">
+            <table class="gridtable">
+                <thead>
+
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <div class="five">
+        <label for='exception'><b>{%if Exception %}
+            <script>alert("Note: No Result found according to your selected criteria ");</script>
+            {% endif %}
+        </b></label>
+    </div>
+    <script>
+
+
+function GetSelected() {
+        //Reference the Table.
+        var grid = document.getElementById("tableMain");
+
+        //Reference the CheckBoxes in Table.
+        var checkBoxes = grid.getElementsByTagName("INPUT");
+        var jigar = "";
+        var challanno = "";
+        var challandt = "";
+        var quantity = "";
+        var boxes = "";
+
+        var check=0;
+
+        //Loop through the CheckBoxes.
+        for (var i = 0; i < checkBoxes.length; i++) {
+            if (checkBoxes[i].checked) {
+                var row = checkBoxes[i].parentNode.parentNode;
+                challanno += "&challanno=" +row.cells[0].innerHTML;
+                check=1;
+            }
+        }
+        if (check==0){
+            alert("Select Challan Number to  Generate Challan");
+        }else{
+            window.open("StoreRegisterPrintPDF?t="+jigar+challanno+challandt+quantity+boxes);
+        }
+
+
+
+ }
+
+function progressstatus(selectallprogressstatus) {
+        //Reference the Table.
+        var grid = document.getElementById("tableMain");
+
+        //Reference the CheckBoxes in Table.
+        var checkBoxes = grid.getElementsByTagName("INPUT");
+        var jigar = "";
+        var challanno = "";
+        var challandt = "";
+        var quantity = "";
+        var boxes = "";
+
+        //Loop through the CheckBoxes.
+        for (var i = 0; i < checkBoxes.length; i++) {
+                checkBoxes[i].checked=!!selectallprogressstatus.checked;
+                var row = checkBoxes[i].parentNode.parentNode;
+        }
+
+        <!--alert('trest');-->
+ }
+
+
+
+function searchFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("tableMain");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }$(".datarow").hide();
+}
+
+
+function myFunction() {
+  $(".datarow").hide();
+}
+		$( document ).ready(function() {
+
+            //collapse and expand sections
+
+            $('.breakrow').click(function(){
+                $(this).nextUntil('tr.breakrow').slideToggle(200);
+            });
+        });
+
+            //add event listener to table rows
+            let thetable = document.getElementById('tableMain').getElementsByTagName('tbody')[0];
+            for (let i = 0; i < thetable.rows.length; i++)
+                {
+                    thetable.rows[i].onclick = function()
+                    {
+                        TableRowClick(this);
+                    };
+                }
+
+            function TableRowClick(therow) {
+                let BUSINESSUNIT = therow.cells[1].innerHTML;
+                let GLACCOUNT = therow.cells[3].innerHTML;
+                let SUPPLIERTYPE = therow.cells[5].innerHTML;
+                let SUPPLIERCODE = therow.cells[6].innerHTML;
+                let OPBAL = therow.cells[7].innerHTML;
+                let DRAMOUNT = therow.cells[8].innerHTML;
+                let CRAMOUNT = therow.cells[9].innerHTML;
+                let CLBAL = therow.cells[10].innerHTML;
+
+                window.open("AdhocLedgerDetail?company="+BUSINESSUNIT+"&account="+GLACCOUNT+
+                "&suppliertype="+SUPPLIERTYPE+
+                "&suppliercode="+SUPPLIERCODE+"&opbalance="+OPBAL+"&debit="+DRAMOUNT+
+                "&credit="+CRAMOUNT+"&clbalance="+CLBAL);
+
+                therow.style.backgroundColor='#00ffff';
+            };
+
+		</script>
+    <script>
+document.getElementById("wrap").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+</script>
+    <script>
+window.onscroll = function() {myFunction()};
+
+var header = document.getElementById("myHeader");
+var sticky = header.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+
+<head style="font-family:arial;">
+    <title>Contract List </title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+    <meta charset="utf-8" />
+    <style>
+        .one {
+            display : inline-block;
+            margin-left: 50px;
+            margin-top: 10px;
+        }
+
+        .two {
+            display : inline-block;
+            margin-top: 10px;
+            margin-left: 30px;
+        }
+        .two label{
+            margin-right: 12px;
+        }
+        .container{
+            width: 100%;
+            height:100%;
+            display: flex;
+            justify-content: space-between;
+            overflow: auto;
+        }
+        .cl-1{
+            width: 32%;
+            height: 50%;
+            overflow: auto;
+        }
+        .cl-2{
+            width: 32%;
+            height: 100%;
+            overflow: auto;
+        }
+
+        table.gridtable {
+            margin: 0 auto;
+            width: 100%;
+            font-family: tahoma;
+            font-size: 12px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #b3b3cc;
+        }
+
+        table.gridtablefooter th {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+        }
+
+        .footer {
+            border-width: 2px;
+            width: 87%;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 5px 0px;
+            border-style: solid;
+            border-color: #666666;
+            font-weight: normal;
+            text-align :left;
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+
+        .containersfooter {
+            margin: 10px auto;
+            width: 88%;
+            height: 50px;
+            font-family: arial;
+        }
+        table thead .itemTotal th{
+            padding: 4px 0px 5px 0px;
+            margin; 4px 0px 5px 0px;
+            background-color: #fcf7ac;
+        }
+        tfoot{
+            background-color: #fcf7ac;
+        }
+
+    </style>
+    <STYLE>
+        A {
+            text-decoration: none;
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #96b1ff;
+         }
+    </STYLE>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+    <!--    disable back-->
+    	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        <!--    Display upto max date only-->
+            $(document).ready( function() {
+            var now = new Date();
+
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+            var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+           $('#startdate').val(today);
+           $('#startdate').attr('max', today);
+           $('#enddate').val(today);
+           $('#enddate').attr('max', today);
+        });
+
+        <!--    toggle display grid acc/ to button-->
+        $(document).ready(function(){
+            // Set div display to block
+            $("#itm").click(function(){
+                $('#form1').attr('action', 'ContListItemWisefunctions');
+            });
+
+            // Set div display to block
+            $("#agent").click(function(){
+                $('#form1').attr('action', 'ContListAgentWisefunctions');
+            });
+        });
+
+
+       $(document).ready(function() {
+            function disableBack() {
+                window.history.forward()
+            }
+            window.onload = disableBack();
+            window.onpageshow = function(e) {
+                if (e.persisted)
+                    disableBack();
+            }
+        });
+    </script>
+
+</head>
+
+<body style="background-color:lavender;font-family:arial; height:100%; font-family: tahoma; font-size:15px; margin-left:6px;" >
+
+<form action="" id='form1' class="mar"  style="display: inline-block; height: 10%;">
+<!--     date-->
+    <div class="one ">
+        <label for='startdate'><b>Start Date : </b></label>
+        <input style="height:25px;" type='date' id='startdate' name='startdate' value="today('yyyy-MM-dd')">
+        <label for='startdate'><b>&emsp;End Date :</b></label>
+        <input style="height:25px;" type='date' id='enddate' name='enddate' value="today">
+    </div>
+
+    <!-- radio -->
+    <div class="two ">
+        <input type='radio' id='itm' name="select " value="it" form='form1' class="mar" onchange="this.form.submit()" >
+        <label for='itm' ><b>ItemWise</b></label>
+        <input type='radio' id='agent' name="select " value="agent" form='form1' class="mar" onchange="this.form.submit()">
+        <label for='agent' ><b>AgentWise</b></label>
+    </div>
+    <input type="text" id="myInput" onkeyup="searchFunction()" style="display: inline-block; margin-left:100px" title="Type item group name" placeholder="search for item group">
+</form>
+<div class="container-fluid" style="height: 100%;">
+    <div class="container">
+<!--        item group-->
+        <div class="cl-1">
+            <table class="table table-striped gridtable" style="width:100%;" id="itemGrpTable">
+                <thead style="height:1px; position: sticky; top: 0;">
+                    <tr>
+                        <th style="width:70%;" onclick="myHeader(this)">Item Group  <span class="" style="float:right;" id="span1"></span> </th>
+                        <th onclick="myHeader(this)" style="text-align:right;">Contract Qty. <span style="float:right;" id="span2"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for i in GDataItemGroup %}
+                    <tr onclick="myItemGrp(this)" >
+                        <td>{{i.ITMGRP}}</td>
+                        <td style="text-align:right; background-color:#f7b5b5;">{{i.CONTQTY}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td style="text-align:left;" colspan="2">Total</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+<!--        item-->
+        <div class="cl-1">
+            <table class="table table-striped gridtable" style="width:100%;" id="itemTable">
+                <thead style="height:1px; position: sticky; top: 0;">
+                    <tr>
+                        <th style="width:70%;" onclick="myHeader(this)">Item <span class="" style="float:right;" id="span3"></span> </th>
+                        <th onclick="myHeader(this)" style="text-align:right;">Contract Qty. <span style="float:right;" id="span4"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for i in GDataItemGroup %}
+                    <tr onclick="myItemGrp(this)" >
+                        <td>{{i.ITMGRP}}</td>
+                        <td style="text-align:right; background-color:#f7b5b5;">{{i.CONTQTY}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td style="text-align:left;" colspan="2">Total</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+<!--        Agent-->
+        <div class="cl-2">
+            <div style="height: 50%">
+                <table class="table table-striped gridtable" style="width:100%;" id="agentTable">
+                    <thead style="height:1px; position: sticky; top: 0;">
+                        <tr>
+                            <th style="width:70%;" onclick="myHeader(this)">Agent <span class="" style="float:right;" id="span5"></span> </th>
+                            <th onclick="myHeader(this)" style="text-align:right;">Contract Qty. <span style="float:right;" id="span6"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for i in GDataItemGroup %}
+                        <tr onclick="myItemGrp(this)" >
+                            <td>{{i.ITMGRP}}</td>
+                            <td style="text-align:right; background-color:#f7b5b5;">{{i.CONTQTY}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td style="text-align:left;" colspan="2">Total</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+<!--            contNo-->
+            <div style="height:40%; margin-top:8%;">
+                <table class="table table-striped gridtable" style="width:100%;" id="contTable">
+                    <thead style="height:1px; position: sticky; top: 0;">
+                        <tr>
+                            <th >Cont No. </th>
+                            <th >Date </th>
+                            <th >Rate </th>
+                            <th >RD </th>
+                            <th >Contract  Qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for i in GDataItemGroup %}
+                        <tr onclick="myItemGrp(this)" >
+                            <td>{{i.ITMGRP}}</td>
+                            <td style="text-align:right; background-color:#f7b5b5;">{{i.CONTQTY}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                           <td style="text-align:left;" colspan = "5">Total</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+</html>

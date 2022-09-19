@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+    <title>Purchase Register</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+    <style>
+        .one {
+            position: absolute;
+            margin-top: 10px;
+            margin-left: 0px;
+        }
+
+        .two {
+            position: absolute;
+            margin-top: 20px;
+            margin-left: 90px;
+        }
+
+        .three {
+            position: absolute;
+            margin-top: 20px;
+            margin-left: 480px;
+        }
+
+        .four {
+            position: absolute;
+            margin-top: 100px;
+            margin-left: 480px;
+        }
+
+        .five {
+            position: absolute;
+            margin-top: 20px;
+            margin-left: 800px;
+        }
+
+        .six {
+            position: absolute;
+            margin-top: 20px;
+            margin-left: 1050px;
+        }
+
+        .seven {
+            position: absolute;
+            margin-top: 700px;
+            margin-left: 50px;
+        }
+
+        select,
+        .select2 {
+            width: 90%;
+            margin: 0 auto;
+            border-radius: 0 !important;
+            display: block;
+        }
+
+        .select2-container .select2-selection {
+            height: 20px;
+
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            border-radius: 0;
+            line-height: 30px;
+            font-size: 14p;
+            border: 1px solid #fafafa;
+        }
+
+        #unit {
+            width: 300px;
+        }
+
+        #grnno {
+            width: 140px;
+        }
+
+        #sup {
+            width: 300px;
+        }
+
+        #billno {
+            width: 300px;
+        }
+
+        #payday {
+            width: 140px;
+        }
+
+        #vchno {
+            width: 300px;
+        }
+
+        #tax {
+            width: 300px;
+        }
+
+        #amt {
+            width: 140px;
+        }
+
+        #billamt {
+            width: 140px;
+        }
+
+        #tds {
+            width: 300px;
+        }
+
+        #refno {
+            width: 150px;
+        }
+
+        #orgbillrec {
+            width: 150px;
+        }
+
+        #assamt {
+            width: 140px;
+        }
+
+        #tdsamt {
+            width: 140px;
+        }
+
+        #billtype {
+            width: 150px;
+        }
+
+        #plofsupp {
+            width: 150px;
+        }
+
+        #billpassamt {
+            width: 150px;
+        }
+
+        #bilpassdone {
+            width: 150px;
+        }
+
+        #tdsonthisamt {
+            width: 140px;
+        }
+    </style>
+    <style>
+        .container {
+            margin: 220px auto;
+            width: 98%;
+            height: 200px;
+            overflow: scroll;
+            position: absolute;
+        }
+
+        table.gridtable {
+            margin: 0 auto;
+            width: 100%;
+            overflow: auto;
+            font-family: arial;
+            font-size: 14px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            text-align: center;
+
+        }
+
+        table.gridtable th {
+            border-width: 2px;
+            padding: 2px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        table.gridtablefooter th {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        .footer {
+            border-width: 2px;
+            width: 87%;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        table.gridtable td {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            font-weight: normal;
+        }
+
+        tr:hover {
+            background-color: #D8DA5C
+        }
+
+        .containerfooter {
+            margin: 10px auto;
+            width: 88%;
+            height: 50px;
+            font-family: arial;
+
+        }
+
+
+        .container1 {
+            margin: 440px auto;
+            width: 40%;
+            height: 150px;
+            overflow: scroll;
+            position: absolute;
+        }
+
+        table.gridtable1 {
+            margin: 0 auto;
+            width: 100%;
+            overflow: auto;
+            font-family: arial;
+            font-size: 14px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            text-align: center;
+
+        }
+
+        table.gridtable1 th {
+            border-width: 2px;
+            padding: 2px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        table.gridtablefooter1 th {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        .footer1 {
+            border-width: 2px;
+            width: 87%;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        table.gridtable1 td {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            font-weight: normal;
+        }
+
+        tr:hover {
+            background-color: #D8DA5C
+        }
+
+        .containerfooter {
+            margin: 10px auto;
+            width: 88%;
+            height: 50px;
+            font-family: arial;
+
+        }
+
+
+        .container2 {
+            margin-top: 440px;
+            margin-left: 650px;
+            width: 40%;
+            height: 100px;
+            overflow: scroll;
+            position: absolute;
+        }
+
+        table.gridtable2 {
+            margin: 0 auto;
+            width: 100%;
+            overflow: auto;
+            font-family: arial;
+            font-size: 14px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            text-align: center;
+
+        }
+
+        table.gridtable2 th {
+            border-width: 2px;
+            padding: 2px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        table.gridtablefooter2 th {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        .footer2 {
+            border-width: 2px;
+            width: 87%;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        table.gridtable2 td {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            font-weight: normal;
+        }
+
+        tr:hover {
+            background-color: #D8DA5C
+        }
+
+        .containerfooter {
+            margin: 10px auto;
+            width: 88%;
+            height: 50px;
+            font-family: arial;
+
+        }
+
+
+        .container3 {
+            margin-top: 580px;
+            margin-left: 650px;
+            width: 40%;
+            height: 100px;
+            overflow: scroll;
+            position: absolute;
+        }
+
+        table.gridtable3 {
+            margin: 0 auto;
+            width: 100%;
+            overflow: auto;
+            font-family: arial;
+            font-size: 14px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+            text-align: center;
+
+        }
+
+        table.gridtable3 th {
+            border-width: 2px;
+            padding: 2px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        table.gridtablefooter3 th {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        .footer3 {
+            border-width: 2px;
+            width: 87%;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #F6B4A5;
+
+        }
+
+        table.gridtable3 td {
+            border-width: 2px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            font-weight: normal;
+        }
+
+        tr:hover {
+            background-color: #D8DA5C
+        }
+
+        .containerfooter {
+            margin: 10px auto;
+            width: 88%;
+            height: 50px;
+            font-family: arial;
+
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        function itemtype(alltype) {
+            var comp = document.getElementById("type");
+            comp.disabled = !!alltype.checked;
+            if (comp.disabled) {
+                comp.focus();
+            }
+        }
+        function date(event) {
+            var startDate = document.getElementById("startdate").value;
+            var endDate = document.getElementById("enddate").value;
+            if (!Date.parse(startDate)) {
+                alert("Please Enter Start Date");
+                event.preventDefault();
+            }
+
+            if (!Date.parse(endDate)) {
+                alert("Please Enter End Date");
+                event.preventDefault();
+            }
+
+            if ((Date.parse(startDate) > Date.parse(endDate))) {
+                alert("End date should be greater than Start date");
+                event.preventDefault();
+            }
+            return true;
+        }
+
+        function company(allcomp) {
+            var comp = document.getElementById("unit");
+            comp.disabled = !!allcomp.checked;
+            if (comp.disabled) {
+                comp.focus();
+            }
+        }
+
+    </script>
+</head>
+
+<body style="background-color:Lavender;">
+
+
+    <form action='PurchaseBill' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;"
+        target="_blank">
+
+        <div style="margin-top:25px;margin-left:10px;position:absolute;">
+            <label for='unit'><b>Company:</b></label>
+        </div>
+        <div style="margin-top:60px;margin-left:10px;position:absolute;">
+            <label for='sup'><b>Supplier:</b></label>
+        </div>
+        <div style="margin-top:100px;margin-left:10px;position:absolute;">
+            <label for='billno'><b>Bill No:</b></label>
+        </div>
+        <div style="margin-top:135px;margin-left:10px;position:absolute;">
+            <label for='vchno'><b>Vch No:</b></label>
+        </div>
+        <div style="margin-top:180px;margin-left:10px;position:absolute;">
+            <label for='tds'><b>T.D.S:</b></label>
+        </div>
+
+        <div class="two">
+            <input type='text' id='unit' name='unit'>
+            <br><br>
+            <input type='text' id='sup' name='sup'>
+            <br>
+            <br>
+            <input type='text' id='billno' name='stdt'>
+            <br>
+            <br>
+            <input type='text' id='vchno' name='vchno'>
+            <br><br>
+            <input type='text' id='tds' name='tds'>
+            <br>
+
+        </div>
+        <div style="margin-top:25px;margin-left:400px;position:absolute;">
+            <label for='billdt'><b>Date:</b></label>
+        </div>
+        <div style="margin-top:50px;margin-left:400px;position:absolute;">
+            <label for='vchdt'><b>Date:</b></label>
+        </div>
+        <div style="margin-top:70px;margin-left:400px;position:absolute;">
+            <label for='payday'><b>Pay Day:</b></label>
+        </div>
+
+        <div class="three">
+            <input type='date' id='billdt' name='stdt'>
+            <br>
+            <input type='date' id='vchdt' name='etdt'>
+            <br>
+            <input type='number' id='payday' name='etdt'>
+        </div>
+        <div style="margin-top:100px;margin-left:400px;position:absolute;">
+            <label for='billamt'><b>Bill Amt:</b></label>
+        </div>
+        <div style="margin-top:130px;margin-left:400px;position:absolute;">
+            <label for='billpass'><b>Bill<br> Passing:</b></label>
+        </div>
+        <div style="margin-top:170px;margin-left:400px;position:absolute;">
+            <label for='tdsonthisamt'><b>TDS On<br> This AMT:</b></label>
+        </div>
+
+        <div class="four">
+            <input type='number' id='billamt' name='grndate'>
+            <br><br>
+            <input type='text' id='billpass' name='billpass'>
+            <br><br>
+
+            <input type='number' id='tdsonthisamt' name='grndate'>
+
+        </div>
+
+        <div style="margin-top:25px;margin-left:650px;position:absolute;">
+            <label for='refno'><b>Ref No:</b></label>
+        </div>
+        <div style="margin-top:55px;margin-left:650px;position:absolute;">
+            <label for='orgbillrec'><b>Orig.Bill Recd:</b></label>
+        </div>
+        <div style="margin-top:85px;margin-left:650px;position:absolute;">
+            <label for='assamt'><b>Aessessable Amt:</b></label>
+        </div>
+        <div style="margin-top:115px;margin-left:650px;position:absolute;">
+            <label for='tdsamt'><b>TDS Amt:</b></label>
+        </div>
+        <div style="margin-top:140px;margin-left:650px;position:absolute;">
+            <label for='billtype'><b>Bill Type:</b></label>
+        </div>
+        <div style="margin-top:165px;margin-left:650px;position:absolute;">
+            <label for='plofsupp'><b>Place of Supply:</b></label>
+        </div>
+
+        <div class="five">
+            <input type="number" id="refno">
+            <br>
+            <select name='gstapp' id='orgbillrec'
+                style="margin-top:560px;margin-left:1270px;position:absolute;width:100px">
+                <option value=1>Yes</option>
+                <option value=2 selected>No</option>
+            </select>
+            <br>
+            <br>
+            <input type="number" id="assamt">
+            <br>
+            <br>
+            <input type="number" id="tdsamt">
+            <br>
+            <input type='text' id='billtype' name='billpass'>
+            <br>
+
+            <input type='text' id='plofsupp' name='plofsupp'>
+            <br>
+        </div>
+
+        <div style="margin-top:20px;margin-left:970px;position:absolute;">
+            <label for='narration'><b>Narration:</b></label>
+        </div>
+
+        <div class="six">
+            <textarea id="narration" name="narration" rows="4" cols="15">
+        </textarea>
+        </div>
+
+        <div class="container" id="wrap">
+
+            <table class="gridtable" id="tableMain">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>MRN No</th>
+                        <th>MRN Date</th>
+                        <th>Item</th>
+                        <th>GST No</th>
+                        <th>Tax</th>
+                        <th>Account Name</th>
+                        <th>Sub A/C Name</th>
+                        <th>Quality</th>
+                        <th>Quantity</th>
+                        <th>Rate</th>
+                        <th>Qd Rt</th>
+                        <th>Amount</th>
+                        <th>Ref No</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                    {%for i in ItemTable%}
+
+                    <tr>
+                        <td style="display:none ;">{{i.ID}}</td>
+
+                        <td style="text-align:left;">{{ i.MRNNO }}</td>
+
+                        <td style="text-align:left;">{{ i.MRNDATE }}</td>
+
+                        <td style="text-align:left;">{{ i.ITEM }}</td>
+
+                        <td style="text-align:left;">{{ i.GSTNO }}</td>
+
+                        <td style="text-align:left;">{{ i. }}</td>
+
+                        <td style="text-align:left;">{{ i.ACCOUNT }}</td>
+
+                        <td style="text-align:left;;">{{ i.SUBACCOUNT }}</td>
+
+                        <td style="text-align:right;">{{ i.OP }}</td>
+
+                        <td style="text-align:right;">{{ i.QUANTITY }}</td>
+
+                        <td style="text-align:right;">{{ i.RATE }}</td>
+
+                        <td style="text-align:right; ">{{ i. }}</td>
+
+                        <td style="text-align:right;">{{ i.BASICVALUE }}</td>
+
+                        <td style="text-align:right;">{{ i. }}</td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+        <h4 style="margin-top:420px;position:absolute;">Charges(Addition/Deductions):</h4>
+        <h4 style="margin-top:600px;margin-left:10px;position:absolute;">Total Charges:</h4>
+        <input type='number' id='totalcharges' name='totalgst'
+            style="margin-top:600px;margin-left:150px;position:absolute;">
+        <div class="container1" id="wrap1">
+
+            <table class="gridtable1" id="tableMain1">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>Name</th>
+                        <th>B</th>
+                        <th>O</th>
+                        <th>Ammount</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                    {%for i in GDataOtherChargesDetail%}
+
+                    <tr>
+                        <td style="text-align:left;width:200px">{{ i.GSTNAME }}</td>
+
+                        <td style="text-align:right;">{{ i.DR }}</td>
+
+                        <td style="text-align:right;">{{ i.CR }}</td>
+
+                        <td style="text-align:right; width:150px;">{{ i.CHARGEVALUE }}</td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <h4 style="margin-top:420px;margin-left:650px;position:absolute;">Item GST:</h4>
+        <div class="container2" id="wrap2">
+
+            <table class="gridtable2" id="tableMain2">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>Name</th>
+                        <th>Rate</th>
+                        <th>Ammount</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                    {%for i in GDataItemGSTDetails%}
+
+                    <tr>
+                        <td style="text-align:left;">{{ i.GSTNAME }}</td>
+
+                        <td style="text-align:left;">{{ i.}}</td>
+
+                        <td style="text-align:right;">{{ i.CHARGEVALUE }}</td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+        <h4 style="margin-top:540px;margin-left:650px;position:absolute;">Total GST On Curr. Item:</h4>
+        <input type='number' id='currgst' name='currgst' style="margin-top:540px;margin-left:840px;position:absolute;">
+        <h4 style="margin-top:560px;margin-left:650px;position:absolute;">Total GST on All Items:</h4>
+        <h4 style="margin-top:680px;margin-left:650px;position:absolute;">Total GST on All Items:</h4>
+        <input type='number' id='totalgst' name='totalgst'
+            style="margin-top:680px;margin-left:840px;position:absolute;">
+        <div class="container3" id="wrap3">
+
+            <table class="gridtable3" id="tableMain3">
+                <thead>
+
+                    <tr style=" font-family:arial;font-weight: bold;">
+                        <th>Name</th>
+                        <th>Rate</th>
+                        <th>Ammount</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                    {%for i in totalgst%}
+
+                    <tr>
+                        <td style="text-align:left;">{{ i.GSTNAME }}</td>
+
+                        <td style="text-align:left;">{{ i.}}</td>
+
+                        <td style="text-align:right;">{{ i.CHARGEVALUE }}</td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <h4 style="margin-top:440px;margin-left:1270px;position:absolute;">Total Item Ammount:</h4>
+        <input type='number' id='totalitemamt' name='totalgst'
+            style="margin-top:460px;margin-left:1270px;position:absolute;">
+        <h4 style="margin-top:500px;margin-left:1270px;position:absolute;">Computed Bill Amt:</h4>
+        <input type='number' id='computedbillamt' name='totalgst'
+            style="margin-top:520px;margin-left:1270px;position:absolute;">
+        <label for='gstapp' style="margin-top:560px;margin-left:1270px;position:absolute;"><b>GST Applicabale
+                Type:</b></label>
+        <br>
+        <select name='gstapp' id='gstapp' style="margin-top:560px;margin-left:1270px;position:absolute;width:100px">
+            <option value=1 selected>Normal</option>
+            <option value=2>RCM</option>
+            <option value=3>URD</option>
+        </select>
+
+
+    </form>
+    <div class="six">
+        <label for='exception'><b>{%if Exception %}
+                <script>alert("Please Select Valid Credentials");</script>
+                {% endif %}
+            </b></label>
+    </div>
+
+</body>
+{%if j %}
+<script>document.getElementById('tableMain').getElementsByTagName('tbody')[0].rows[0].style.backgroundColor = '#00ffff';
+
+</script>
+{% endif %}
+<script>
+    document.getElementById('tableMain').getElementsByTagName('tbody')[0].rows[{{ rownumber }}-1].style.backgroundColor = '#00ffff';</script>
+
+<script>
+    let thetable = document.getElementById('tableMain').getElementsByTagName('tbody')[0];
+    for (let i = 0; i < thetable.rows.length; i++) {
+        thetable.rows[i].onclick = function () {
+            TableRowClick(this);
+        };
+    }
+
+    function TableRowClick(therow) {
+        cell = therow.getElementsByTagName("td");
+        rownumber = therow.rowIndex;
+        window.open("PurchaseDocumentItemGST?ID=" + cell[0].innerText + "&rownumber=" + rownumber, "_self");
+        therow.style.backgroundColor = '#00ffff';
+        j = j + 1;
+    };
+
+    document.getElementById("totalitemamt").value = {{ tottalitemamt }};
+    document.getElementById("totalitemamt").disabled = 1;
+
+    document.getElementById("totalgst").value = {{ TotalGSTONALLItems }};
+    document.getElementById("totalgst").disabled = 1;
+
+    document.getElementById("currgst").value = {{ TotalGSTOnCurrentItem }};
+    document.getElementById("currgst").disabled = 1;
+
+    document.getElementById("unit").value = '{{result.COMPANY}}';
+    document.getElementById("unit").disabled = 1;
+
+    document.getElementById("sup").value = '{{result.SUPPLIER}}';
+    document.getElementById("sup").disabled = 1;
+
+    document.getElementById("billno").value = '{{result.BILLNO}}';
+    document.getElementById("billno").disabled = 1;
+
+    document.getElementById("vchno").value = '{{result.VCHNO}}';
+    document.getElementById("vchno").disabled = 1;
+
+    $("select#billtype").append($("<option>").val("value").html("{{result.BILLTYPE}}"));
+    document.getElementById("billtype").selectedIndex = 1; //Option 10
+    document.getElementById("billtype").disabled = 1;
+
+    document.getElementById("vchdt").value = '{{result.VCHDATE}}';
+    document.getElementById("vchdt").disabled = 1;
+
+    document.getElementById("billdt").value = '{{result.BILLDATE}}';
+    document.getElementById("billdt").disabled = 1;
+
+    document.getElementById("billamt").value = {{ result.BILLAMOUNT }};
+    document.getElementById("billamt").disabled = 1;
+
+    document.getElementById("tdsonthisamt").value = {{ result.TDSAPPLICABLEAMOUNT }};
+    document.getElementById("tdsonthisamt").disabled = 1;
+
+    $("select#plofsupp").append($("<option>").val("value").html("{{result.PLACEOFSUPPLY}}"));
+    document.getElementById("plofsupp").selectedIndex = 1; //Option 10
+    document.getElementById("plofsupp").disabled = 1;
+
+    document.getElementById("orgbillrec").disabled = 1;
+
+
+    document.getElementById("tdsamt").value = {{ result.TDSAMOUNT }};
+    document.getElementById("tdsamt").disabled = 1;
+
+    $("select#tds").append($("<option>").val("value").html("{{result.TDSPERCENTAGE}}"));
+    document.getElementById("tds").selectedIndex = 1; //Option 10
+    document.getElementById("tds").disabled = 1;
+
+    document.getElementById("narration").value = {{ result.NARRATION }};
+    document.getElementById("narration").disabled = 1;
+
+
+    document.getElementById("refno").value = {{ result.REFNO }};
+    document.getElementById("refno").disabled = 1;
+
+    document.getElementById("refdate").value = {{ result.REFDATE }};
+    document.getElementById("refdate").disabled = 1;
+
+
+
+</script>
+
+</html>

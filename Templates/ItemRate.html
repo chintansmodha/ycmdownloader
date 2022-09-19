@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Item Rate</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+    <style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+
+.one2{position: absolute;
+    margin-top: 10px;
+    margin-left:250px ;
+}
+
+.two{position: absolute;
+    margin-top: 10px;
+    margin-left:650px ;
+}
+        .three{ position: absolute;
+    margin-top: 80px;
+    margin-left:381px ;
+}
+
+.four{position: absolute;
+    margin-top: 80px;
+    margin-left:703px ;
+}
+        .five{position: absolute;
+    margin-top: 80px;
+    margin-left:1034px ;
+}
+  .six{position: absolute;
+    margin-top: 10px;
+    margin-left:900px ;
+}
+ .seven{position: absolute;
+    margin-top: 300px;
+    margin-left:380px ;
+}
+.eight{position: absolute;
+    margin-top: 300px;
+    margin-left:710px ;
+}
+.nine{position: absolute;
+    margin-top: 300px;
+    margin-left:1040px ;
+}
+
+.ten{position: absolute;
+    margin-top: 300px;
+    margin-left:720px ;
+}
+
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 200px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 13p;
+    border: 1px solid #fafafa;
+}
+select {
+    box-sizing: content-box;
+    height: 30px;
+    border: 1px solid black !important;
+    font-size: 16px;
+}
+
+.selectize-dropdown-content{
+    cursor:context-menu;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+<script>
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)&&!Date.parse(endDate)){
+    alert("Please Enter Start Date and End Date");
+        event.preventDefault();
+    }
+    else{
+        if (!Date.parse(startDate)){
+        alert("Please Enter Start Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(endDate)){
+        alert("Please Enter End Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater Or Equall To Start date");
+        event.preventDefault();
+    }
+     return true;
+    }
+
+}
+
+$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#Price").select2({
+		data:itemlist
+	});
+	});
+
+
+	$(document).ready( function() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+   $('#enddate').val(today);
+   $('#startdate').val(today);
+   $('#enddate').attr('max', today);
+   $('#startdate').attr('max', today);
+});
+$(document).ready(function () {
+$("#submit_check").click(function(){
+            var com = $("#Price").val();
+            if (com == 0){
+                alert("Price List Code Required For Search")
+                event.preventDefault();
+            }
+    });
+    $("#Price").change(function(){
+    var com = $("#Price").val();
+    if(com !=0){
+        $("#op").hide();
+    }
+    });
+});
+
+$(document).ready(function () {
+      $('select').selectize({
+          sortField: 'text'
+      });
+  });
+
+</script>
+
+
+
+    <h1 style="font-family:arial;margin-left: 50px;">Item Rate</h1>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='ItemRate' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+
+    <!--Date-->
+<!--<div class="one" style="display: none;">-->
+<!--<label for='startdate'><b>Date :</b></label>-->
+<!--<input type='date' id='startdate' name='startdate'>-->
+
+<!--</div>-->
+
+
+<div class="one2">
+    <label for="Price" ><b>Price List Code : </b></label>
+    <select name="Price" id="Price" placeholder="Pick a code..." style="width: 200px;"  >
+        <option value="" id="op"></option>
+  {%for i in GDATAPriceCode%}
+          <option value="{{ i.CODE }} ">{{ i.CODE }}</option>
+  {% endfor %}
+    </select>
+</div>
+
+<!--    Location-->
+<!--<div class="two" style="display: none;">-->
+<!-- <label for='Location' ><b>&emsp13; Location :</b></label>-->
+<!-- <select  name='Location' id='Location' style="width: 350px" >-->
+<!--        <option value="" id="op1"></option>-->
+<!--  {%for i in GDATALocation%}-->
+<!--          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>-->
+<!--  {% endfor %}-->
+<!-- </select>-->
+<!--</div>-->
+
+
+<div class="ten">
+
+<br><br>
+    <label for='format' ><b></b></label>
+<button type='submit' style="background-color:#808080; color:#ffffff;" form='form1' value='PDF' class="mar" id="submit_check" > FIND</button>
+</div>
+
+</form>
+<div class="eight">
+<label for='exception'><b>{%if Exception %}
+<script>alert("No Result Found");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>

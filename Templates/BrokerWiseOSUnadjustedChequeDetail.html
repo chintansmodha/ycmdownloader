@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Cheque Details</title>
+{% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <style>
+        .container{
+                margin: 250px auto;
+                left:30px;
+                width:98%;
+                height:200px;
+                overflow:scroll;
+                position:absolute;
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding:2px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #b0c5e6;
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #D8DA5C}
+.containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+        .container1{
+                margin: 500px auto;
+                width:40%;
+                height:100px;
+                overflow:scroll;
+                position:absolute;
+            }
+            table.gridtable1 {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+            }
+            table.gridtable1 th {
+                border-width: 2px;
+                padding: 2px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #b0c5e6;
+
+            }
+            table.gridtablefooter1 th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer1 {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtable1 td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #D8DA5C}
+.containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+.container2{
+                margin-top:500px;
+                margin-left:650px;
+                width:40%;
+                height:100px;
+                overflow:scroll;
+                position:absolute;
+            }
+            table.gridtable2 {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+            }
+            table.gridtable2 th {
+                border-width: 2px;
+                padding: 2px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtablefooter2 th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer2 {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtable2 td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #D8DA5C}
+.containerfooter{
+                margin: 10px auto;
+                width:88%;
+                height:50px;
+                font-family:arial;
+
+            }
+
+
+
+        .comp{
+            position: absolute;
+            margin-top: 20px;
+            margin-left:50px ;
+}
+
+        .party{
+            position: absolute;
+            margin-top: 20px;
+            margin-left:400px ;
+}
+
+        .bank{
+            position: absolute;
+            margin-top: 20px;
+            margin-left:750px ;
+}
+
+        .drawer{
+            position: absolute;
+            margin-top: 80px;
+            margin-left:750px ;
+
+}
+
+        .slip{
+            position: absolute;
+            margin-top: 80px;
+            margin-left:50px ;
+
+}
+
+        .branch{
+                position: absolute;
+                margin-top: 80px;
+                margin-left:400px ;
+
+}
+
+        .broker{
+                position: absolute;
+                margin-top: 20px;
+                margin-left:1100px;
+}
+
+        .vchno{
+                position: absolute;
+                margin-top: 140px;
+                margin-left:50px ;
+}
+
+        .vchdate{
+                position: absolute;
+                margin-top: 140px;
+                margin-left:400px ;
+}
+
+.partybank{
+                position: absolute;
+                margin-top: 140px;
+                margin-left:750px ;
+}
+
+.ac{
+                position: absolute;
+                margin-top: 140px;
+                margin-left:1100px ;
+}
+
+.chqno{
+                position: absolute;
+                margin-top: 200px;
+                margin-left:50px ;
+}
+
+ .chqdate{
+                position: absolute;
+                margin-top: 200px;
+                margin-left:400px ;
+}
+
+.chqamt{
+                position: absolute;
+                margin-top: 200px;
+                margin-left : 750px ;
+}
+
+.rep{
+                position: absolute;
+                margin-top: 200px;
+                margin-left : 1100px ;
+}
+
+.write{
+                position: absolute;
+                margin-top: 260px;
+                margin-left : 50px ;
+}
+
+.bou{
+                position: absolute;
+                margin-top: 260px;
+                margin-left : 400px ;
+}
+
+.nar{
+                position: absolute;
+                margin-top: 260px;
+                margin-left : 750px ;
+}
+
+.five{
+position: absolute;
+                margin-top: 600px;
+                margin-left : 50px ;
+
+
+}
+#unit{
+width:300px;
+}
+
+#branch{
+    width:300px;
+
+}
+#bank{
+    width:300px;
+
+}
+
+#drawer{
+    width:500px;
+}
+
+#customer{
+    width:300px;
+    height: 20px;
+}
+
+#con{
+    width:300px;
+    height: 20px;
+}
+
+#branch{
+    width:300px;
+    height: 20px;
+}
+#saletax{
+    width:150px;
+    height: 20px;
+}
+#broker{
+    width:300px;
+    height: 20px;
+}
+
+#party{
+    width:300px;
+    height: 20px;
+}
+
+#slip{
+    width:300px;
+    height: 20px;
+}
+select,
+.select2 {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+     height: 20px;
+
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+}
+
+.select3 {
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select3-container .select3-selection {
+     height: 50px;
+     overflow: scroll;
+}
+.select3-container--default .select3-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+</head>
+<body style="background-color:Lavender;font-family:Verdana;">
+
+<b style="margin-left:50px;background-color:#9ebeff;border-width: 2px;
+                padding: 10px;
+                border-style: solid;
+                border-color: #666666;">Cheque Details</b>
+
+<form action='BankCashVoucherTable' id='form1' class="mar" onsubmit=" date(event);" target="_blank" style="font-family:arial;">
+<div class="comp">
+<label for='unit'><b>Plant:</b></label>
+<br>
+<input type ='text' id='unit' name='unit'>
+    <script type="text/javascript">
+   document.getElementById("unit").value = '{{result.BRANCH}}';
+document.getElementById("unit").disabled=1;
+</script>
+</div>
+
+<div class ="bank">
+<label for='bank'><b>Bank:</b></label>
+<br>
+<input type ='text' id='bank' name='bank'>
+    <script type="text/javascript">
+   document.getElementById("bank").value = '{{result.BANK}}';
+document.getElementById("bank").disabled=1;
+</script>
+</div>
+
+
+    <div class="broker">
+<label for='broker'><b>Broker:</b></label> &nbsp;
+<br><input type ='text' id='broker' name='broker'>
+        <script type="text/javascript">
+   document.getElementById("broker").value = '{{result.BROKER}}';
+document.getElementById("broker").disabled=1;
+</script>
+</div>
+
+<div class ="party">
+<label for='party'><b>Party:</b></label>
+<br><input type ='text' id='party' name='party'>
+    <script type="text/javascript">
+   document.getElementById("party").value = '{{result.PARTY}}';
+document.getElementById("party").disabled=1;
+</script>
+</div>
+
+<div class ="slip">
+<label for='slip'><b>Slip Type:</b></label>
+<br><input type ='text' id='slip' name='slip'>
+    <script type="text/javascript">
+   document.getElementById("slip").value = '{{result.SLIPTYPE}}';
+document.getElementById("slip").disabled=1;
+</script>
+</div>
+
+<div class="vchdate">
+<label for='vchdate'><b>Vch. Date:</b></label><br>
+    <input type ='date' id='vchdate' name='vchdate'>
+     <script type="text/javascript">
+   document.getElementById("vchdate").value = '{{result.VCHDATE}}';
+document.getElementById("vchdate").disabled=1;
+</script>
+</div>
+<div class="vchno">
+<label for='vchno'><b>Vch. Number:</b></label><br>
+    <input type ='text' id='vchno' name='vchno'>
+    <script type="text/javascript">
+   document.getElementById("vchno").value = '{{result.VCHNO}}';
+document.getElementById("vchno").disabled=1;
+</script>
+</div>
+
+<div class="partybank">
+<label for='partybank'><b>Party Bank:</b></label><br>
+    <input type ='text' id='partybank' name='partybank'>
+      <script type="text/javascript">
+   document.getElementById("partybank").value = '{{result.PARTYBANK}}';
+document.getElementById("partybank").disabled=1;
+</script>
+</div>
+    <div class="ac">
+<label for='ac'><b>A/C Payee:</b></label> &nbsp;
+<select name='ac' id='ac'>
+<option value=1 >Yes</option>
+<option value=2 selected>No</option>
+</select>
+</div>
+
+<div class="chqno">
+<label for='chqno'><b>Cheque No:</b></label><br>
+    <input type ='text' id='chqno' name='chqno'>
+    <script type="text/javascript">
+   document.getElementById("chqno").value = '{{result.CHQNO}}';
+document.getElementById("chqno").disabled=1;
+</script>
+</div>
+
+    <div class="chqdate">
+<label for='chqdate'><b>Cheque Date:</b></label><br>
+    <input type ='date' id='chqdate' name='chqdate'>
+        <script type="text/javascript">
+   document.getElementById("chqdate").value = '{{result.CHQDATE}}';
+document.getElementById("chqdate").disabled=1;
+</script>
+</div>
+
+<div class="chqamt">
+<label for='chqamt'><b>Cheque Amount:</b></label><br>
+    <input type ='number' id='chqamt' name='chqamt'>
+    <script type="text/javascript">
+   document.getElementById("chqamt").value = '{{result.CHQAMT}}';
+document.getElementById("chqamt").disabled=1;
+</script>
+</div>
+
+    <div class="write">
+        <label><b>Write Off:</b></label>{{result.WRITEOFF}} &nbsp;
+    </div>
+
+    <div class="bou">
+        <label><b>Bounce:</b></label>{{result.BOUNCE}}
+    </div>
+
+    <div class="nar">
+     <label for='narration'><b>Narration:</b></label><br>
+        <textarea id="narration" name="narration" rows="4" cols="15">
+
+        </textarea>
+        <script type="text/javascript">
+   document.getElementById("narration").value = '{{result.NAR}}';
+document.getElementById("narration").disabled=1;
+</script>
+    </div>
+
+</form>
+
+<div class="five">
+<label for='format' ><b>Export To:</b></label>
+<br>
+<button type='submit' form='form1' value='PDF' class="mar" >Process</button>
+</div>
+
+
+
+<div class= "five">
+<label><b>{%if Exception %}
+<script>alert("Note: No Result found according to your selected criteria ");</script>
+{% endif  %}
+</b></label>
+</div>
+</body>
+
+</html>
+

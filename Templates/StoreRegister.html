@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Retunable Challan</title>
+        {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <!--link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="css/common.css" rel="stylesheet"-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+    function unit(allunit)
+	{
+		var comp=document.getElementById("selunit");
+		comp.disabled=!!allunit.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+    function party(allparty)
+	{
+		var comp=document.getElementById("selparty");
+		comp.disabled=!!allparty.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	 function costcenter(allcostcenter)
+	{
+		var comp=document.getElementById("selcostcenter");
+		comp.disabled=!!allcostcenter.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+    function itemtype(allitemtype)
+	{
+		var comp=document.getElementById("selitemtype");
+		comp.disabled=!!allitemtype.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+ 	$(document).ready(function()
+	{
+        var itemtypelist=[];
+        $("#selitemtype").select2({
+            data:itemtypelist
+        });
+	});
+
+	$(document).ready(function()
+	{
+        var unitlist=[];
+        $("#selunit").select2({
+            data:unitlist
+        });
+	});
+
+	$(document).ready(function()
+	{
+        var costcenterlist=[];
+        $("#selcostcenter").select2({
+            data:costcenterlist
+        });
+	});
+	$(document).ready(function()
+	{
+        var partylist=[];
+        $("#selparty").select2({
+            data:partylist
+        });
+	});
+
+
+
+	Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+    });
+        $(document).ready( function() {
+        $('#startdate').val(new Date().toDateInputValue());
+    });
+    $(document).ready( function() {
+        $('#enddate').val(new Date().toDateInputValue());
+    });
+
+    function date(event){
+     var startDate = document.getElementById("startdate").value;
+        var endDate = document.getElementById("enddate").value;
+        if (!Date.parse(startDate)||!Date.parse(endDate)){
+        alert("Please Enter Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) >= Date.parse(endDate))) {
+            alert("To date should be greater than From date");
+            event.preventDefault();
+        }
+
+        check();
+
+         return true;
+    }
+
+    function check(checked = true) {
+        const cbunit = document.querySelectorAll('input[name="allunit"]');
+        const cbparty = document.querySelectorAll('input[name="allparty"]');
+        const cbitemtype = document.querySelectorAll('input[name="allitemtype"]');
+        var selunit=document.getElementById("selunit");
+        var selparty=document.getElementById("selparty");
+        var selitemtype=document.getElementById("selitemtype");
+        if (selunit.value !== '') {
+        <!--                        $('#selunit').focus();-->
+        }else{
+            cbunit.forEach((cb) => {
+                cb.checked = checked;
+                selunit.disabled=!!allunit.checked;
+            });
+        }
+        if (selparty.value !== '') {
+        <!--                        $('#selparty').focus();-->
+        }else{
+            cbparty.forEach((cb) => {
+                cb.checked = checked;
+                selparty.disabled=!!allparty.checked;
+            });
+        }
+        if (selitemtype.value !== '') {
+        <!--                        $('#selitemtype').focus();-->
+        }else{
+            cbitemtype.forEach((cb) => {
+                cb.checked = checked;
+                selitemtype.disabled=!!allitemtype.checked;
+            });
+        }
+}
+    </script>
+</head>
+
+<body>
+
+<!-- go through this below site -->
+<!--******* http://eonasdan.github.io/bootstrap-datetimepicker/Installing/ ****-->
+<div class="vspacer20"></div>
+<div class="container">
+<div class="vspacer20"><br><br></div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class='col-sm-16'>
+            <div class="panel panel-primary col-sm-16">
+                <div class="panel-heading">Retunable Challan</div>
+
+                <form action='StoreRegister' id='StoreReportForm' target="_blank" class="mar" onsubmit=" date(event);">
+                    <div class="panel-body">
+                        <div class="row">
+                           <!-- <div class="col-xs-3">
+                                <div>
+                                    <label>Register Type</label>
+                                </div>
+                            </div>-->
+                            <!--<div class="col-xs-3">
+                                <div>
+                                    <label>Report Type</label>
+                                </div>
+                            </div>-->
+                            <div class="col-xs-3">
+                                <div>
+                                    <label>From Date</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div>
+                                    <label>To Date</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!--<div class="col-xs-3">
+                                <div>
+
+                                    <select id="CboRegisterType" name="CboRegisterType" class="form-control">
+                                        <option value="0">GST Register</option>
+                                        <option value="1">Item Summary</option>
+                                        <option value="2">Charge Summary</option>
+                                    </select>
+                                </div>
+                            </div>-->
+                            <!--<div class="col-xs-3">
+                                <div>
+                                    <select id="CboReportType" name="" CboReportType class="form-control">
+                                        <option value="DeptWise">Dept. wise</option>
+                                        <option value="TnvnoWise">Txn. No wise</option>
+                                        <option value="ChaltypeItemSkechWise">Chal Type wise (Item skechs)</option>
+                                        <option value="ChaltypeItemWise">Chal Type wise (Item)</option>
+                                    </select>
+                                </div>
+                            </div>-->
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <div class='input-group date' id='datetimeFrom'>
+                                        <input type='date' id='startdate' name='startdate'>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <div class='input-group date' id='datetimeTo'>
+                                        <input type='date' id='enddate' name='enddate'>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="allunit" name="allunit" onclick="unit(this)"
+                                                  value="1"/>Select All Plant</label>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="allparty" name="allparty" onclick="party(this)"
+                                                  value="1">Select All Party</label>
+                                </div>
+                            </div>
+                            <!-- <div class="col-xs-3">
+                                 <div class="checkbox">
+                                     <label><input type="checkbox" id="allcostcenter" name="allcostcenter"
+                                                   onclick="costcenter(this)" value="1">Select All Cost
+                                         center </Center></label>
+                                 </div>
+                             </div>-->
+                            <div class="col-xs-4">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="allitemtype" name="allitemtype"
+                                                  onclick="itemtype(this)" value="1">Select All Item Type </Center>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <div class="form-group">
+                                    <select name='selunit' id='selunit' multiple class="form-control">
+                                        {%for i in unit%}
+                                        <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{i.CODE}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="form-group">
+                                    <select name='selparty' id='selparty' multiple class="form-control">
+                                        {%for i in party%}
+                                        <option value="{{ i.NUMBERID }}">{{ i.LEGALNAME1 }}-{{i.NUMBERID}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- <div class="col-xs-3">
+                                 <div class="form-group">
+                                     <select name='selcostcenter' id='selcostcenter' class="form-control" multiple>
+                                         {%for i in costcenter%}
+                                         <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.code }}</option>
+                                         {% endfor %}
+                                     </select>
+                                 </div>
+                             </div>-->
+                            <div class="col-xs-4">
+                                <select name='selitemtype' id='selitemtype' multiple class="form-control">
+                                    {%for i in code%}
+                                    <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4">
+                            </div>
+                            <div class="col-xs-4">
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="text-right">
+                                    <label>Generate : </label>
+                                    <button class="btn btn-primary">PDF</button>
+<!--                                    <button class="btn btn-primary">Excel</button>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<!--                    <div class="panel-footer">Panel Footer</div>-->
+                </form>
+                <div class="six">
+                    <label for='exception'><b>{%if Exception %}
+                        <script>alert("Note : No Record found according to your selected criteria");</script>
+                        {% endif %}
+                    </b></label>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/moment.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+		$(function () {
+			$('#datetimeFrom').datetimepicker();
+			$('#datetimeTo').datetimepicker();
+		});
+
+
+
+
+
+</script>
+</body>

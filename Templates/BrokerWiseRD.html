@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+    <title>Broker Wise RD Report </title>
+    <!-- {% load static %} -->
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+
+    <style>
+        html,
+        body
+        {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container-fluid {
+            border: 1px solid black;
+            margin-top: 1%;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+
+        }
+
+        .header {
+            background: #337ab7;
+            border-top-right-radius: 9.5px;
+            border-top-left-radius: 9.5px;
+            padding: 5px 50px;
+            border-bottom: 1px solid;
+            color:white;
+        }
+
+        .one {
+            position: absolute;
+            margin-top: 10px;
+            margin-left: 50px;
+        }
+
+        .one2 {
+            position: absolute;
+            margin-top: 10px;
+            margin-left: 650px;
+        }
+
+        #type:hover{
+            cursor: pointer;
+        }
+
+        .boxes {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+        .inner_box {
+            border: 1px solid silver;
+            width: 24%;
+            margin: 0px 5px 0px 5px;
+            display: inline-block;
+        }
+
+        .text {
+            margin-top: -12px;
+            margin-left: 60px;
+            background: lavender;
+            width: 70px;
+        }
+
+        .two {
+            position: absolute;
+            margin-top: 80px;
+            margin-left: 50px;
+        }
+
+        .three {
+            position: absolute;
+            margin-top: 80px;
+            margin-left: 360px;
+        }
+
+        .four {
+            position: absolute;
+            margin-top: 80px;
+            margin-left: 518px;
+        }
+
+        .five {
+            position: absolute;
+            margin-top: 80px;
+            margin-left: 845px;
+        }
+
+        .six {
+            position: absolute;
+            margin-top: 80px;
+            margin-left: 1055px;
+        }
+
+        .seven {
+            position: absolute;
+            margin-top: 300px;
+            margin-left: 380px;
+        }
+
+        .eight {
+            position: absolute;
+            margin-top: 300px;
+            margin-left: 710px;
+        }
+
+        .nine {
+            position: absolute;
+            margin-top: 300px;
+            margin-left: 1040px;
+        }
+
+        .ten {
+            position: absolute;
+            margin-top: 400px;
+            margin-left: 920px;
+        }
+
+        .select2 {
+            width: 100%;
+            margin: 0 auto;
+            border-radius: 0 !important;
+            display: block;
+        }
+
+        .select2-container .select2-selection {
+            height: 200px;
+            overflow: scroll;
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            border-radius: 0;
+            line-height: 30px;
+            font-size: 13p;
+            border: 1px solid #fafafa;
+        }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        function date(event) {
+            var startDate = document.getElementById("startdate").value;
+            var endDate = document.getElementById("enddate").value;
+            if (!Date.parse(startDate) && !Date.parse(endDate)) {
+                alert("Please Enter Start Date and End Date");
+                event.preventDefault();
+            } else {
+                if (!Date.parse(startDate)) {
+                    alert("Please Enter Start Date");
+                    event.preventDefault();
+                }
+                if (!Date.parse(endDate)) {
+                    alert("Please Enter End Date");
+                    event.preventDefault();
+                }
+                if ((Date.parse(startDate) > Date.parse(endDate))) {
+                    alert("End date should be greater Or Equall To Start date");
+                    event.preventDefault();
+                }
+                return true;
+            }
+
+        }
+
+        function COMP(allcomp) {
+            var Comp = document.getElementById("comp");
+            Comp.disabled = !!allcomp.checked;
+            if (Comp.disabled) {
+                Comp.focus();
+            }
+        }
+
+        function BRANCH(allbranch) {
+            var Comp = document.getElementById("branch");
+            Comp.disabled = !!allbranch.checked;
+            if (Comp.disabled) {
+                Comp.focus();
+            }
+        }
+
+        function BROKERGROUP(allbrokergrp) {
+            var Comp = document.getElementById("brokergrp");
+            Comp.disabled = !!allbrokergrp.checked;
+            if (Comp.disabled) {
+                Comp.focus();
+            }
+        }
+
+        function BROKER(allbroker) {
+            var Comp = document.getElementById("broker");
+            Comp.disabled = !!allbroker.checked;
+            if (Comp.disabled) {
+                Comp.focus();
+            }
+        }
+
+
+        function PARTY(allparty) {
+            var Comp = document.getElementById("party");
+            Comp.disabled = !!allparty.checked;
+            if (Comp.disabled) {
+                Comp.focus();
+            }
+        }
+
+        function YARN(allyarn) {
+            var Comp = document.getElementById("yarn");
+            Comp.disabled = !!allyarn.checked;
+            if (Comp.disabled) {
+                Comp.focus();
+            }
+        }
+
+        $(document).ready(function() {
+            var itemlist = [ //'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+            ];
+            $("#comp").select2({
+                data: itemlist
+            });
+        });
+
+        $(document).ready(function() {
+            var itemlist = [ //'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+            ];
+            $("#branch").select2({
+                data: itemlist
+            });
+        });
+
+        $(document).ready(function() {
+            var itemlist = [ //'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+            ];
+            $("#brokergrp").select2({
+                data: itemlist
+            });
+        });
+
+        $(document).ready(function() {
+            var itemlist = [ //'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+            ];
+            $("#broker").select2({
+                data: itemlist
+            });
+        });
+
+        $(document).ready(function() {
+            var itemlist = [ //'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+            ];
+            $("#party").select2({
+                data: itemlist
+            });
+        });
+
+        $(document).ready(function() {
+            var itemlist = [ //'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+            ];
+            $("#yarn").select2({
+                data: itemlist
+            });
+        });
+
+
+        $(document).ready(function() {
+            var now = new Date();
+
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+            var today = now.getFullYear() + "-" + (month) + "-" + (day);
+
+
+            $('#enddate').val(today);
+            $('#startdate').val(today);
+            $('#enddate').attr('max', today);
+            $('#startdate').attr('max', today);
+        });
+    </script>
+</head>
+
+<body style="background-color:Lavender;">
+
+
+    <form action='BrokerWiseRD' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial; height:95%" target="_blank">
+        <div class="container-fluid" style="width: 95%; height:100%; padding: 0;">
+            <div class="header">
+                Broker Wise RD Report
+            </div>
+            <div style="width: 100%; height: 19%;">
+                <!--Date-->
+                <div class="one">
+                    <label for='startdate'><b>Start Date:</b></label>
+                    <input type='date' id='startdate' name='startdate'>
+
+                    <label for='enddate'><b>&emsp; &emsp; End Date:</b></label>
+                    <input type='date' id='enddate' name='enddate'>
+                </div>
+                <!--    Report Type-->
+                <div class="one2" style="">
+                    <label for='type'><b>Report Type :</b></label>
+                    <select name="type" id="type">
+                    <option value="OnlyRD">Only RD Invoices</option>
+                    <option value="WithoutRD">Without RD Invoices</option>
+                    <option value="All">All Invoices</option>
+                </select>
+                </div>
+            </div>
+
+            <div class="row" style="width: 99%;margin: 0px;height: 65%;">
+                <div class="col-3" style="height: 100%">
+                    <div class="row" style="width: 100%;margin: 0px;height: 85%;">
+                        <!-- Company -->
+                        <div class="col-12" style="border: 1px solid silver; height: 100%;">
+                            <div style="margin-left: -10px;width: 107%;height: 100%;">
+                                <div style="margin-top: -12px; background-color: lavender; margin-left: 50px; width: 110px;"><b>Business Unit</b></div>
+                                <select name='comp' id='comp' style="width:100%; height: 75%;" multiple>
+                                    {%for i in GDataCompany%}
+                                           <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+                                   {% endfor %}
+                                  </select><br><br>
+                                <label for="allcomp"><b>All Business Units</b></label>
+                                <input type="checkbox" id="allcomp" name="allcomp" value=1 onclick="COMP(this)" /> <br>
+                                <label for="mergecomp" style="visibility: hidden;"><b>Merge Branches</b></label>
+                                <input style="visibility: hidden;" type="checkbox" id="mergecomp" name="mergecomp" value=1 onclick="COMP(this)" /> <br>
+                            </div>
+                        </div>
+<!--                        <div class="col-5" style="border: 1px solid silver; height: 100%;">-->
+<!--                            &lt;!&ndash; Branch &ndash;&gt;-->
+<!--                            <div style="margin-left: -10px;width: 100%;height: 100%;">-->
+<!--                                <div style="margin-top: -12px; background-color: lavender; margin-left: 50px; width: 50px;"><b>Branch</b></div>-->
+<!--                                <select name='branch' id='branch' style="width:113%; margin: 0; height: 75%;" multiple>-->
+<!--                                    {%for i in GDataBranch%}-->
+<!--                                           <option value="{{ i.CODE }} ">{{ i.SHORTDESCRIPTION }}-{{ i.CODE }}</option>-->
+<!--                                   {% endfor %}-->
+<!--                                  </select><br><br>-->
+<!--                                <label for="allbranch"><b>All Branches</b></label>-->
+<!--                                <input  type="checkbox" id="allbranch" name="allbranch" value=1 onclick="BRANCH(this)" /> <br>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+                <div class="col-9" style="height:100%">
+                    <div class="row" style="width: 99%;margin: 0px;height: 85%;">
+                        <!-- Broker Group -->
+                        <div class="col-3" style="border: 1px solid silver; height: 100%;">
+                            <div style="margin-left: -10px;width: 108%;height: 100%;">
+                                <div style="margin-top: -12px; background-color: lavender; margin-left: 50px; width: 105px;"><b>Broker Group</b></div>
+                                <select name='brokergrp' id='brokergrp' style="width:102%; height: 75%;" multiple>
+                                    {%for i in GDataBrokerGroup%}
+                                           <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+                                   {% endfor %}
+                                  </select><br><br>
+                                <label for="allbrokergrp"><b>All Broker Groups</b></label>
+                                <input type="checkbox" id="allbrokergrp" name="allbrokergrp" value=1 onclick="BROKERGROUP(this)" /> <br>
+                            </div>
+                        </div>
+                        <!-- Broker -->
+                        <div class="col-3" style="border: 1px solid silver; height: 100%;">
+                            <div style="margin-left: -10px;width: 108%;height: 100%;">
+                                <div style="margin-top: -12px; background-color: lavender; margin-left: 50px; width: 50px;"><b>Broker</b></div>
+                                <select name='broker' id='broker' style="width:102%; height: 75%;" multiple>
+                                    {%for i in GDataBroker%}
+                                           <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+                                   {% endfor %}
+                                  </select><br><br>
+                                <label for="allbroker"><b>All Brokers</b></label>
+                                <input type="checkbox" id="allbroker" name="allbroker" value=1 onclick="BROKER(this)" /> <br>
+                            </div>
+                        </div>
+                        <!-- Party -->
+                        <div class="col-3" style="border: 1px solid silver; height: 100%;">
+                            <div style="margin-left: -10px;width: 108%;height: 100%;">
+                                <div style="margin-top: -12px; background-color: lavender; margin-left: 50px; width: 45px;"><b>Party</b></div>
+                                <select name='party' id='party' style="width:102%; height: 75%;" multiple>
+                                    {%for i in GDataParty%}
+                                           <option value="{{ i.NUMBERID }} ">{{ i.LEGALNAME1 }}-{{ i.NUMBERID }}</option>
+                                   {% endfor %}
+                                  </select><br><br>
+                                <label for="allparty"><b>All Parties</b></label>
+                                <input type="checkbox" id="allparty" name="allparty" value=1 onclick="PARTY(this)" /> <br>
+                            </div>
+                        </div>
+                        <!-- Yarn Type -->
+                        <div class="col-3" style="border: 1px solid silver; height: 100%;">
+                            <div style="margin-left: -10px;width: 108%;height: 100%;">
+                                <div style="margin-top: -12px; background-color: lavender; margin-left: 50px; width: 80px;"><b>Yarn Type</b> </div>
+                                <select name='yarn' id='yarn' style="width:102%; height: 75%;" multiple>
+                                    {%for i in GDataYarnType%}
+                                           <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+                                   {% endfor %}
+                                  </select><br><br>
+                                <label for="allyarn"><b>All Yarn Types</b></label>
+                                <input type="checkbox" id="allyarn" name="allyarn" value=1 onclick="YARN(this)" /> <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button style="background: blue; color: white;font-weight: bold;float: right;margin-right: 10px;" type='submit' form='form1' value='PDF' class="mar" name="button" >Export To:PDF</button>
+                <button style="background: blue; color: white;font-weight: bold;float: right;margin-right: 10px;" type='submit' value="EXL" name="button">Export To: Excel</button>
+            </div>
+        </div>
+
+    </form>
+    <div class="ten ">
+        <label for='exception'><b>
+            {%if Exception %}
+            <script>alert("No Record Found ");</script>
+            {% endif %}
+        </b></label>
+    </div>
+
+</body>
+
+</html>

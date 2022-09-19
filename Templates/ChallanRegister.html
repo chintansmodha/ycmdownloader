@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Challan Register (Customer)</title>
+    <!--link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="css/common.css" rel="stylesheet"-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <style>
+        .mtop-20{
+         margin-top:20px;
+        }
+    </style>
+    <script>
+    function company(allcompany){
+        var comp=document.getElementById("selcompany");
+        comp.disabled=!!allcompany.checked;
+        if(comp.disabled){
+            comp.focus();
+        }
+    }
+    function party(allparty){
+		var comp=document.getElementById("selparty");
+		comp.disabled=!!allparty.checked;
+		if (comp.disabled){
+			comp.focus();
+		}
+	}
+	function lotno(alllotno){
+		var lot=document.getElementById("sellotno");
+		lot.disabled=!!alllotno.checked;
+		if (lot.disabled){
+			lot.focus();
+		}
+	}
+    function quality(allquality){
+		var quality=document.getElementById("selquality");
+		quality.disabled=!!allquality.checked;
+		if (quality.disabled){
+			quality.focus();
+		}
+	}
+	function fromdepartment(allfromdepartment){
+		var fromdepartment=document.getElementById("selfromdepartment");
+		fromdepartment.disabled=!!allfromdepartment.checked;
+		if (fromdepartment.disabled){
+			fromdepartment.focus();
+		}
+	}
+	function todepartment(alltodepartment){
+		var todepartment=document.getElementById("seltodepartment");
+		todepartment.disabled=!!alltodepartment.checked;
+		if (todepartment.disabled){
+			todepartment.focus();
+		}
+	}
+	function windingtype(allwindingtype){
+		var winding=document.getElementById("selwindingtype");
+		winding.disabled=!!allwindingtype.checked;
+		if (winding.disabled){
+			winding.focus();
+		}
+	}
+    function agent(allagent){
+		var agent=document.getElementById("selagent");
+		agent.disabled=!!allagent.checked;
+		if (agent.disabled){
+			agent.focus();
+		}
+	}
+	function shade(allshade){
+		var shade=document.getElementById("selshade");
+		shade.disabled=!!allshade.checked;
+		if (shade.disabled){
+			shade.focus();
+		}
+	}
+
+    $(document).ready(function()
+	{
+        var companylist=[];
+        $("#selcompany").select2({
+            data:companylist
+        });
+	});
+
+    $(document).ready(function()
+	{
+        var lotnolist=[];
+        $("#sellotno").select2({
+            data:lotnolist
+        });
+	});
+
+	$(document).ready(function()
+	{
+        var qualitylist=[];
+        $("#selquality").select2({
+            data:qualitylist
+        });
+	});
+
+	 $(document).ready(function()
+        {
+            var fromdepartmentlist=[];
+            $("#selfromdepartment").select2({
+                data:fromdepartmentlist
+            });
+        });
+
+    $(document).ready(function()
+        {
+            var todepartmentlist=[];
+            $("#seltodepartment").select2({
+                data:todepartmentlist
+            });
+        });
+
+    $(document).ready(function()
+        {
+            var windingtypelist=[];
+            $("#selwindingtype").select2({
+                data:windingtypelist
+            });
+        });
+
+    $(document).ready(function()
+        {
+            var agentlist=[];
+            $("#selagent").select2({
+                data:agentlist
+            });
+        });
+
+    $(document).ready(function()
+        {
+            var shadelist=[];
+            $("#selshade").select2({
+                data:shadelist
+            });
+        });
+
+	$(document).ready(function()
+	{
+        var partylist=[];
+        $("#selparty").select2({
+            data:partylist
+        });
+	});
+
+	Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+    });
+        $(document).ready( function() {
+        $('#startdate').val(new Date().toDateInputValue());
+    });
+    $(document).ready( function() {
+        $('#enddate').val(new Date().toDateInputValue());
+    });
+
+    function date(event){
+     var startDate = document.getElementById("startdate").value;
+        var endDate = document.getElementById("enddate").value;
+        if (!Date.parse(startDate)||!Date.parse(endDate)){
+        alert("Please Enter Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) >= Date.parse(endDate))) {
+            alert("To date should be greater than From date");
+            event.preventDefault();
+        }
+        /**/
+
+        /**/
+
+
+        check();
+
+         return true;
+    }
+
+    function check(checked = true) {
+        const cbcompany = document.querySelectorAll('input[name="allcompany"]');
+        const cbparty = document.querySelectorAll('input[name="allparty"]');
+        const cblotno = document.querySelectorAll('input[name="alllotno"]');
+        const cbquality = document.querySelectorAll('input[name="allquality"]');
+        const cbfromdepartment = document.querySelectorAll('input[name="allfromdepartment"]');
+        const cbtodepartment = document.querySelectorAll('input[name="alltodepartment"]');
+        const cbwindingtype = document.querySelectorAll('input[name="allwindingtype"]');
+        const cbagent = document.querySelectorAll('input[name="allagent"]');
+        const cbshade = document.querySelectorAll('input[name="allshade"]');
+
+        var selcompany=document.getElementById("selcompany");
+        var selparty=document.getElementById("selparty");
+        var sellotno=document.getElementById("sellotno");
+        var selquality=document.getElementById("selquality");
+        var selfromdepartment=document.getElementById("selfromdepartment");
+        var seltodepartment=document.getElementById("seltodepartment");
+        var selwindingtype=document.getElementById("selwindingtype");
+        var selagent=document.getElementById("selagent");
+        var selshade=document.getElementById("selshade");
+        if (selcompany.value !== '') {
+        <!--                        $('#selunit').focus();-->
+        }else{
+            cbcompany.forEach((cb) => {
+                cb.checked = checked;
+                selcompany.disabled=!!allcompany.checked;
+            });
+        }
+        if (selparty.value !== '') {
+        <!--                        $('#selparty').focus();-->
+        }else{
+            cbparty.forEach((cb) => {
+                cb.checked = checked;
+                selparty.disabled=!!allparty.checked;
+            });
+        }
+        if (sellotno.value !== '') {
+    <!--                  $('#selitemtype').focus()-->
+        }else{
+            cblotno.forEach((cb) => {
+                cb.checked = checked;
+                sellotno.disabled=!!alllotno.checked;
+            });
+        }
+    if (selquality.value !== '') {
+    <!--                  $('#selitemtype').focus()-->
+        }else{
+            cbquality.forEach((cb) => {
+                cb.checked = checked;
+                selquality.disabled=!!allquality.checked;
+            });
+        }
+        if (selfromdepartment.value !== '') {
+        <!--   $('#selfromdepartment').focus();-->
+        }else{
+            cbfromdepartment.forEach((cb) => {
+                cb.checked = checked;
+                selfromdepartment.disabled=!!allfromdepartment.checked;
+            });
+        }
+        if (seltodepartment.value !== '') {
+        <!--   $('#selfromdepartment').focus();-->
+        }else{
+            cbtodepartment.forEach((cb) => {
+                cb.checked = checked;
+                seltodepartment.disabled=!!alltodepartment.checked;
+            });
+        }
+        if (selwindingtype.value !== '') {
+                <!--   $('#selfromdepartment').focus();-->
+        }else{
+            cbwindingtype.forEach((cb) => {
+                cb.checked = checked;
+                selwindingtype.disabled=!!allwindingtype.checked;
+            });
+        }
+        if (selagent.value !== '') {
+                        <!--   $('#selfromdepartment').focus();-->
+        }else{
+            cbagent.forEach((cb) => {
+                cb.checked = checked;
+                selagent.disabled=!!allagent.checked;
+            });
+        }
+        if (selshade.value !== '') {
+                        <!--   $('#selfromdepartment').focus();-->
+        }else{
+            cbshade.forEach((cb) => {
+                cb.checked = checked;
+                selshade.disabled=!!allshade.checked;
+            });
+        }
+
+}
+    </script>
+</head>
+
+<body>
+
+<!-- go through this below site -->
+<!--******* http://eonasdan.github.io/bootstrap-datetimepicker/Installing/ ****-->
+
+<div class="container">
+    <div class="row">
+        <div class='col-sm-12 '>
+            <div class="panel panel-primary mtop-20">
+                <div class="panel-heading">Challan Register Selection</div>
+
+                <form action='ChallanRegister' id='ChallanReportForm' class="mar" onsubmit=" date(event);">
+                    <div class="m1"></div>
+                    <div class="panel-body margin-top">
+
+
+                        <div class="row">
+                            <div class="col-xs-3">
+
+                                    <label><b>Register Type </b></label>
+
+
+                                    <select id="CboRegisterType" name="CboRegisterType" class="form-control">
+                                        <option value="0">Challan Reg. Details & Summary</option>
+                                        <option value="1">Challan Reg. Summary</option>
+                                        <option value="2">Agent Party Item-wise Summary</option>
+                                        <option value="3">Party Agent Item-wise Summary</option>
+                                        <option value="4">Item Agent Party-wise Summary</option>
+                                       <!-- <option value="5">Transporterwise Freight/Service</option>-->
+                                    </select>
+
+
+                            </div>
+                            <div class="col-xs-3">
+
+                                <label>Start Date </label>
+                                    <div class="form-group">
+                                    <div class='input-group date' id='datetimeFrom'>
+                                        <input type='date' id='startdate' name='startdate'>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-xs-3">
+
+                                     <label>End Date</label>
+                                    <div class="form-group">
+                                    <div class='input-group date' id='datetimeTo'>
+                                        <input type='date' id='enddate' name='enddate'>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                         <div class="row">
+                            <div class="col-xs-3">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="allcompany" name="allcompany" onclick="company(this)"
+                                                  value="1"/><b>Select All Company </b></label>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="allparty" name="allparty" onclick="party(this)"
+                                                  value="1"><b>Select All Party</b></label>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-3">
+                                 <div class="checkbox">
+                                     <label><input type="checkbox" id="alllotno" name="alllotno"
+                                                   onclick="lotno(this)" value="1"><b>Select All Lot No</b></Center></label>
+                                 </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="allquality" name="allquality" onclick="quality(this)"
+                                                  value="1"><b>Select All Quality</b></label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <select name='selcompany' id='selcompany' multiple class="form-control">
+                                        {%for i in company%}
+                                        <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{i.CODE}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <select name='selparty' id='selparty' multiple class="form-control">
+                                        {%for i in party%}
+                                        <option value="{{ i.NUMBERID }}">{{ i.LEGALNAME1 }}-{{i.NUMBERID}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-3">
+                                <select name='sellotno' id='sellotno' multiple class="form-control">
+                                    {%for i in lot%}
+                                    <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                            <div class="col-xs-3">
+                                 <div class="form-group">
+                                     <select name='selquality' id='selquality' class="form-control" multiple>
+                                         {%for i in quality%}
+                                         <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.code }}</option>
+                                         {% endfor %}
+                                     </select>
+                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                 <div class="checkbox">
+                                     <label><input type="checkbox" id="allfromdepartment" name="allfromdepartment"
+                                                   onclick="fromdepartment(this)" value="1"><b>Select All From Department</b></Center></label>
+                                 </div>
+                             </div>
+                            <div class="col-xs-3">
+                                 <div class="checkbox">
+                                     <label><input type="checkbox" id="alltodepartment" name="alltodepartment"
+                                                   onclick="todepartment(this)" value="1"><b> Select All To Department</b></Center></label>
+                                 </div>
+                            </div>
+                            <div class="col-xs-3">
+                                 <div class="checkbox">
+                                     <label><input type="checkbox" id="allwindingtype" name="allwindingtype"
+                                                   onclick="windingtype(this)" value="1"><b>Select All Winding Type</b></Center></label>
+                                 </div>
+                            </div>
+                            <div class="col-xs-3">
+                                 <div class="checkbox">
+                                     <label><input type="checkbox" id="allagent" name="allagent"
+                                                   onclick="agent(this)" value="1"><b>Select All Agent</b></Center></label>
+                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-xs-3">
+                                <div class="form-group">
+                                    <select name='selfromdepartment' id='selfromdepartment' multiple class="form-control">
+                                        {%for i in department%}
+                                        <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{i.CODE}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                           </div>
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <select name='seltodepartment' id='seltodepartment' multiple class="form-control">
+                                        {%for i in department%}
+                                        <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{i.CODE}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                             <div class="col-xs-3">
+                                 <div class="form-group">
+                                     <select name='selwindingtype' id='selwindingtype' class="form-control" multiple>
+                                         {%for i in winding%}
+                                         <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.code }}</option>
+                                         {% endfor %}
+                                     </select>
+                                 </div>
+                             </div>
+                            <div class="col-xs-3">
+                                <select name='selagent' id='selagent' multiple class="form-control">
+                                    {%for i in agent%}
+                                    <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="allshade" name="allshade" onclick="shade(this)"
+                                                  value="1"/><b>Select All Shade</b></label>
+                                </div>
+                            </div>
+                            <!--<div class="col-xs-3">
+                                 <div class="input-group">
+                                     <label>Register Type</label>
+                                 </div>
+                            </div>
+                           <div class="col-xs-3">
+                                <div class="form-group">
+                                    <div class='input-group date' >
+                                        <label>Start Date</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <div class='input-group date' >
+                                         <label>End Date</label>
+                                    </div>
+                                </div>
+                            </div>-->
+
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <select name='selshade' id='selshade' multiple class="form-control">
+                                        {%for i in shade%}
+                                        <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{i.CODE}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <!--<div class="col-xs-3">
+                                <div>
+
+                                    <select id="CboRegisterType" name="CboRegisterType" class="form-control">
+                                        <option value="0">Challan Reg. Details & Summary</option>
+                                        <option value="1">Challan Reg. Summary</option>
+                                        <option value="2">Agent Party Item-wise Summary</option>
+                                        <option value="3">Party Agent Item-wise Summary</option>
+                                        <option value="4">Item Agent Party-wise Summary</option>
+                                        <option value="5">Transporterwise Freight/Service</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <div class='input-group date' id='datetimeFrom'>
+                                        <input type='date' id='startdate' name='startdate'>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <div class='input-group date' id='datetimeTo'>
+                                        <input type='date' id='enddate' name='enddate'>
+                                    </div>
+                                </div>
+                            </div>-->
+
+                        </div>
+
+
+
+
+                        <div class="row">
+                            <div class="col-xs-4">
+                            </div>
+                            <div class="col-xs-4">
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="text-right">
+                                    <label>Generate : </label>
+                                    <button class="btn btn-primary">PDF</button>
+<!--                                    <button class="btn btn-primary">Excel</button>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<!--                    <div class="panel-footer">Panel Footer</div>-->
+                </form>
+                <div class="six">
+                    <label for='exception'><b>{%if Exception %}
+                        <script>alert("Note : No Record found according to your selected criteria");</script>
+                        {% endif %}
+                    </b></label>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/moment.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript">
+		$(function () {
+			$('#datetimeFrom').datetimepicker();
+			$('#datetimeTo').datetimepicker();
+		});
+
+
+
+
+
+</script>
+</body>

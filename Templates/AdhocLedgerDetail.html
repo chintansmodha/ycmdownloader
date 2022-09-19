@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AdhocLedger Detail</title>
+        {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <style>
+
+    .zero{
+ border-style: solid;
+ margin-left: 60px;
+ margin-top:10px;
+padding: 8px;
+width:90%;
+border-width: 5px;
+height:120px;
+ }
+
+.one{
+position: absolute;
+ margin-top:10px;
+ margin-left:30px;
+ }
+
+  .two{
+  position: absolute;
+ margin-top:40px;
+ margin-left:30px;
+ }
+
+  .three{
+  position: absolute;
+ margin-top:70px;
+ margin-left:30px;
+ }
+
+  .four{
+  position: absolute;
+ margin-top:100px;
+ margin-left:30px;
+ }
+
+.five{
+  position: absolute;
+ margin-top:10px;
+ margin-left:850px;
+}
+
+.six{
+position: absolute;
+ margin-top:10px;
+ margin-left:170px;
+ }
+
+  .seven{
+position: absolute;
+ margin-top:40px;
+ margin-left:170px;
+ }
+
+  .eight{
+ position: absolute;
+ margin-top:70px;
+ margin-left:170px;
+ }
+
+  .nine{
+position: absolute;
+ margin-top:100px;
+ margin-left:170px;
+ }
+
+.ten{
+ position: absolute;
+ margin-top:10px;
+ margin-left:150px;
+}
+
+
+.container{
+                margin: 10px auto;
+                width:90%;
+                height:490px;
+                overflow:scroll;
+
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+
+
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #D8DA5C}
+
+.containerfooter{
+                margin: 10px auto;
+                width:90%;
+                height:50px;
+
+
+            }
+</style>
+</head>
+<body style="background-color:Lavender;font-family:arial;">
+<div class="zero">
+
+    <div class="one"><b><label>Company: </label></b></div><div class="six">{{comp}}</div>
+
+    <div class="two"><b><label>Account: </label></b></div><div class="seven">{{bank}}</div>
+
+    <div class="three"><b><label>Sub-Account: </label></b></div><div class="eight">{{subaccount}}</div>
+
+    <div class="four"><b><label>Opening Balance: </label></b></div><div class="nine">{{LSOpeningBalance}}</div>
+
+
+    <div class="five"><b><label>Period: </label></b>
+        <br>
+    {{startdate}}<br><br>
+        {{enddate}}
+    </div>
+</div>
+<div class="container" id="wrap" style="font-family:arial;">
+<table class="gridtable" id="tableMain">
+                <thead>
+
+                    <tr>
+                        <th>Vch. Date</th>
+                        <th>Vch. No</th>
+                        <th>Doc. No.</th>
+                        <th>Doc. Type</th>
+                        <th>Cheque No</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                        <th>Closing Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {%for i in GDataAdhocLedgerDetailData%}
+
+    <tr>
+        <td style="text-align:left;">{{ i.DATE }}</td>
+
+        <td style="text-align:left;">{{ i.NUMBER }}</td>
+        <td style="text-align:left;">{{ i.INVNO }}</td>
+        <td style="text-align:left;">{{ i.DOCNO }}</td>
+        <td style="text-align:left;">{{ i.CHQNO }}</td>
+        <td style="text-align:left;display:none">{{ i.DOCCODE }}</td>
+        <td style="text-align:left;display:none">{{ i.YEARCODE }}</td>
+        <td style="text-align:right;width:150px;">{{ i.DR }}</td>
+        <td style="text-align:right;width:150px;">{{ i.CR }}</td>
+        <td style="text-align:right;width:150px;">{{ i.CL }}</td>
+
+    </tr>
+    {% endfor %}
+
+                </tbody>
+            </table>
+    </div>
+<div class="containerfooter">
+    <table class="gridtable">
+        <thead>
+        <tr style="font-family:arial;">
+
+                        <th style="font-family:arial;">TOTAL</th>
+                        <th style="text-align:right;width:150px;">{{OpeningBalance}}</th>
+                        <th style="text-align:right;width:150px;">{{  Debit }}</th>
+                        <th style="text-align:right;width:150px;">{{  Credit }}</th>
+                        <th style="text-align:right;width:150px;">{{  ClosingBalance}}</th>
+        </tr>
+        </thead>
+    </table>
+                    </div>
+
+
+
+
+<script>
+
+document.getElementById("wrap").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+//add event listener to table rows
+            let thetable = document.getElementById('tableMain').getElementsByTagName('tbody')[0];
+            for (let i = 0; i < thetable.rows.length; i++)
+                {
+                    thetable.rows[i].onclick = function()
+                    {
+                        TableRowClick(this);
+                    };
+                }
+
+            function TableRowClick(therow) {
+                let CompanyCode ='{{companycode}}';
+                let AccountCode = '{{accountcode}}';
+                let SubAccountCode = '{{subaccountcode}}';
+                let VCHNO = therow.cells[1].innerHTML;
+                let VCHDATE = therow.cells[0].innerHTML;
+                let DOCTYPE = therow.cells[3].innerHTML;
+                let DOCCODE = therow.cells[5].innerHTML;
+                let YEAR = therow.cells[6].innerHTML;
+                let startdate = '{{startdate}}';
+                let enddate = '{{enddate}}';
+                window.open("Doctype?vchno="+VCHNO+"&vchdate="+VCHDATE+"&doctype="+DOCTYPE+"&year="+YEAR+"&CompanyCode="+CompanyCode+"&AccountCode="
+                +AccountCode+"&SubAccountCode="+SubAccountCode+"&doccode="+DOCCODE+"&startdate="+startdate+"&enddate="+enddate);
+
+                therow.style.backgroundColor='#00ffff';
+            };
+</script>
+</body>
+</html>

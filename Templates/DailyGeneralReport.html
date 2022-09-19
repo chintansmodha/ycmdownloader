@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Daily General Report</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Daily General Report</h1>
+    <style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+        .two{
+            position: absolute;
+            margin-top: 10px;
+    margin-left:570px ;
+}
+        .three{position: absolute;
+    margin-top: 400px;
+    margin-left:50px ;
+}
+        .four{position: absolute;
+    margin-top: 10px;
+    margin-left:230px ;
+}
+        .five{position: absolute;
+    margin-top: 10px;
+    margin-left:1050px ;
+}
+ .six{position: absolute;
+    margin-top: 400px;
+    margin-left:50px ;
+}
+.yeartype{
+position: absolute;
+    margin-top: 10px;
+    margin-left: 50px;
+
+}
+
+select,
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 200px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+	function itemtype(allaccount)
+	{
+		var comp=document.getElementById("account");
+		comp.disabled=!!allaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function itemtype1(allsubaccount)
+	{
+		var comp=document.getElementById("subaccount");
+		comp.disabled=!!allsubaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+    function itemtype(alltype)
+	{
+		var comp=document.getElementById("type");
+		comp.disabled=!!alltype.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)){
+    alert("Please Enter Start Date");
+        event.preventDefault();
+    }
+
+    if (!Date.parse(endDate)){
+    alert("Please Enter End Date");
+        event.preventDefault();
+    }
+
+    if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+}
+	function company(allcomp)
+	{
+		var comp=document.getElementById("unit");
+		comp.disabled=!!allcomp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+    $(document).ready(function()
+	{
+	$("#unit").select2();
+	$("#type").select2();
+
+
+	});
+
+	Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+    });
+        $(document).ready( function() {
+        $('#startdate').val(new Date().toDateInputValue());
+    });
+    $(document).ready( function() {
+        $('#enddate').val(new Date().toDateInputValue());
+    });
+
+</script>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='DailyGeneralReport' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+<div class="one">
+  <select  name='ReportType' id='ReportType'>
+    <option value="1">Product Summary</option>
+      <option value="2">Product Detail</option>
+</select>
+    <br><br>
+<label for='startdate'><b>Start Date:</b></label><br>
+<input type='date' id='startdate' name='startdate'>
+<br><br>
+<label for='enddate'><b>End Date:</b></label><br>
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+
+<div class="four">
+<label for='unit' ><b>Departments:</b></label>
+<label for="allcomp"> Select All Departments</label>
+<input type="checkbox" id="allcomp" name="allcomp" value=1 onclick="company(this)"/>
+<br><br>
+<select  name='unit' id='unit' multiple>
+ {%for i in GDataDepartment%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+    <div class="two">
+<label for='type'><b>Item Type:</b></label>
+<label for="alltype"> Select All Items Types</label>
+<input type="checkbox" id="alltype" name="alltype" value=1 onclick="itemtype(this)">
+
+<br><br>
+<select name='type' id='type' multiple >
+ {%for i in GDataItemCode%}
+<option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+{% endfor %}
+</select>
+</div>
+
+<div class="three">
+
+<br><br>
+<button type='submit' form='form1' value='PDF' class="mar" >Process</button>
+</div>
+
+</form>
+<div class="six">
+<label for='exception'><b>{% if Exception %}
+<script>
+var a= '{{Exception}}';
+alert(a);</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>

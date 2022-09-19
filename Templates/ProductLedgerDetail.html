@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Ledger Detail</title>
+        {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <style>
+
+    .zero{
+     border-style: solid;
+     margin-top:10px;
+     margin-bottom:5px;
+    padding: 8px;
+    border-width: 5px;
+    height:80px;
+ }
+
+.one{
+position: absolute;
+ margin-top:10px;
+ margin-left:10px;
+ }
+
+  .two{
+  position: absolute;
+ margin-top:50px;
+ margin-left:10px;
+ }
+
+  .three{
+  position: absolute;
+ margin-top:10px;
+ margin-left:400px;
+ }
+
+ .three2{
+  position: absolute;
+ margin-top:10px;
+ margin-left:920px;
+ }
+
+  .four{
+  position: absolute;
+ margin-top:50px;
+ margin-left:920px;
+ }
+
+.five{
+  position: absolute;
+ margin-top:10px;
+ margin-left:850px;
+}
+
+.five2{
+  position: absolute;
+    margin-top: 10px;
+    margin-left: 596px;
+    width: 310px;
+    height: 65px;
+ }
+
+.six{
+position: absolute;
+ margin-top:10px;
+ margin-left:60px;
+ }
+
+  .seven{
+position: absolute;
+ margin-top:50px;
+ margin-left:60px;
+ }
+
+  .eight2{
+ position: absolute;
+ margin-top:10px;
+ margin-left:990px;
+ }
+
+ .eight{
+ position: absolute;
+ margin-top:10px;
+ margin-left:500px;
+ }
+
+  .nine{
+position: absolute;
+ margin-top:50px;
+ margin-left:990px;
+ }
+
+.nine2{
+    width: 250px;
+    margin-left: 50px;
+    margin-top: -18px;
+    height: 100%;
+ }
+
+.ten{
+ position: absolute;
+ margin-top:10px;
+ margin-left:150px;
+}
+
+
+.container{
+                margin:auto;
+                height:490px;
+                overflow:auto;
+
+            }
+            table.gridtable {
+                margin:0 auto;
+                width:100%;
+                overflow:auto;
+                font-family:arial;
+                font-size:14px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+                text-align: center;
+
+            }
+            table.gridtable th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+            table.gridtablefooter th {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+            }
+
+            .footer {
+                border-width: 2px;
+                width:87%;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #F6B4A5;
+
+
+
+            }
+            table.gridtable td {
+                border-width: 2px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                font-weight: normal;
+            }
+            tr:hover {background-color: #D8DA5C}
+
+.containerfooter{
+                margin: 10px auto;
+                width:90%;
+                height:50px;
+
+
+            }
+</style>
+</head>
+<body style="background-color:#99ccff;font-family:tahoma;">
+<h4 style="height:4px;">Product Ledger Detail</h4>
+<div class="zero">
+    <div class="one"><b><label>Plant: </label></b></div><div class="six">{{Company}}</div>
+
+    <div class="two"><b><label>Item: </label></b></div><div class="seven">{{Item}}</div>
+
+    <div class="four"><b><label>OpBal: </label></b></div><div class="nine">{{OpBal}}</div>
+
+    <div class="three"><b><label>W.H.Code: </label></b></div><div class="eight">{{Warehouse}}</div>
+
+    <div class="five2"><b><label>Dept: </label></b>
+        <div class="nine2">{{Dept}}</div>
+    </div>
+
+    <div class="three2"><b><label>Period: </label></b></div><div class="eight2">{{startdate}}  ---  {{enddate}}</div>
+
+</div>
+<div class="container" id="wrap" style="font-family:arial;">
+<table class="gridtable" id="tableMain">
+                <thead>
+
+                    <tr>
+                        <th style="width: 45px;">StType</th>
+                        <th style="width: 75px;">Date</th>
+                        <th style="width: 70px;">Type</th>
+                        <th style="width:135px;">Number</th>
+                        <th>OrdPrn/Dept</th>
+                        <th>Rec Qty</th>
+                        <th>Iss Qty</th>
+                        <th>Bal Qty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        {%for i in GDataProductLedgerDetail%}
+    <tr>
+        {% if i.STTYPE != None %}
+        <td>{{i.STTYPE}}</td>
+        {% else %}
+        <td></td>
+        {% endif %}
+        <td style="text-align:left;">{{ i.TXNDATE|date:'d-m-Y' }}</td>
+        <td style="text-align:left;">{{ i.TXNTYPE }}</td>
+        <td style="text-align:left;">{{ i.TXNNO }}</td>
+        {% if i.DEPT != None %}
+        <td style="text-align:left;">{{ i.DEPT }}</td>
+        {% else %}
+        <td style="text-align:left;">{{ i.jkl }}</td>
+        {% endif %}
+        <td style="text-align:right;">{{ i.RECQTY }}</td>
+        <td style="text-align:right;">{{ i.ISSQTY }}</td>
+        <td style="text-align:right;">{{ i.CL }}</td>
+    </tr>
+    {% endfor %}
+
+                </tbody>
+    <tfoot style="position:sticky; bottom:0; background:#f6b4a5;">
+        <td colspan="5" style="font-weight:bold;">Total</td>
+        <td style="text-align:right;font-weight:bold;">{{RecivedQnty}}</td>
+        <td style="text-align:right;font-weight:bold;">{{IssueQnty}}</td>
+        <td></td>
+    </tfoot>
+            </table>
+    </div>
+<script>
+document.getElementById("wrap").addEventListener("scroll",function(){
+   var translate = "translate(0,"+this.scrollTop+"px)";
+   this.querySelector("thead").style.transform = translate;
+});
+
+
+//add event listener to table rows
+            let thetable = document.getElementById('tableMain').getElementsByTagName('tbody')[0];
+            for (let i = 0; i < thetable.rows.length; i++)
+                {
+                    thetable.rows[i].onclick = function()
+                    {
+                        TableRowClick(this);
+                    };
+                }
+
+            function TableRowClick(therow) {
+               let INVNO = therow.cells[9].innerHTML;
+                let ISSUEDATE = therow.cells[1].innerHTML;
+                let INVAMT = therow.cells[4].innerHTML;
+                let OSAMT = therow.cells[5].innerHTML;
+                let PARTY = therow.cells[8].innerHTML;
+                window.open("InvoiceDetails?invno="+INVNO+"&issuedate="+ISSUEDATE+"&invamt="+INVAMT+"&osamt="+OSAMT+"&party="+PARTY);
+                therow.style.backgroundColor='#00ffff';
+            };
+
+</script>
+</body>
+</html>

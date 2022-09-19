@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >packing Report</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+    <style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+
+.one2{position: absolute;
+    margin-top: 10px;
+    margin-left:650px ;
+}
+
+.two{position: absolute;
+    margin-top: 60px;
+    margin-left:50px ;
+}
+        .three{ position: absolute;
+    margin-top: 60px;
+    margin-left:378px ;
+}
+
+.four{position: absolute;
+    margin-top: 60px;
+    margin-left:708px ;
+}
+        .five{position: absolute;
+    margin-top: 60px;
+    margin-left:1037px ;
+}
+  .six{position: absolute;
+    margin-top: 300px;
+    margin-left:50px ;
+}
+ .seven{position: absolute;
+    margin-top: 300px;
+    margin-left:380px ;
+}
+.eight{position: absolute;
+    margin-top: 300px;
+    margin-left:710px ;
+}
+.nine{position: absolute;
+    margin-top: 300px;
+    margin-left:1040px ;
+}
+
+.ten{position: absolute;
+    margin-top: 500px;
+    margin-left:1120px ;
+}
+
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 100px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 14p;
+    border: 1px solid #fafafa;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)&&!Date.parse(endDate)){
+    alert("Please Enter Start Date and End Date");
+        event.preventDefault();
+    }
+    else{
+        if (!Date.parse(startDate)){
+        alert("Please Enter Start Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(endDate)){
+        alert("Please Enter End Date");
+            event.preventDefault();
+        }
+        if ((Date.parse(startDate) >= Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+    }
+
+}
+	function company(allcomp)
+	{
+		var Comp=document.getElementById("comp");
+		Comp.disabled=!!allcomp.checked;
+		if (Comp.disabled)
+		{
+			Comp.focus();
+		}
+	}
+
+	function production(allprdtyp)
+	{
+		var comp=document.getElementById("prdtyp");
+		comp.disabled=!!allprdtyp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function Lot(alllot)
+	{
+		var comp=document.getElementById("lot");
+		comp.disabled=!!alllot.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function machine(allmach)
+	{
+		var comp=document.getElementById("mach");
+		comp.disabled=!!allmach.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function winding(allwndtyp)
+	{
+		var comp=document.getElementById("wndtyp");
+		comp.disabled=!!allwndtyp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function quality(allqwlty)
+	{
+		var comp=document.getElementById("qwlty");
+		comp.disabled=!!allqwlty.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function pallet(allpallt)
+	{
+		var comp=document.getElementById("pallt");
+		comp.disabled=!!allpallt.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+	function item(allitmtyp)
+	{
+		var comp=document.getElementById("itmtyp");
+		comp.disabled=!!allitmtyp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#comp").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#prdtyp").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#lot").select2({
+		data:itemlist
+	});
+	});
+
+    $(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#mach").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#wndtyp").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#qwlty").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#pallt").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function()
+	{
+	var itemlist=
+	[//'YDG','WTR','CNT','MOY','MON','POY','DTY','FDY','TWD','DYD','BCF','CAP','PKG','SPR','CON','CAB','ROP','WST','SCP','SER','HST','PLY','CHP','MB ','DYE','CHE','ATY','MSB','CST','CBM','PRI','PRT','BMG','MBB','MBP','BRG'
+	];
+	$("#itmtyp").select2({
+		data:itemlist
+	});
+	});
+
+	$(document).ready(function () {
+    $("#type").change(function () {
+        var val = $(this).val();
+        if (val == "itntyp") {
+                $("#itm").show();
+        } else {
+                  $("#itm").hide();
+                  $('#itmtyp').val(null).trigger('change');
+        }
+    });
+});
+
+</script>
+    <h1 style="font-family:arial;margin-left: 50px">Packing Report</h1>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='PackingReport' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+
+<!--Date-->
+<div class="one">
+<label for='startdate'><b>Start Date:</b></label>
+<input type='date' id='startdate' name='startdate'>
+
+<label for='enddate'><b>&emsp; &emsp; End Date:</b></label>
+<input type='date' id='enddate' name='enddate'>
+</div>
+
+<!--    Type-->
+<div class="one2">
+    <label for="type" ><b>Type : </b></label>
+    <select name="type" id="type">
+        <option  value="dtl">Detail</option>
+        <option  value="summ">Summary</option>
+        <option  value="pacl">Packing List</option>
+<!--        <option  value="pallet">Packing List (Pallet Details)</option>-->
+        <option  value="itntyp">Item Typewise Summary</option>
+        <option  value="boxnt">Box Not Allowed For Dispatch</option>
+    </select>
+</div>
+
+<!--    Department-->
+<div class="two">
+ <label for='comp' ><b>&emsp13;Department:</b></label><br>
+ <label for="allcomp">&emsp13; All Departments</label>
+ <input type="checkbox" id="allcomp" name="allcomp" value=1 onclick="company(this)"/> <br>
+ <select  name='comp' id='comp' style="width: 320px;" multiple>
+  {%for i in GDataDepartment%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--    Production Type-->
+<div class="five" style="display: none; ">
+ <label for='prdtyp' ><b>&emsp13;Production Type:</b></label><br>
+ <label for="allprdtyp">&emsp13; All Prodn. Types</label>
+ <input type="checkbox" id="allprdtyp" name="allprdtyp" value=1 onclick="production(this)"/> <br>
+ <select  name='prdtyp' id='prdtyp' style="width: 320px;" multiple>
+   {%for i in GDataProduction%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--    LotNo-->
+<div class="three">
+ <label for='lot' ><b>&emsp13;Lot No. :</b></label><br>
+ <label for="alllot">&emsp13; All Lot Nos.</label>
+ <input type="checkbox" id="alllot" name="alllot" value=1 onclick="Lot(this)"/> <br>
+ <select  name='lot' id='lot' style="width: 320px;" multiple>
+   {%for i in GDataLot%}
+          <option value="{{ i.CODE }} ">{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--    Machine-->
+<div class="four">
+ <label for='mach' ><b>&emsp13;Machine(Resource) :</b></label><br>
+ <label for="allmach">&emsp13; All Machines</label>
+ <input type="checkbox" id="allmach" name="allmach" value=1 onclick="machine(this)"/> <br>
+ <select  name='mach' id='mach' style="width: 320px;" multiple>
+   {%for i in GDataMachine%}
+          <option value="{{ i.CODE }} ">{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--    Winding Type-->
+<div class="six">
+ <label for='wndtyp' ><b>&emsp13;Winding Type :</b></label><br>
+ <label for="allwndtyp">&emsp13; All Winding Types</label>
+ <input type="checkbox" id="allwndtyp" name="allwndtyp" value=1 onclick="winding(this)"/> <br>
+ <select  name='wndtyp' id='wndtyp' style="width: 320px;" multiple>
+   {%for i in GDataWinding%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--    Quality-->
+<div class="seven">
+ <label for='qwlty' ><b>&emsp13;Quality :</b></label><br>
+ <label for="allqwlty">&emsp13; All Qualities</label>
+ <input type="checkbox" id="allqwlty" name="allqwlty" value=1 onclick="quality(this)"/> <br>
+ <select  name='qwlty' id='qwlty' style="width: 320px;" multiple>
+   {%for i in GDataQuality%}
+          <option value="{{ i.LONGDESCRIPTION }}-{{ i.ITEMTYPECODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.ITEMTYPECODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--    Pallet Type-->
+    <div class="eight">
+ <label for='pallt' ><b>&emsp13;Pallet Type :</b></label><br>
+ <label for="allpallt">&emsp13; All Pallet Types</label>
+ <input type="checkbox" id="allpallt" name="allpallt" value=1 onclick="pallet(this)"/> <br>
+ <select  name='pallt' id='pallt' style="width: 320px;" multiple>
+   {%for i in GDataPallet%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--    Item Type-->
+    <div class="nine" id="itm" style="display: none; ">
+ <label for='itmtyp' ><b>&emsp13;Item Type :</b></label><br>
+ <label for="allitmtyp">&emsp13; All Item Types</label>
+ <input type="checkbox" id="allitmtyp" name="allitmtyp" value=1 onclick="item(this)"/> <br>
+ <select  name='itm' id='itmtyp' style="width: 310px;"  multiple>
+   {%for i in GDataItemType%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+
+<div class="ten">
+
+<br><br>
+    <label for='format' ><b>Export To:</b></label>
+<button type='submit' form='form1' value='PDF' class="mar" > PDF</button>
+</div>
+
+</form>
+<div class="eight">
+<label for='exception'><b>{%if Exception %}
+<script>alert("No Report Form From Given Criteria");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>
+<!--alert("Please Select Valid Credentials");-->
