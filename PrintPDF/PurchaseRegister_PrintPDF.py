@@ -176,7 +176,7 @@ def textsize(c, result, d, stdt, etdt):
                 d = dvalue()
                 LowerLineData(result, d)
                 d = dvalue()
-                GST(result, d)
+                # GST(result, d)
                 total(result)
 
     elif divisioncode[-1] == divisioncode[-2]:
@@ -197,7 +197,7 @@ def textsize(c, result, d, stdt, etdt):
             elif id[-1] != id[-2]:
                 LowerLineData(result, d)
                 d = dvalue()
-                GST(result, d)
+                # GST(result, d)
 
     elif divisioncode[-1] != divisioncode[-2]:
             fonts(7)
@@ -216,19 +216,20 @@ def textsize(c, result, d, stdt, etdt):
             if finno[-1] == finno[-2]:
                 if id[-1] == id[-2]:
                     d=dvaluegst()
-                    GST(result, d)
+                    # GST(result, d)
                 elif id[-1] != id[-2]:
                     LowerLineData(result, d)
                     d = dvalue()
-                    GST(result, d)
+                    # GST(result, d)
 
             elif finno[-1] != finno[-2]:
                 data(result, d)
                 d = dvalue()
                 total(result)
                 if id[-1] == id[-2]:
-                    GST(result, d)
+                    # GST(result, d)
+                    pass
                 elif id[-1] != id[-2]:
                     LowerLineData(result, d)
                     d = dvalue()
-                    GST(result, d)
+                    # GST(result, d)

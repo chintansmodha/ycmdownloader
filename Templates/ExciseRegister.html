@@ -3,67 +3,90 @@
 
 <head style="font-family:arial;">
     <meta charset="UTF-8">
-<title >Adhoc Ledger</title>
+<title >Excise Register</title>
     {% load static %}
 <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-<h1 style="font-family:arial;margin-left: 50px">Adhoc Ledger</h1>
+<h1 style="font-family:arial;margin-left: 50px">Excise Register</h1>
     <style>
-.one{position: absolute;
-    margin-top: 100px;
-    margin-left:50px ;
-}
-        .chllantype{
-            position: absolute;
-            margin-top: 10px;
-    margin-left:570px ;
-}
-        .three{position: absolute;
-    margin-top: 400px;
-    margin-left:50px ;
-}
-        .company{position: absolute;
-    margin-top: 10px;
-    margin-left:230px ;
-}
-        .party{position: absolute;
-    margin-top: 10px;
-    margin-left:820px ;
-}
+    .one{position: absolute;
+        margin-top: 400px;
+        margin-left:50px ;
+    }
+    .chllantype{
+        position: absolute;
+        margin-top: 10px;
+        margin-left:570px ;
+    }
+            .dept{position: absolute;
+        margin-top: 400px;
+        margin-left:230px ;
+    }
+            .company{position: absolute;
+        margin-top: 10px;
+        margin-left:230px ;
+    }
+            .party{position: absolute;
+        margin-top: 10px;
+        margin-left:860px ;
+    }
 
-.charges{position: absolute;
-    margin-top: 10px;
-    margin-left:1150px ;
+    .charges{position: absolute;
+        margin-top: 10px;
+        margin-left:1210px ;
 
-}
+    }
 
- .six{position: absolute;
-    margin-top: 400px;
-    margin-left:50px ;
-}
-.yeartype{
-position: absolute;
-    margin-top: 10px;
-    margin-left: 50px;
+    #party{
+    width: 300px;
+    }
+    .challancat{
+        position: absolute;
+       
+        margin-top: 400px;
+        margin-left: 860px;
+       
+    }
+    .itemtype{position: absolute;
+        margin-top: 400px;
+        margin-left: 610px ;
+    }
+   
+    .yeartype{
+    position: absolute;
+        margin-top: 10px;
+        margin-left: 20px;
 
-}
+    }
+    .lot{
+        position: absolute;
+        margin-top: 200px;
+        margin-left: 20px;
+    }
 
-select,
-.select2 {
-    width: 100%;
-    margin: 0 auto;
-    border-radius: 0 !important;
-    display: block;
-}
-.select2-container .select2-selection {
-    height: 200px;
-    overflow: scroll;
-}
-.select2-container--default .select2-selection--multiple {
-    border-radius: 0;
-    line-height: 30px;
-    font-size: 14p;
-    border: 1px solid #fafafa;
+    .three{
+    position: absolute;
+        margin-top: 550px;
+        margin-left: 1200px;
 
+    }
+
+    select,
+    .select2 {
+        width: 80%;
+        margin: 0 auto;
+        border-radius: 0 !important;
+        display: block;
+    }
+    .select2-container .select2-selection {
+        height: 200px;
+        overflow: scroll;
+    }
+    .select2-container--default .select2-selection--multiple {
+        border-radius: 0;
+        line-height: 30px;
+        font-size: 14p;
+        border: 1px solid #fafafa;
+    }
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -72,7 +95,7 @@ select,
 <script>
 	function itemtype(allaccount)
 	{
-		var comp=document.getElementById("account");
+		var comp=document.getElementById("unit");
 		comp.disabled=!!allaccount.checked;
 		if (comp.disabled)
 		{
@@ -82,7 +105,52 @@ select,
 
 	function itemtype1(allsubaccount)
 	{
-		var comp=document.getElementById("subaccount");
+		var comp=document.getElementById("chllantype");
+		comp.disabled=!!allsubaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+  function itemtype2(allsubaccount)
+	{
+		var comp=document.getElementById("party");
+		comp.disabled=!!allsubaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+  function itemtype3(allsubaccount)
+	{
+		var comp=document.getElementById("charges");
+		comp.disabled=!!allsubaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+  function itemtype4(allsubaccount)
+	{
+		var comp=document.getElementById("dept");
+		comp.disabled=!!allsubaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+  function itemtype5(allsubaccount)
+	{
+		var comp=document.getElementById("itemtype");
+		comp.disabled=!!allsubaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+    function itemtype6(allsubaccount)
+	{
+		var comp=document.getElementById("challancat");
 		comp.disabled=!!allsubaccount.checked;
 		if (comp.disabled)
 		{
@@ -118,6 +186,7 @@ select,
 			comp.focus();
 		}
 	}
+
     const a1 = new Date("2022-04-01");
     const d2 = new Date("2023-03-31");
     $(document).ready(function()
@@ -125,8 +194,12 @@ select,
 	document.getElementById("startdate").value = a1.toISOString().split('T')[0];
     document.getElementById("enddate").value = d2.toISOString().split('T')[0];
 	$("#unit").select2();
-	$("#subaccount").select2();
-	$("#account").select2();
+	$("#chllantype").select2();
+	$("#party").select2();
+  $("#charges").select2();
+  $("#dept").select2();
+  $("#itemtype").select2();
+  $("#challancat").select2();
 
 	});
 </script>
@@ -134,76 +207,127 @@ select,
 <body  style="background-color:Lavender;">
 
 
-<form action='AdhocLedgerSummary' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+<form action='ExciseRegister' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
 
-    <div class="yeartype">
- <label for='year'><b>Financial Year:</b></label>
-<select name='year' id='year' onchange="updateDate();">
-    {% for i in GDataYear%}
-<option value={{i.CODE}}>{{i.CODE}}</option>
-{%endfor%}
-</select>
-    </div>
+<div class="yeartype">
+    <label for='year'><b>Report Type:</b></label>
+    <select name='year' id='year' onchange="updateDate();">
+        <option value=1>Dept Wise</option>
+        <option value=2>Inv no. Wise</option>
+        <option value=3>Challan Type Wise(Item+Shade)</option>
+        <option value=4>Challan Type Wise</option>
+    </select>
+</div>
 
 <div class="one">
-<label for='startdate'><b>Start Date:</b></label><br>
-<input type='date' id='startdate' name='startdate'>
-<br><br>
-<label for='enddate'><b>End Date:</b></label><br>
-<input type='date' id='enddate' name='enddate'>
+    <label for='startdate'><b>Start Date:</b></label><br>
+    <input type='date' id='startdate' name='startdate'>
+    <br><br>
+    <label for='enddate'><b>End Date:</b></label><br>
+    <input type='date' id='enddate' name='enddate'>
 </div>
+
+<div class="lot">
+    <label for='lottype'><b>Lot Type:</b></label>
+    <select name='lottype' id='lottype' onchange="updateDate();">
+        <option value=1>Merge</option>
+        <option value=2 selected>Separate</option>
+  
+    </select>
+</div>
+
 
 
 <div class="company">
-<label for='unit' ><b>Company Unit:</b></label>
-<label for="allcomp"> Select All Company Units</label>
-<input type="checkbox" id="allcomp" name="allcomp" value=1 onclick="company(this)"/>
-<br><br>
-<select  name='unit' id='unit' multiple>
- {%for i in GDataCompany%}
-<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
-{% endfor %}
-</select>
+    <label for='unit' ><b>Company Unit:</b></label>
+    <label for="allcomp"> Select All Company Units</label>
+    <input type="checkbox" id="allcomp" name="allcomp" value=1 onclick="itemtype(this)"/>
+    <br><br>
+    <select  name='unit' id='unit' multiple>
+        {%for i in GDataCompanyCode%}
+        <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+        {% endfor %}
+    </select>
 </div>
 
 <div class="chllantype">
-<label for='account'><b>Account:</b></label>
-<label for="allaccount"> Select All Accounts</label>
-<input type="checkbox" id="allaccount" name="allaccount" value=1 onclick="itemtype(this)">
+    <label for='chllantype'><b>Challan Type:</b></label>
+    <label for="allchllantype"> Select All Chllantype</label>
+    <input type="checkbox" id="allaccount" name="allaccount" value=1 onclick="itemtype1(this)">
+
+    <br><br>
+    <select name='chllantype' id='chllantype' multiple >
+        {%for i in GDataChallanType%}
+        <option value="{{ i.TAXTEMPLATECODE }}">{{ i.TAXTEMPLATECODE }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+
+<div class="party">
+    <label for='party' ><b>Party :</b></label>
+    <label for="allparty"> Select All Party :</label>
+    <input type="checkbox" id="allparty" name="allparty" value=1 onclick="itemtype2(this)"/>
+    <br><br>
+    <select  name='party' id='party' multiple>
+        {%for i in GDataParty%}
+        <option value="{{ i.NUMBERID }} ">{{ i.LEGALNAME1 }}-{{ i.NUMBERID }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="charges">
+<label for='charges'><b>Charges:</b></label>
+<label for="allcharges"> Select All Charges</label>
+<input type="checkbox" id="allcharges" name="allcharges" value=1 onclick="itemtype3(this)">
 
 <br><br>
-<select name='account' id='account' multiple >
- {%for i in GDataAccount%}
+<select name='charges' id='charges' multiple >
+ {%for i in GDataCharges%}
 <option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
 {% endfor %}
 </select>
 </div>
 
-<div class="party">
-<label for='party'><b>Sub-Account:</b></label>
-<label for="allparty"> Select All Sub-Accounts</label>
-<input type="checkbox" id="party" name="party" value=1 onclick="itemtype1(this)">
 
+<div class="dept">
+<label for='dept' ><b>To Department:</b></label>
+<label for="alldept"> Select All Department</label>
+<input type="checkbox" id="alldept" name="alldept" value=1 onclick="itemtype4(this)"/>
 <br><br>
-<select name='subaccount' id='subaccount' multiple >
- {%for i in GDataSubAccount%}
-<option value="{{ i.NUMBERID }}">{{ i.LEGALNAME1 }}-{{ i.NUMBERID }}</option>
+<select  name='dept' id='dept' multiple>
+ {%for i in GDataDepartment%}
+<option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
 {% endfor %}
 </select>
 </div>
 
-<div class="charges">
-<label for='subaccount'><b>Sub-Account:</b></label>
-<label for="allsubaccount"> Select All Sub-Accounts</label>
-<input type="checkbox" id="allsubaccount" name="allsubaccount" value=1 onclick="itemtype1(this)">
+<div class="itemtype">
+<label for='itemtype'><b>ItemType:</b></label>
+<label for="allitemtype"> Select All ItemType</label>
+<input type="checkbox" id="allitemtype" name="allitemtype" value=1 onclick="itemtype5(this)">
 
 <br><br>
-<select name='subaccount' id='subaccount' multiple >
- {%for i in GDataSubAccount%}
-<option value="{{ i.NUMBERID }}">{{ i.LEGALNAME1 }}-{{ i.NUMBERID }}</option>
+<select name='itemtype' id='itemtype' multiple >
+ {%for i in GDataItemType%}
+<option value="{{ i.CODE }}">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
 {% endfor %}
 </select>
 </div>
+
+<div class="challancat">
+<label for='challancat'><b>Challan Category:</b></label>
+<label for="allchallancat"> Select All Challan Categories</label>
+<input type="checkbox" id="allchallancat" name="allchallancat" value=1 onclick="itemtype6(this)">
+
+<br><br>
+<select name='challancat' id='challancat' multiple >
+<option value="1">Box Challan</option>
+<option value="2">Yarn Challan</option>
+<option value="3">Stores Challan</option>
+</select>
+</div>
+
 
 
 

@@ -1,5 +1,6 @@
 from django.urls import path
 from AllReports import views
+from ProcessSelection import ExciseRegister_ProcessSelection as ERPS
 # from FormLoad import *
 # from FormLoad import AdhocLedger_FormLoad as AHLviews
 # from ProcessSelection import AdhocLedger_ProcessSelection as AdhocLedger_Views
@@ -377,6 +378,7 @@ urlpatterns = [
     path("AdhocLedgerU.html",AdhocLedgerU_FormLOad.AdhocLedgerU,name="AdhocLedgerU"),
     path("AdhocLedgerU",AdhocLedgerU_ProcessSelection.adhocLedgerU_ProcessData,name="adhocLedgerU_ProcessData"),
     path("ExciseRegister.html",ERFL.ExciseRegister,name="ExciseRegister"),
+    path("ExciseRegister",ERPS.ExciseRegister,name="ExciseRegister"),
 
 
 ]
