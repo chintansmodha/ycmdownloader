@@ -1,3 +1,4 @@
+from glob import glob
 from reportlab.lib.pagesizes import landscape, A3
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -10,12 +11,12 @@ pdfmetrics.registerFont(TTFont('MyOwnArialBold', 'arialbd.ttf'))
 
 c = canvas.Canvas("1.pdf",pagesize=(landscape(A3)))
 c.setPageSize(landscape(A3))
-d = 680
+d = 740
 
 divisioncode=[]
-finno=[]
+costcenter=[]
 item=[]
-id=[]
+challantype=[]
 
 pageno=0
 Qty=0
@@ -47,43 +48,60 @@ def dvalue():
 
 
 def header(stdt,etdt,divisioncode):
-    fonts(15)
+    fonts(16)
     c.setFillColorRGB(0, 0, 0)
-    c.drawCentredString(400, 780, divisioncode[-1])
+    c.drawCentredString(600, 820, divisioncode[-1])
     
-    fonts(9)
-    c.drawCentredString(400, 530, "Excise Register From " + str(stdt.strftime('%d-%m-%Y')) + " To " + str(etdt.strftime('%d-%m-%Y')))
+    fonts(14)
+    c.drawCentredString(600, 800, "Excise Register From " + str(stdt.strftime('%d-%m-%Y')) + " To " + str(etdt.strftime('%d-%m-%Y')))
 
     p=page()
-    c.drawString(780,530,"Page No."+str(p))
-    c.line(0, 520, 850, 520)
-    c.line(0, 480, 850, 480)
- 
-    c.drawString(10, 520, "Inv.No.")
-    c.drawString(70, 520, "ChallanNo.")
-    c.drawString(70, 510, "Inv.Date")
-    c.drawString(110, 520, "QTY")
-    c.drawString(120, 510, "Party Name")
-    c.drawString(150, 520, "GST No.")
-    c.drawString(375, 520, "Rate")
-    c.drawString(365, 510, "Assessbl")
-    c.drawString(422, 520, "Freight")
-    c.drawString(422, 510, "  Insaurance")
-    c.drawString(480, 520, "Othr Charges")
-    c.drawString(480, 510, "IGST")
-    c.drawString(535, 520, "CGST")
-    c.drawString(535, 510, "UTGST")
-    c.drawString(580, 520, "Total GST")
-    c.drawString(580, 510, "Inv Amt")
-    c.drawString(620, 520, "Tax Value")
-    c.drawString(620, 510, "TCS Amt")
+    c.drawString(1080,800,"Page No."+str(p))
+    c.line(0, 790, 1200, 790)
+    c.line(0, 750, 1200, 750)
+    fonts(8)
+    c.drawString(10, 765, "Inv.No.")
+    c.drawString(60, 765, "ChallanNo.")
+    c.drawString(140, 765, "Inv.Date")
+    c.drawString(210, 765, "QTY")
+    c.drawString(270, 765, "Party Name")
+    c.drawString(400, 765, "GST No.")
+    c.drawString(470, 765, "Rate")
+    c.drawString(540, 765, "Assessbl")
+    c.drawString(630, 765, "Freight")
+    c.drawString(700, 765, "Insaurance")
+    c.drawString(770, 765, "Oth.Chrgs.")
+    c.drawString(840, 765, "IGST")
+    c.drawString(880, 765, "CGST")
+    c.drawString(930, 765, "UTGST")
+    c.drawString(980, 765, "Total GST")
+    c.drawString(1040, 765, "Inv Amt")
+    c.drawString(1080, 765, "Tax Value")
+    c.drawString(1130, 765, "TCS Amt")
   
 
 def data(result,d):
-    fonts(7)
+    fonts(8)
     # Upperline in data
     c.drawString(10, d, str(result['INVNO']))
-    # c.drawString(65, d, result['FINNO'])
+    c.drawString(60, d, str(result['CHALLANNO']))
+    c.drawString(140, d, str(result['INVDATE'].strftime('%d-%m-%Y')))
+    c.drawString(210, d, str(result['QTY']))
+    c.drawString(270, d, str(result['PARTY']))
+    c.drawString(400, d, str(result['GST']))
+    c.drawString(470, d, str(result['RATE']))
+    c.drawString(540, d, str(result['INVNO']))
+    c.drawString(630, d, str(result['FRT']))
+    c.drawString(700, d, str(result['INS']))
+    c.drawString(770, d, str(result['OTHCH']))
+    c.drawString(840, d, str(result['IGST']))
+    c.drawString(880, d, str(result['CGST']))
+    c.drawString(930, d, str(result['UTGST']))
+    c.drawString(980, d, str(result['GST']))
+    c.drawString(1040, d, str(result['IGST']))
+    c.drawString(1080, d, str(result['TCS']))
+    c.drawString(1130, d, str(result['TCS']))
+    # c.drawString(65, d, result['costcenter'])
     # c.drawString(110, d, str(result['BILLDATE'].strftime('%d-%m-%Y')))
     # c.drawString(160, d, result['BILLNO'])
     # c.drawString(530, d, result['SUPPLIER'])
@@ -103,14 +121,41 @@ def LowerLineData(result,d):
 
 
 def total(result):
-    global CompanyQuentityTotal
-    global CompanyAmountTotal
-    CompanyQuentityTotal = CompanyQuentityTotal + (float("%.3f" % float(result['QUANTITY'])))
-    CompanyAmountTotal = CompanyAmountTotal + (float("%.2f" % float(result['BILLAMOUNT'])))
+    
+    global Qty
+    global Assessbl
+    global Freight
+    global Insaurance
+    global OtherCharges
+    global Igst
+    global Cgst
+    global UTgst
+    global TotalGST
+    global InvAmt
+    global TaxValue
+    global TCSAmt
+    
+    Qty=0
+    Assessbl=0
+    Freight=0
+    Insaurance=0
+    OtherCharges=0
+    Igst=0
+    Cgst=0
+    UTgst=0
+    TotalGST=0
+    InvAmt=0
+    TaxValue=0
+    TCSAmt=0
 
-def itemtotal(result):
-    global ItemAmountTotal
-    ItemAmountTotal = ItemAmountTotal + (float("%.2f" % float(result['BASICVALUE'])))
+    # global CompanyQuentityTotal
+    # global CompanyAmountTotal
+    # CompanyQuentityTotal = CompanyQuentityTotal + (float("%.3f" % float(result['QUANTITY'])))
+    # CompanyAmountTotal = CompanyAmountTotal + (float("%.2f" % float(result['BILLAMOUNT'])))
+
+# def itemtotal(result):
+#     global ItemAmountTotal
+#     ItemAmountTotal = ItemAmountTotal + (float("%.2f" % float(result['BASICVALUE'])))
 
 def GSTTotal(result):
     global ChargesTotal
@@ -118,9 +163,8 @@ def GSTTotal(result):
 
 def logic(result):
     divisioncode.append(result['COMPANY'])
-    finno.append(result['COST'])
-    # item.append(result['ITEM'])
-    id.append(result['CHALT'])
+    costcenter.append(result['COST'])
+    challantype.append(result['CHALT'])
 
 def dlocvalue(d):
     d=d-20
@@ -128,16 +172,16 @@ def dlocvalue(d):
 
 def newpage():
     global d
-    d = 680
+    d = 740
     return d
 
 def newrequest():
     global divisioncode
     global pageno
-    global finno
+    global costcenter
     divisioncode=[]
     pageno=0
-    finno=[]
+    costcenter=[]
 
 
 def companyclean():
@@ -174,7 +218,7 @@ def textsize(c, result, d, stdt, etdt):
     d=dvalue()
     logic(result)
     if len(divisioncode) == 1:
-        if len(finno) == 1:
+        if len(costcenter) == 1:
                 header(stdt,etdt,divisioncode)
                 data(result, d)
                 d = dvalue()
@@ -183,21 +227,21 @@ def textsize(c, result, d, stdt, etdt):
                 # total(result)
 
     elif divisioncode[-1] == divisioncode[-2]:
-        if finno[-1] == finno[-2]:
-            if id[-1] == id[-2]:
-                pass
-            elif id[-1] != id[-2]:
+        if costcenter[-1] == costcenter[-2]:
+            if challantype[-1] == challantype[-2]:
+                data(result, d)
+            elif challantype[-1] != challantype[-2]:
                 LowerLineData(result, d)
                 d = dvalue()
                 
 
-        elif finno[-1] != finno[-2]:
+        elif costcenter[-1] != costcenter[-2]:
             data(result, d)
             d = dvalue()
             # total(result)
-            if id[-1] == id[-2]:
+            if challantype[-1] == challantype[-2]:
                 pass
-            elif id[-1] != id[-2]:
+            elif challantype[-1] != challantype[-2]:
                 LowerLineData(result, d)
                 d = dvalue()
                 
@@ -216,21 +260,21 @@ def textsize(c, result, d, stdt, etdt):
             header(stdt, etdt, divisioncode)
             d=newpage()
             d=dvalue()
-            if finno[-1] == finno[-2]:
-                if id[-1] == id[-2]:
+            if costcenter[-1] == costcenter[-2]:
+                if challantype[-1] == challantype[-2]:
                     pass
                     
-                elif id[-1] != id[-2]:
+                elif challantype[-1] != challantype[-2]:
                     LowerLineData(result, d)
                     d = dvalue()
                     
 
-            elif finno[-1] != finno[-2]:
+            elif costcenter[-1] != costcenter[-2]:
                 data(result, d)
                 d = dvalue()
                 # total(result)
-                if id[-1] == id[-2]:
+                if challantype[-1] == challantype[-2]:
                     pass
-                elif id[-1] != id[-2]:
+                elif challantype[-1] != challantype[-2]:
                     LowerLineData(result, d)
                     d = dvalue()

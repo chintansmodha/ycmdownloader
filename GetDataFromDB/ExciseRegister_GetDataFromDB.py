@@ -1,10 +1,10 @@
-from ast import LShift
 from datetime import datetime
+from this import d
 from Global_Files import Connection_String as con
-from PrintPDF import ExciseRegister_ChallanTypeWise as pdfrpt1
-from PrintPDF import ExciseRegister_ChallanTypeWiseItemShade as pdfrpt2
-from PrintPDF import ExciseRegister_InvNoWise as pdfrpt3
-from PrintPDF import ExciseRegisterDepartmentWise as pdfrpt
+from PrintPDF import ExciseRegister_ChallanTypeWise_PrintPDF as pdfrpt1
+from PrintPDF import ExciseRegister_ChallanTypeWiseItemShade_PrintPDF as pdfrpt2
+from PrintPDF import ExciseRegister_InvNoWise_PrintPDF as pdfrpt3
+from PrintPDF import ExciseRegisterDepartmentWise_PrintPDF as pdfrpt
 from FormLoad import ExciseRegister_FormLoad as views
 counter=0
 
@@ -110,18 +110,23 @@ def ExciseRegister_GetData(LSCompany,LSChallanType,LSParty,LSCharges,LSAllCompan
 	con.db.execute(stmt)
 	result = con.db.fetch_both(stmt)
 	print(result)
+	abc=[]
 	while result != False:
 		global counter
 		counter = counter + 1
 		pdfrpt.textsize(pdfrpt.c, result, pdfrpt.d, stdt, etdt)
 		pdfrpt.d = pdfrpt.dvalue()
+		abc.append(result)
 		result = con.db.fetch_both(stmt)
+	print(abc)	
 
 	if pdfrpt.d < 20:
-		pdfrpt.d = 680
+		pdfrpt.d = 740
 		pdfrpt.c.showPage()
 		pdfrpt.header(stdt, etdt, pdfrpt.divisioncode)
 
+		
+	
 	if result == False:
 		global Exceptions
 	if counter>0:

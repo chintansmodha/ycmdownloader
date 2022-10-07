@@ -5,10 +5,10 @@ from django.shortcuts import render
 import os.path
 from django.views.static import serve
 from GetDataFromDB import ExciseRegister_GetDataFromDB
-from PrintPDF import ExciseRegisterDepartmentWise as pdfrpt1
-from PrintPDF import ExciseRegister_InvNoWise as pdfrpt2
-from PrintPDF import ExciseRegister_ChallanTypeWiseItemShade as pdfrpt3
-from PrintPDF import ExciseRegister_ChallanTypeWise as pdfrpt4
+from PrintPDF import ExciseRegisterDepartmentWise_PrintPDF as pdfrpt1
+from PrintPDF import ExciseRegister_InvNoWise_PrintPDF as pdfrpt2
+from PrintPDF import ExciseRegister_ChallanTypeWiseItemShade_PrintPDF as pdfrpt3
+from PrintPDF import ExciseRegister_ChallanTypeWise_PrintPDF as pdfrpt4
 from GetDataFromDB import ExciseRegister_GetDataFromDB as ErGetDB
 from FormLoad import ExciseRegister_FormLoad as views
 Exceptions=""
