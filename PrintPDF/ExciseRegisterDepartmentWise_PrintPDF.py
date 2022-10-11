@@ -88,9 +88,9 @@ def data(result,d):
     c.drawString(140, d, str(result['INVDATE'].strftime('%d-%m-%Y')))
     c.drawString(210, d, str(result['QTY']))
     c.drawString(270, d, str(result['PARTY']))
-    c.drawString(400, d, str(result['GST']))
+    c.drawString(400, d, str(result['GSTNO']))
     c.drawString(470, d, str(result['RATE']))
-    c.drawString(540, d, str(result['INVNO']))
+    c.drawString(540, d, str(result['ASSAMT']))
     c.drawString(630, d, str(result['FRT']))
     c.drawString(700, d, str(result['INS']))
     c.drawString(770, d, str(result['OTHCH']))
@@ -98,9 +98,10 @@ def data(result,d):
     c.drawString(880, d, str(result['CGST']))
     c.drawString(930, d, str(result['UTGST']))
     c.drawString(980, d, str(result['GST']))
-    c.drawString(1040, d, str(result['IGST']))
+    c.drawString(1040, d, str(result['INVAMT']))
     c.drawString(1080, d, str(result['TCS']))
     c.drawString(1130, d, str(result['TCS']))
+    total(result)
     # c.drawString(65, d, result['costcenter'])
     # c.drawString(110, d, str(result['BILLDATE'].strftime('%d-%m-%Y')))
     # c.drawString(160, d, result['BILLNO'])
@@ -134,19 +135,60 @@ def total(result):
     global InvAmt
     global TaxValue
     global TCSAmt
+    if result['QTY']!=None:
+        Qty=Qty+(float("%.2f"%float(result['QTY'])))     
+    elif result['ASSAMT']!=None:
+        Assessbl=Assessbl+(float("%.3f"%float(result['ASSAMT'])))     
+    elif result['FRT']!=None:
+        Freight=Freight+(float("%.3f"%float(result['FRT'])))    
+    elif result['INS']!=None:
+        Insaurance=Insaurance+(float("%.2f"%float(result['INS'])))
+    elif result['OTHCH']!=None:
+        OtherCharges=OtherCharges+(float("%.2f"%float(result['OTHCH'])))
+    elif result['IGST']!=None:
+        Igst=Igst+(float("%.2f"%float(result['IGST'])))
+    elif result['CGST']!=None:
+        Cgst=Cgst+(float("%.2f"%float(result['CGST'])))
+    elif result['UTGST']!=None:
+        UTgst=UTgst+(float("%.2f"%float(result['UTGST'])))
+    elif result['GST']!=None:
+        TotalGST=TotalGST+(float("%.2f"%float(result['GST'])))
+    elif result['INVAMT']!=None:
+        InvAmt=InvAmt+(float("%.2f"%float(result['INVAMT'])))
+    elif result['TCS']!=None:
+        TCSAmt=TCSAmt+(float("%.2f"%float(result['TCS'])))
     
-    Qty=0
-    Assessbl=0
-    Freight=0
-    Insaurance=0
-    OtherCharges=0
-    Igst=0
-    Cgst=0
-    UTgst=0
-    TotalGST=0
-    InvAmt=0
-    TaxValue=0
-    TCSAmt=0
+def totalprint(d):
+    global Qty
+    global Assessbl
+    global Freight
+    global Insaurance
+    global OtherCharges
+    global Igst
+    global Cgst
+    global UTgst
+    global TotalGST
+    global InvAmt
+    global TaxValue
+    global TCSAmt
+
+    c.drawString(10,d,"Chintan")
+    c.drawString(210,d,str(Qty))
+    c.drawString(540,d,str(Assessbl))
+    c.drawString(630,d,str(Freight))
+    c.drawString(700,d,str(Insaurance))
+    c.drawString(770,d,str(OtherCharges))
+    c.drawString(840,d,str(Igst))
+    c.drawString(880,d,str(Cgst))
+    c.drawString(930,d,str(UTgst))
+    c.drawString(980,d,str(TotalGST))
+    c.drawString(1040,d,str(InvAmt))
+    c.drawString(1130,d,str(TCSAmt))
+    
+    
+    
+    # TaxValue=TaxValue+(float("%.2f"%float(result['TCAMT'])))
+    
 
     # global CompanyQuentityTotal
     # global CompanyAmountTotal
@@ -171,8 +213,10 @@ def dlocvalue(d):
     return d
 
 def newpage():
+    
     global d
     d = 740
+  
     return d
 
 def newrequest():
@@ -200,7 +244,7 @@ def companyclean():
     global TaxValue
     global TCSAmt
 
-    pageno=0
+    pageno =0
     Qty=0
     Assessbl=0
     Freight=0
@@ -214,46 +258,46 @@ def companyclean():
     TaxValue=0
     TCSAmt=0
 
-def textsize(c, result, d, stdt, etdt):
+def textsize(result, d, stdt, etdt):
     d=dvalue()
     logic(result)
     if len(divisioncode) == 1:
         if len(costcenter) == 1:
                 header(stdt,etdt,divisioncode)
+                c.drawString(10,d,costcenter[-1])
+                d = dvalue()
+                c.drawString(10,d,challantype[-1])
+                d = dvalue()
                 data(result, d)
-                d = dvalue()
-                LowerLineData(result, d)
-                d = dvalue()
-                # total(result)
+                
 
     elif divisioncode[-1] == divisioncode[-2]:
         if costcenter[-1] == costcenter[-2]:
             if challantype[-1] == challantype[-2]:
                 data(result, d)
             elif challantype[-1] != challantype[-2]:
-                LowerLineData(result, d)
+                c.drawString(10, d, str(challantype[-1]))
                 d = dvalue()
+                data(result, d)
                 
 
         elif costcenter[-1] != costcenter[-2]:
-            data(result, d)
+            c.drawString(10, d, str(costcenter[-1]))
             d = dvalue()
-            # total(result)
             if challantype[-1] == challantype[-2]:
-                pass
+                data(result,d)
+             
             elif challantype[-1] != challantype[-2]:
-                LowerLineData(result, d)
+                c.drawString(10, d, str(challantype[-1]))
                 d = dvalue()
+                data(result, d)
                 
 
     elif divisioncode[-1] != divisioncode[-2]:
             fonts(7)
             c.drawString(10, d, str(divisioncode[-2]) + " TOTAL : ")
-            # c.drawString(490, d, "Basic Value Total : "+str("%.2f" % float(ItemAmountTotal)))
-            # c.drawAlignedString(750, d, str("%.2f" % float(CompanyAmountTotal)))
-            # d=dvalue()
-            # c.drawString(490, d, "Charges Total : "+str("%.2f" % float(ChargesTotal)))
-            companyclean()
+            d=dvalue()
+            totalprint(d)
             c.setPageSize(landscape(A3))
             c.showPage()
 
@@ -272,7 +316,6 @@ def textsize(c, result, d, stdt, etdt):
             elif costcenter[-1] != costcenter[-2]:
                 data(result, d)
                 d = dvalue()
-                # total(result)
                 if challantype[-1] == challantype[-2]:
                     pass
                 elif challantype[-1] != challantype[-2]:
