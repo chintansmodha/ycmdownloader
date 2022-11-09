@@ -1,6 +1,8 @@
 from django.urls import path
 from AllReports import views
 from ProcessSelection import ExciseRegister_ProcessSelection as ERPS
+from FormLoad import BrokerWiseSalesSummary_FormLoad as BWSS
+from ProcessSelection import BrokerWiseSalesSummary_ProcessSelection as BWSSPS1
 # from FormLoad import *
 # from FormLoad import AdhocLedger_FormLoad as AHLviews
 # from ProcessSelection import AdhocLedger_ProcessSelection as AdhocLedger_Views
@@ -379,6 +381,8 @@ urlpatterns = [
     path("AdhocLedgerU",AdhocLedgerU_ProcessSelection.adhocLedgerU_ProcessData,name="adhocLedgerU_ProcessData"),
     path("ExciseRegister.html",ERFL.ExciseRegister,name="ExciseRegister"),
     path("ExciseRegister",ERPS.ExciseRegister,name="ExciseRegister"),
+    path("BrokerWiseSalesSummary.html",BWSS.bwssfl,name="BrokerWiseSalesSummary"),
+    path("BrokerWiseSalesSummary",BWSSPS1.bwssps,name="BrokerWiseSalesSummary")
 
 
 ]

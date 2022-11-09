@@ -58,14 +58,14 @@ def ExciseRegister_GetData(LSCompany,LSChallanType,LSParty,LSCharges,LSAllCompan
 "	          ,cast(PI.GROSSVALUE as decimal(18)) as invamt "
 "	          ,cast(SDL.PRICE as decimal(18,2)) as Rate "
 "	          ,BP.Legalname1 as Party "
-"	          ,cast(IGST.CALCULATEDVALUE as decimal(18)) as IGST "
-"	          ,cast(CGST.CALCULATEDVALUE as decimal(18)) as CGST "
-"	          ,cast(UTGST.CALCULATEDVALUE as decimal(18)) as UTGST "
-"	          ,cast(BC.CALCULATEDVALUE as decimal(18)) as OTHCH "
-"	          ,cast(DR.CALCULATEDVALUE as decimal(18)) as GST "
-"	          ,cast(FRT.CALCULATEDVALUE as decimal(18)) as FRT "
-"	          ,cast(IC.CALCULATEDVALUE as decimal(18)) as INS "
-"	          ,cast(TCS.CALCULATEDVALUE as decimal(18)) as TCS "
+"	          ,COALESCE(cast(IGST.CALCULATEDVALUE as decimal(18)),0) as IGST "
+"	          ,COALESCE(cast(CGST.CALCULATEDVALUE as decimal(18)),0) as CGST "
+"	          ,COALESCE(cast(UTGST.CALCULATEDVALUE as decimal(18)),0) as UTGST "
+"	          ,COALESCE(cast(BC.CALCULATEDVALUE as decimal(18)),0) as OTHCH "
+"	          ,COALESCE(cast(DR.CALCULATEDVALUE as decimal(18)),0) as GST "
+"	          ,COALESCE(cast(FRT.CALCULATEDVALUE as decimal(18)),0) as FRT "
+"	          ,COALESCE(cast(IC.CALCULATEDVALUE as decimal(18)),0) as INS "
+"	          ,COALESCE(cast(TCS.CALCULATEDVALUE as decimal(18)),0) as TCS "
 "			 ,COSTCENTER.LONGDESCRIPTION AS COST"
 "			 ,pi.TAXTEMPLATECODE AS CHALT"
 "			 ,AG.GSTINNUMBER as gstno"
@@ -112,16 +112,15 @@ def ExciseRegister_GetData(LSCompany,LSChallanType,LSParty,LSCharges,LSAllCompan
 	con.db.execute(stmt)
 	result = con.db.fetch_both(stmt)
 	print(result)
-	a=[]
+
 	while result != False:
 		global counter
 		counter = counter + 1
 		pdfrpt.textsize(result, pdfrpt.d, stdt, etdt)
-		pdfrpt.d = pdfrpt.dvalue()
+		pdfrpt.d = pdfrpt.dvalue(stdt, etdt, pdfrpt.divisioncode)
 		result = con.db.fetch_both(stmt)
-		a.append(result)
-	print(a)
-	print
+		
+
 
 	if pdfrpt.d < 20:
 		pdfrpt.d = 740
@@ -198,14 +197,14 @@ def ExciseRegister_InovNoWise_PrintPDF(LSCompany,LSChallanType,LSParty,LSCharges
 "	          ,cast(PI.GROSSVALUE as decimal(18)) as invamt "
 "	          ,cast(SDL.PRICE as decimal(18,2)) as Rate "
 "	          ,BP.Legalname1 as Party "
-"	          ,cast(IGST.CALCULATEDVALUE as decimal(18)) as IGST "
-"	          ,cast(CGST.CALCULATEDVALUE as decimal(18)) as CGST "
-"	          ,cast(UTGST.CALCULATEDVALUE as decimal(18)) as UTGST "
-"	          ,cast(BC.CALCULATEDVALUE as decimal(18)) as OTHCH "
-"	          ,cast(DR.CALCULATEDVALUE as decimal(18)) as GST "
-"	          ,cast(FRT.CALCULATEDVALUE as decimal(18)) as FRT "
-"	          ,cast(IC.CALCULATEDVALUE as decimal(18)) as INS "
-"	          ,cast(TCS.CALCULATEDVALUE as decimal(18)) as TCS "
+"	          ,COALESCE(cast(IGST.CALCULATEDVALUE as decimal(18)),0) as IGST "
+"	          ,COALESCE(cast(CGST.CALCULATEDVALUE as decimal(18)),0) as CGST "
+"	          ,COALESCE(cast(UTGST.CALCULATEDVALUE as decimal(18)),0) as UTGST "
+"	          ,COALESCE(cast(BC.CALCULATEDVALUE as decimal(18)),0) as OTHCH "
+"	          ,COALESCE(cast(DR.CALCULATEDVALUE as decimal(18)),0) as GST "
+"	          ,COALESCE(cast(FRT.CALCULATEDVALUE as decimal(18)),0) as FRT "
+"	          ,COALESCE(cast(IC.CALCULATEDVALUE as decimal(18)),0) as INS "
+"	          ,COALESCE(cast(TCS.CALCULATEDVALUE as decimal(18)),0) as TCS "
 "			 ,COSTCENTER.LONGDESCRIPTION AS COST"
 "			 ,pi.TAXTEMPLATECODE AS CHALT"
 "			 ,AG.GSTINNUMBER as gstno"
@@ -255,31 +254,31 @@ def ExciseRegister_InovNoWise_PrintPDF(LSCompany,LSChallanType,LSParty,LSCharges
 	while result != False:
 		global counter
 		counter = counter + 1
-		pdfrpt1.textsize(pdfrpt1.c, result, pdfrpt1.d, stdt, etdt)
-		pdfrpt1.d = pdfrpt1.dvalue()
+		pdfrpt3.textsize(result, pdfrpt3.d, stdt, etdt)
+		pdfrpt3.d = pdfrpt3.dvalue(stdt, etdt, pdfrpt3.divisioncode)
 		result = con.db.fetch_both(stmt)
 
-	if pdfrpt1.d < 20:
-		pdfrpt1.d = 730
-		pdfrpt1.c.showPage()
-		pdfrpt1.header(stdt, etdt, pdfrpt1.divisioncode)
+	if pdfrpt3.d < 20:
+		pdfrpt3.d = 730
+		pdfrpt3.c.showPage()
+		pdfrpt3.header(stdt, etdt, pdfrpt3.divisioncode)
 
 	if result == False:
 		global Exceptions
 	if counter>0:
-		pdfrpt1.d = pdfrpt1.dlocvalue(pdfrpt1.d)
-		pdfrpt1.fonts(7)
-		pdfrpt1.c.drawString(10, pdfrpt1.d, str(pdfrpt1.divisioncode[-2]) + " TOTAL : ")
-		pdfrpt1.c.drawAlignedString(570, pdfrpt1.d, str("%.2f" % float(pdfrpt1.CompanyAmountTotal)))
-		pdfrpt1.companyclean()
+		pdfrpt3.d = pdfrpt3.dlocvalue(pdfrpt3.d)
+		pdfrpt3.fonts(7)
+		pdfrpt3.c.drawString(10, pdfrpt3.d, str(pdfrpt3.divisioncode[-2]) + " TOTAL : ")
+	
+		pdfrpt3.companyclean()
 		views.Exceptions = ""
 	elif counter == 0:
 		views.Exceptions = "Note: Please Select Valid Credentials"
 		return
 	
-	pdfrpt1.c.setPageSize(pdfrpt1.landscape(pdfrpt1.A4))
-	pdfrpt1.c.showPage()
-	pdfrpt1.c.save()
+	pdfrpt3.c.setPageSize(pdfrpt3.landscape(pdfrpt3.A3))
+	pdfrpt3.c.showPage()
+	pdfrpt3.c.save()
         
 
 def ExciseRegister_ChallanTypeWiseItemShade_PrintPDF(LSCompany,LSChallanType,LSParty,LSCharges,LSAllCompanies,LSAllChallanTypes,
@@ -329,14 +328,14 @@ def ExciseRegister_ChallanTypeWiseItemShade_PrintPDF(LSCompany,LSChallanType,LSP
 "	          ,cast(PI.GROSSVALUE as decimal(18)) as invamt "
 "	          ,cast(SDL.PRICE as decimal(18,2)) as Rate "
 "	          ,BP.Legalname1 as Party "
-"	          ,cast(IGST.CALCULATEDVALUE as decimal(18)) as IGST "
-"	          ,cast(CGST.CALCULATEDVALUE as decimal(18)) as CGST "
-"	          ,cast(UTGST.CALCULATEDVALUE as decimal(18)) as UTGST "
-"	          ,cast(BC.CALCULATEDVALUE as decimal(18)) as OTHCH "
-"	          ,cast(DR.CALCULATEDVALUE as decimal(18)) as GST "
-"	          ,cast(FRT.CALCULATEDVALUE as decimal(18)) as FRT "
-"	          ,cast(IC.CALCULATEDVALUE as decimal(18)) as INS "
-"	          ,cast(TCS.CALCULATEDVALUE as decimal(18)) as TCS "
+"	          ,COALESCE(cast(IGST.CALCULATEDVALUE as decimal(18)),0) as IGST "
+"	          ,COALESCE(cast(CGST.CALCULATEDVALUE as decimal(18)),0) as CGST "
+"	          ,COALESCE(cast(UTGST.CALCULATEDVALUE as decimal(18)),0) as UTGST "
+"	          ,COALESCE(cast(BC.CALCULATEDVALUE as decimal(18)),0) as OTHCH "
+"	          ,COALESCE(cast(DR.CALCULATEDVALUE as decimal(18)),0) as GST "
+"	          ,COALESCE(cast(FRT.CALCULATEDVALUE as decimal(18)),0) as FRT "
+"	          ,COALESCE(cast(IC.CALCULATEDVALUE as decimal(18)),0) as INS "
+"	          ,COALESCE(cast(TCS.CALCULATEDVALUE as decimal(18)),0) as TCS "
 "			 ,COSTCENTER.LONGDESCRIPTION AS COST"
 "			 ,pi.TAXTEMPLATECODE AS CHALT"
 "			 ,AG.GSTINNUMBER as gstno"
@@ -385,8 +384,8 @@ def ExciseRegister_ChallanTypeWiseItemShade_PrintPDF(LSCompany,LSChallanType,LSP
 	while result != False:
 		global counter
 		counter = counter + 1
-		pdfrpt2.textsize(pdfrpt2.c, result, pdfrpt2.d, stdt, etdt)
-		pdfrpt2.d = pdfrpt2.dvalue()
+		pdfrpt2.textsize(result, pdfrpt2.d, stdt, etdt)
+		pdfrpt2.d = pdfrpt2.dvalue(stdt, etdt, pdfrpt2.divisioncode)
 		result = con.db.fetch_both(stmt)
 
 	if pdfrpt2.d < 20:
@@ -399,15 +398,15 @@ def ExciseRegister_ChallanTypeWiseItemShade_PrintPDF(LSCompany,LSChallanType,LSP
 	if counter>0:
 		pdfrpt2.d = pdfrpt2.dlocvalue(pdfrpt2.d)
 		pdfrpt2.fonts(7)
-		pdfrpt2.c.drawString(10, pdfrpt2.d, str(pdfrpt2.divisioncode[-2]) + " TOTAL : ")
-		pdfrpt2.c.drawAlignedString(570, pdfrpt2.d, str("%.2f" % float(pdfrpt2.CompanyAmountTotal)))
+		# pdfrpt2.c.drawString(10, pdfrpt2.d, str(pdfrpt2.divisioncode[-2]) + " TOTAL : ")
+		# pdfrpt2.c.drawAlignedString(570, pdfrpt2.d, str("%.2f" % float(pdfrpt2.CompanyAmountTotal)))
 		pdfrpt2.companyclean()
 		views.Exceptions = ""
 	elif counter == 0:
 		views.Exceptions = "Note: Please Select Valid Credentials"
 		return
 	
-	pdfrpt2.c.setPageSize(pdfrpt2.landscape(pdfrpt2.A4))
+	pdfrpt2.c.setPageSize(pdfrpt2.landscape(pdfrpt2.A3))
 	pdfrpt2.c.showPage()
 	pdfrpt2.c.save()
        
@@ -458,14 +457,14 @@ def ExciseRegister_ChallanTypeWise_PrintPDF(LSCompany,LSChallanType,LSParty,LSCh
 "	          ,cast(PI.GROSSVALUE as decimal(18)) as invamt "
 "	          ,cast(SDL.PRICE as decimal(18,2)) as Rate "
 "	          ,BP.Legalname1 as Party "
-"	          ,cast(IGST.CALCULATEDVALUE as decimal(18)) as IGST "
-"	          ,cast(CGST.CALCULATEDVALUE as decimal(18)) as CGST "
-"	          ,cast(UTGST.CALCULATEDVALUE as decimal(18)) as UTGST "
-"	          ,cast(BC.CALCULATEDVALUE as decimal(18)) as OTHCH "
-"	          ,cast(DR.CALCULATEDVALUE as decimal(18)) as GST "
-"	          ,cast(FRT.CALCULATEDVALUE as decimal(18)) as FRT "
-"	          ,cast(IC.CALCULATEDVALUE as decimal(18)) as INS "
-"	          ,cast(TCS.CALCULATEDVALUE as decimal(18)) as TCS "
+"	          ,COALESCE(cast(IGST.CALCULATEDVALUE as decimal(18)),0) as IGST "
+"	          ,COALESCE(cast(CGST.CALCULATEDVALUE as decimal(18)),0) as CGST "
+"	          ,COALESCE(cast(UTGST.CALCULATEDVALUE as decimal(18)),0) as UTGST "
+"	          ,COALESCE(cast(BC.CALCULATEDVALUE as decimal(18)),0) as OTHCH "
+"	          ,COALESCE(cast(DR.CALCULATEDVALUE as decimal(18)),0) as GST "
+"	          ,COALESCE(cast(FRT.CALCULATEDVALUE as decimal(18)),0) as FRT "
+"	          ,COALESCE(cast(IC.CALCULATEDVALUE as decimal(18)),0) as INS "
+"	          ,COALESCE(cast(TCS.CALCULATEDVALUE as decimal(18)),0) as TCS "
 "			 ,COSTCENTER.LONGDESCRIPTION AS COST"
 "			 ,pi.TAXTEMPLATECODE AS CHALT"
 "			 ,AG.GSTINNUMBER as gstno"
@@ -515,31 +514,31 @@ def ExciseRegister_ChallanTypeWise_PrintPDF(LSCompany,LSChallanType,LSParty,LSCh
 	while result != False:
 		global counter
 		counter = counter + 1
-		pdfrpt3.textsize(pdfrpt3.c, result, pdfrpt3.d, stdt, etdt)
-		pdfrpt3.d = pdfrpt3.dvalue()
+		pdfrpt1.textsize(result,pdfrpt1.d, stdt, etdt)
+		pdfrpt1.d = pdfrpt1.dvalue(stdt, etdt, pdfrpt1.divisioncode)
 		result = con.db.fetch_both(stmt)
 
-	if pdfrpt3.d < 20:
-		pdfrpt3.d = 730
-		pdfrpt3.c.showPage()
-		pdfrpt3.header(stdt, etdt, pdfrpt3.divisioncode)
+	if pdfrpt1.d < 20:
+		pdfrpt1.d = 730
+		pdfrpt1.c.showPage()
+		pdfrpt1.header(stdt, etdt, pdfrpt1.divisioncode)
 
 	if result == False:
 		global Exceptions
 	if counter>0:
-		pdfrpt3.d = pdfrpt3.dlocvalue(pdfrpt3.d)
-		pdfrpt3.fonts(7)
-		pdfrpt3.c.drawString(10, pdfrpt3.d, str(pdfrpt3.divisioncode[-2]) + " TOTAL : ")
-		pdfrpt3.c.drawAlignedString(570, pdfrpt3.d, str("%.2f" % float(pdfrpt3.CompanyAmountTotal)))
-		pdfrpt3.companyclean()
+		pdfrpt1.d = pdfrpt1.dlocvalue(pdfrpt1.d)
+		pdfrpt1.fonts(7)
+		# pdfrpt1.c.drawString(10, pdfrpt1.d, str(pdfrpt1.divisioncode[-2]) + " TOTAL : ")
+		# pdfrpt1.c.drawAlignedString(570, pdfrpt1.d, str("%.2f" % float(pdfrpt1.CompanyAmountTotal)))
+		pdfrpt1.companyclean()
 		views.Exceptions = ""
 	elif counter == 0:
 		views.Exceptions = "Note: Please Select Valid Credentials"
 		return
 	
-	pdfrpt3.c.setPageSize(pdfrpt3.landscape(pdfrpt3.A4))
-	pdfrpt3.c.showPage()
-	pdfrpt3.c.save()
+	pdfrpt1.c.setPageSize(pdfrpt1.landscape(pdfrpt1.A3))
+	pdfrpt1.c.showPage()
+	pdfrpt1.c.save()
         
 
 

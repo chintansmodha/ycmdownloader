@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Broker Wise Sales Summary</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<h1 style="font-family:arial;margin-left: 50px">Broker Wise Sales Summary</h1>
+    <style>
+    .one{position: absolute;
+        margin-top: 300px;
+        margin-left:100px ;
+    }
+    .two
+    {
+        position: absolute;
+        margin-top: 300px;
+        margin-left: 250px;
+    }
+    .four
+    {
+        position: absolute;
+        margin-top: 350px;
+        margin-left: 250px;
+    }
+
+   .company
+   {
+        position: absolute;
+        margin-top: 10px;
+        margin-left:100px ;
+    
+    }
+    #unit
+    {
+        width: 300px;
+    }
+    .party{position: absolute;
+        margin-top: 10px;
+        margin-left:900px ;
+    }
+    .broker
+    {
+        position: absolute;
+        margin-top: 10px;
+        margin-left: 510px;
+    }
+
+    #party{
+    width: 300px;
+    }
+    #broker{
+        width: 300px;
+    }
+    .challancat{
+        position: absolute;
+       
+        margin-top: 400px;
+        margin-left: 860px;
+       
+    }
+    
+    .itemwise{
+    position: absolute;
+        margin-top: 10px;
+        margin-left: 20px;
+
+    }
+
+    .three{
+    position: absolute;
+        margin-top: 450px;
+        margin-left: 600px;
+
+    }
+
+    select,
+    .select2 {
+        width: 80%;
+        margin: 0 auto;
+        border-radius: 0 !important;
+        display: block;
+    }
+    .select2-container .select2-selection {
+        height: 200px;
+        overflow: scroll;
+    }
+    .select2-container--default .select2-selection--multiple {
+        border-radius: 0;
+        line-height: 30px;
+        font-size: 14p;
+        border: 1px solid #fafafa;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+	function itemtype(allaccount)
+	{
+		var comp=document.getElementById("unit");
+		comp.disabled=!!allaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+
+  function itemtype2(allsubaccount)
+	{
+		var comp=document.getElementById("party");
+		comp.disabled=!!allsubaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+    function itemtype3(allsubaccount)
+	{
+		var comp=document.getElementById("broker");
+		comp.disabled=!!allsubaccount.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+
+          
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    if (!Date.parse(startDate)){
+    alert("Please Enter Start Date");
+        event.preventDefault();
+    }
+
+    if (!Date.parse(endDate)){
+    alert("Please Enter End Date");
+        event.preventDefault();
+    }
+
+    if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater than Start date");
+        event.preventDefault();
+    }
+     return true;
+}
+	function company(allcomp)
+	{
+		var comp=document.getElementById("unit");
+		comp.disabled=!!allcomp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+    // function company(mergecomp)
+	// {
+	// 	var comp=document.getElementById("mergecomp");
+	// 	comp.disabled=!!mergecomp.checked;
+	// 	if (comp.disabled)
+	// 	{
+	// 		comp.focus();
+	// 	}
+	// }
+
+    const a1 = new Date("2022-04-01");
+    const d2 = new Date("2023-03-31");
+    $(document).ready(function()
+	{
+	document.getElementById("startdate").value = a1.toISOString().split('T')[0];
+    document.getElementById("enddate").value = d2.toISOString().split('T')[0];
+	$("#unit").select2();
+    $('#broker').select2();
+	$("#party").select2();
+  
+	});
+</script>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='BrokerWiseSalesSummary' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+<div class="two">
+    <label for='IW'><b>Item Wise:</b></label>
+    <select name='item' id='item' onchange="updateDate();">
+        <option value=yes>Yes</option>
+        <option value=no>No</option>
+        </select>
+</div>
+
+<div class="one">
+    <label for='startdate'><b>Start Date:</b></label><br>
+    <input type='date' id='startdate' name='startdate'>
+<br><br> 
+    <label for='enddate'><b>End Date:</b></label><br>
+    <input type='date' id='enddate' name='enddate'>
+</div>
+
+<div class="four">
+    <br>
+    <label for='summary'><b>Summary:</b></label>
+    <select name='summary1' id='summary1' onchange="updateDate();">
+        <option value=yes>Yes</option>
+        <option value=no selected>No</option>
+  
+    </select>
+</div>
+
+
+<div class="company">
+    <label for='unit' ><b>Company:</b></label>
+    <label for="allcomp"> Select All Companies</label>
+    <input type="checkbox" id="company" name="company" value=1 onclick="itemtype(this)"/>
+<!--     
+    <label for="mergecomp"> Merge Companies</label>
+    <input type="checkbox" id="mergecomp" name="mergecomp" value=1 onclick="itemtype(this)"/> -->
+    <br><br>
+    <select  name='unit' id='unit' multiple>
+        {%for i in GDataCompanyCode%}
+        <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="broker">
+    <label for='broker'><b>Broker Group:</b></label>
+    <label for="allbroker"> Select All Broker Group</label>
+    <input type="checkbox" id="allbroker" name="allbroker" onclick="itemtype2(this)"/>
+    <br><br>
+    <select  name='broker' id='broker' multiple>
+        {%for i in GDataBrokerGroup%}
+        <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="party">
+    <label for='party' ><b>Party :</b></label>
+    <label for="allparty"> Select All Party :</label>
+    <input type="checkbox" id="allparty" name="allparty" value=1 onclick="itemtype2(this)"/>
+    <br><br>
+    <select  name='party' id='party' multiple>
+        {%for i in GDataParty%}
+        <option value="{{ i.NUMBERID }} ">{{ i.LEGALNAME1 }}-{{ i.NUMBERID }}</option>
+        {% endfor %}
+    </select>
+</div>
+<div class="three">
+<button type='submit' form='form1' value='PDF' class="mar" >Report</button>
+<button type='submit' form='form1' value='PDF' class="mar" >Cancel</button>
+</div>
+
+</form>
+<div class="six">
+<label for='exception'><b>{% if Exception %}
+<script>
+var a= '{{Exception}}';
+alert(a);</script>
+{% endif %}
+</b></label>
+</div>
+<script>
+
+function updateDate() {
+    var selectBox = document.getElementById("year");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+
+    if(selectedValue == 2023){
+    const d3 = new Date("2022-04-01");
+    document.getElementById("startdate").value = d3.toISOString().split('T')[0];
+    const d4 = new Date("2023-03-31");
+    document.getElementById("enddate").value = d4.toISOString().split('T')[0];
+
+    }
+
+    if(selectedValue == 2022){
+    const d3 = new Date("2021-04-01");
+    document.getElementById("startdate").value = d3.toISOString().split('T')[0];
+    const d4 = new Date("2022-03-31");
+    document.getElementById("enddate").value = d4.toISOString().split('T')[0];
+
+    }
+   if(selectedValue == 2021){
+    const d5 = new Date("2020-04-01");
+    document.getElementById("startdate").value = d5.toISOString().split('T')[0];
+    const d6 = new Date("2021-03-31");
+    document.getElementById("enddate").value = d6.toISOString().split('T')[0];
+    }
+    if(selectedValue == 2019){
+    const d7 = new Date("2019-04-01");
+    document.getElementById("startdate").value = d7.toISOString().split('T')[0];
+    const d8 = new Date("2020-03-31");
+    document.getElementById("enddate").value = d8.toISOString().split('T')[0];
+    }
+    if(selectedValue == 1920){
+    const d9 = new Date("2020-04-01");
+    document.getElementById("startdate").value = d9.toISOString().split('T')[0];
+    const d10 = new Date("2020-03-31");
+    document.getElementById("enddate").value = d10.toISOString().split('T')[0];
+    }
+
+   }
+</script>
+</body>
+
+</html>

@@ -41,10 +41,17 @@ def fonts(size):
     global c
     c.setFont("MyOwnArial", size)
 
-def dvalue():
+def dvalue(stdt, etdt, divisioncode):
     global d
-    d=d-10
-    return d
+    if d > 40:
+        d = d - 10
+        return d
+    else:
+        d = newpage()
+        c.setPageSize(landscape(A3))
+        c.showPage()
+        header(stdt, etdt, divisioncode)
+        return d
 
 
 def header(stdt,etdt,divisioncode):
@@ -61,46 +68,64 @@ def header(stdt,etdt,divisioncode):
     c.line(0, 750, 1200, 750)
     fonts(8)
     c.drawString(10, 765, "Inv.No.")
-    c.drawString(60, 765, "ChallanNo.")
+    c.drawString(70, 765, "ChallanNo.")
     c.drawString(140, 765, "Inv.Date")
     c.drawString(210, 765, "QTY")
     c.drawString(270, 765, "Party Name")
     c.drawString(400, 765, "GST No.")
-    c.drawString(470, 765, "Rate")
-    c.drawString(540, 765, "Assessbl")
-    c.drawString(630, 765, "Freight")
-    c.drawString(700, 765, "Insaurance")
-    c.drawString(770, 765, "Oth.Chrgs.")
-    c.drawString(840, 765, "IGST")
-    c.drawString(880, 765, "CGST")
-    c.drawString(930, 765, "UTGST")
-    c.drawString(980, 765, "Total GST")
-    c.drawString(1040, 765, "Inv Amt")
-    c.drawString(1080, 765, "Tax Value")
-    c.drawString(1130, 765, "TCS Amt")
+    c.drawString(490, 765, "Rate")
+    c.drawString(560, 765, "Assessbl")
+    c.drawString(650, 765, "Freight")
+    c.drawString(720, 765, "Insaurance")
+    c.drawString(790, 765, "Oth.Chrgs.")
+    c.drawString(860, 765, "IGST")
+    c.drawString(900, 765, "CGST")
+    c.drawString(950, 765, "UTGST")
+    c.drawString(1000, 765, "Total GST")
+    c.drawString(1060, 765, "Inv Amt")
+    # c.drawString(1080, 765, "Tax Value")
+    # c.drawString(1130, 765, "TCS Amt")
   
 
 def data(result,d):
     fonts(8)
     # Upperline in data
-    c.drawString(10, d, str(result['INVNO']))
-    c.drawString(60, d, str(result['CHALLANNO']))
-    c.drawString(140, d, str(result['INVDATE'].strftime('%d-%m-%Y')))
-    c.drawString(210, d, str(result['QTY']))
-    c.drawString(270, d, str(result['PARTY']))
-    c.drawString(400, d, str(result['GSTNO']))
-    c.drawString(470, d, str(result['RATE']))
-    c.drawString(540, d, str(result['ASSAMT']))
-    c.drawString(630, d, str(result['FRT']))
-    c.drawString(700, d, str(result['INS']))
-    c.drawString(770, d, str(result['OTHCH']))
-    c.drawString(840, d, str(result['IGST']))
-    c.drawString(880, d, str(result['CGST']))
-    c.drawString(930, d, str(result['UTGST']))
-    c.drawString(980, d, str(result['GST']))
-    c.drawString(1040, d, str(result['INVAMT']))
-    c.drawString(1080, d, str(result['TCS']))
-    c.drawString(1130, d, str(result['TCS']))
+    if result['INVNO']!=None:
+        c.drawString(10, d, str(result['INVNO']))
+    if result['CHALLANNO']!=None:
+        c.drawString(70, d, str(result['CHALLANNO']))
+    if result['INVDATE']!=None:
+        c.drawString(140, d, str(result['INVDATE'].strftime('%d-%m-%Y')))
+    if result['QTY']!=None:
+        c.drawAlignedString(230, d, str(result['QTY']))
+    if result['PARTY']!=None:
+        c.drawString(270, d, str(result['PARTY'])[:25])
+    if result['GSTNO']!=None:
+        c.drawString(400, d, str(result['GSTNO']))
+    if result['RATE']!=None:
+        c.drawAlignedString(510, d, str(result['RATE']))
+    if result['ASSAMT']!=None:
+        c.drawAlignedString(590, d, str(result['ASSAMT']))
+    if result['FRT']!=None:
+        c.drawAlignedString(680, d, str(result['FRT']))
+    if result['INS']!=None:
+        c.drawAlignedString(750, d, str(result['INS']))
+    if result['OTHCH']!=None:
+        c.drawAlignedString(820, d, str(result['OTHCH']))
+    if result['IGST']!=None:
+        c.drawAlignedString(890, d, str(result['IGST']))
+    if result['CGST']!=None:
+        c.drawAlignedString(930, d, str(result['CGST']))
+    if result['UTGST']!=None:
+        c.drawAlignedString(980, d, str(result['UTGST']))
+    if result['GST']!=None:
+        c.drawAlignedString(1030, d, str(result['GST']))
+    if result['INVAMT']!=None:
+        c.drawAlignedString(1090, d, str(result['INVAMT']))
+    
+    # c.drawString(1080, d, " ")
+    # if result['TCS']!=None:
+    #     c.drawString(1130, d, str(result['TCS']))
     total(result)
     # c.drawString(65, d, result['costcenter'])
     # c.drawString(110, d, str(result['BILLDATE'].strftime('%d-%m-%Y')))
@@ -137,26 +162,26 @@ def total(result):
     global TCSAmt
     if result['QTY']!=None:
         Qty=Qty+(float("%.2f"%float(result['QTY'])))     
-    elif result['ASSAMT']!=None:
+    if result['ASSAMT']!=None:
         Assessbl=Assessbl+(float("%.3f"%float(result['ASSAMT'])))     
-    elif result['FRT']!=None:
+    if result['FRT']!=None:
         Freight=Freight+(float("%.3f"%float(result['FRT'])))    
-    elif result['INS']!=None:
+    if result['INS']!=None:
         Insaurance=Insaurance+(float("%.2f"%float(result['INS'])))
-    elif result['OTHCH']!=None:
+    if result['OTHCH']!=None:
         OtherCharges=OtherCharges+(float("%.2f"%float(result['OTHCH'])))
-    elif result['IGST']!=None:
+    if result['IGST']!=None:
         Igst=Igst+(float("%.2f"%float(result['IGST'])))
-    elif result['CGST']!=None:
+    if result['CGST']!=None:
         Cgst=Cgst+(float("%.2f"%float(result['CGST'])))
-    elif result['UTGST']!=None:
+    if result['UTGST']!=None:
         UTgst=UTgst+(float("%.2f"%float(result['UTGST'])))
-    elif result['GST']!=None:
+    if result['GST']!=None:
         TotalGST=TotalGST+(float("%.2f"%float(result['GST'])))
-    elif result['INVAMT']!=None:
+    if result['INVAMT']!=None:
         InvAmt=InvAmt+(float("%.2f"%float(result['INVAMT'])))
-    elif result['TCS']!=None:
-        TCSAmt=TCSAmt+(float("%.2f"%float(result['TCS'])))
+    # if result['TCS']!=None:
+    #     TCSAmt=TCSAmt+(float("%.2f"%float(result['TCS'])))
     
 def totalprint(d):
     global Qty
@@ -172,18 +197,18 @@ def totalprint(d):
     global TaxValue
     global TCSAmt
 
-    c.drawString(10,d,"Chintan")
-    c.drawString(210,d,str(Qty))
-    c.drawString(540,d,str(Assessbl))
-    c.drawString(630,d,str(Freight))
-    c.drawString(700,d,str(Insaurance))
-    c.drawString(770,d,str(OtherCharges))
-    c.drawString(840,d,str(Igst))
-    c.drawString(880,d,str(Cgst))
-    c.drawString(930,d,str(UTgst))
-    c.drawString(980,d,str(TotalGST))
-    c.drawString(1040,d,str(InvAmt))
-    c.drawString(1130,d,str(TCSAmt))
+    
+    c.drawAlignedString(230,d,str(round(Qty,3)))
+    c.drawAlignedString(560,d,str(Assessbl))
+    c.drawAlignedString(650,d,str(Freight))
+    c.drawAlignedString(720,d,str(Insaurance))
+    c.drawAlignedString(790,d,str(OtherCharges))
+    c.drawAlignedString(860,d,str(Igst))
+    c.drawAlignedString(900,d,str(Cgst))
+    c.drawAlignedString(950,d,str(UTgst))
+    c.drawAlignedString(1000,d,str(TotalGST))
+    c.drawAlignedString(1060,d,str(InvAmt))
+    # c.drawAlignedString(1150,d,str(TCSAmt))
     
     
     
@@ -199,9 +224,6 @@ def totalprint(d):
 #     global ItemAmountTotal
 #     ItemAmountTotal = ItemAmountTotal + (float("%.2f" % float(result['BASICVALUE'])))
 
-def GSTTotal(result):
-    global ChargesTotal
-    ChargesTotal = ChargesTotal + (float("%.2f" % float(result['PRODUCTCHARGEAMOUNT'])))
 
 def logic(result):
     divisioncode.append(result['COMPANY'])
@@ -223,9 +245,11 @@ def newrequest():
     global divisioncode
     global pageno
     global costcenter
+    global challantype
     divisioncode=[]
     pageno=0
     costcenter=[]
+    challantype=[]
 
 
 def companyclean():
@@ -239,7 +263,7 @@ def companyclean():
     global Igst
     global Cgst
     global UTgst
-    global  TotalGST
+    global TotalGST
     global InvAmt
     global TaxValue
     global TCSAmt
@@ -259,15 +283,15 @@ def companyclean():
     TCSAmt=0
 
 def textsize(result, d, stdt, etdt):
-    d=dvalue()
+    d=dvalue(stdt, etdt, divisioncode)
     logic(result)
     if len(divisioncode) == 1:
         if len(costcenter) == 1:
                 header(stdt,etdt,divisioncode)
                 c.drawString(10,d,costcenter[-1])
-                d = dvalue()
+                d = dvalue(stdt, etdt, divisioncode)
                 c.drawString(10,d,challantype[-1])
-                d = dvalue()
+                d = dvalue(stdt, etdt, divisioncode)
                 data(result, d)
                 
 
@@ -277,47 +301,32 @@ def textsize(result, d, stdt, etdt):
                 data(result, d)
             elif challantype[-1] != challantype[-2]:
                 c.drawString(10, d, str(challantype[-1]))
-                d = dvalue()
+                d = dvalue(stdt, etdt, divisioncode)
                 data(result, d)
                 
 
         elif costcenter[-1] != costcenter[-2]:
             c.drawString(10, d, str(costcenter[-1]))
-            d = dvalue()
+            d = dvalue(stdt, etdt, divisioncode)
             if challantype[-1] == challantype[-2]:
                 data(result,d)
              
             elif challantype[-1] != challantype[-2]:
                 c.drawString(10, d, str(challantype[-1]))
-                d = dvalue()
+                d = dvalue(stdt, etdt, divisioncode)
                 data(result, d)
                 
 
     elif divisioncode[-1] != divisioncode[-2]:
             fonts(7)
             c.drawString(10, d, str(divisioncode[-2]) + " TOTAL : ")
-            d=dvalue()
+            d=dvalue(stdt, etdt, divisioncode)
             totalprint(d)
             c.setPageSize(landscape(A3))
             c.showPage()
 
             header(stdt, etdt, divisioncode)
             d=newpage()
-            d=dvalue()
-            if costcenter[-1] == costcenter[-2]:
-                if challantype[-1] == challantype[-2]:
-                    pass
-                    
-                elif challantype[-1] != challantype[-2]:
-                    LowerLineData(result, d)
-                    d = dvalue()
-                    
-
-            elif costcenter[-1] != costcenter[-2]:
-                data(result, d)
-                d = dvalue()
-                if challantype[-1] == challantype[-2]:
-                    pass
-                elif challantype[-1] != challantype[-2]:
-                    LowerLineData(result, d)
-                    d = dvalue()
+            d=dvalue(stdt, etdt, divisioncode)
+            data(result,d)
+           
