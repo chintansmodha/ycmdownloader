@@ -9,10 +9,12 @@ from Global_Files import Connection_String as con
 counter=0
 Exceptions=""
 def BrokerWiseSalesSummaryItemWiseSummaryWise(LSCompany,LSAllCompanies,LSParty,LSAllParties,LSBrokerGroup,LSAllBrokerGroup,LDEndDate,LDStartDate,ItemWise,SummaryWise):
+    
     if not LSAllCompanies and not LSCompany or LSAllCompanies:
         LSCompany = ""
     elif LSCompany:
         LSCompany = " And Plant.CODE in ("+str(LSCompany)[1:-1]+")"
+    
     if not LSAllParties and not LSParty or LSAllParties:
         LSParty = ""
     elif LSParty:
@@ -44,7 +46,6 @@ def BrokerWiseSalesSummaryItemWiseSummaryWise(LSCompany,LSAllCompanies,LSParty,L
 "                      AND COALESCE(PIL.subcode10, '') =                COALESCE(FIKD.subcode10, '')  "
 " JOIN product    ON PIL.itemtypecode = product.itemtypecode  "
 "                AND FIKD.itemuniqueid = product.absuniqueid "
-"        Join    AgentsGroupDetail AGD           On      PI.Agent1Code = AGD.AgentCode "
 "        Join    AgentsGroupDetail AGD           On      PI.Agent1Code = AGD.AgentCode "
 "        Join    AgentsGroup AgGrp               On      AGD.AgentsGroupCode = AgGrp.Code "
 "        Join SalesDocument SD                   ON    PI.CODE = SD.PROVISIONALCODE "
@@ -86,7 +87,7 @@ def BrokerWiseSalesSummaryItemWiseSummaryWise(LSCompany,LSAllCompanies,LSParty,L
     elif counter == 0:
         Exceptions = "Note: Please Select Valid Credentials"
         return
-
+    pdfrpt1.newrequest()
     pdfrpt1.c.setPageSize(pdfrpt1.A4)
     pdfrpt1.c.showPage()
     pdfrpt1.c.save()
@@ -106,8 +107,9 @@ def BrokerWiseSalesSummary(LSCompany,LSAllCompanies,LSParty,LSAllParties,LSBroke
     elif LSBrokerGroup:
         LSBrokerGroup= " And AGENTSGROUP.CODE in("+str(LSBrokerGroup)[1:-1]+")"
   
-    sql=("Select Plant.LONGDESCRIPTION as company,AgGrp.LONGDESCRIPTION as agentgroup, BP.Legalname1 as Party, product.longdescription as item" 
-" ,sum(PI.totalquantity) as quantity,sum(pi.BASICVALUE) as amount"
+    sql=("Select Plant.LONGDESCRIPTION as company,AgGrp.LONGDESCRIPTION as agentgroup, BP.Legalname1 as Party" 
+" ,SD.PROVISIONALCODE as vchno,SD.PROVISIONALDOCUMENTDATE as vchdate "    
+" ,sum(pi.BASICVALUE) as amount"
 " from PlantInvoice as PI"
 "        Join Plant                              ON PI.FactoryCode = Plant.code"
 "        JOIN plantinvoiceline as PIL"
@@ -129,7 +131,6 @@ def BrokerWiseSalesSummary(LSCompany,LSAllCompanies,LSParty,LSAllParties,LSBroke
 " JOIN product    ON PIL.itemtypecode = product.itemtypecode  "
 "                AND FIKD.itemuniqueid = product.absuniqueid "
 "        Join    AgentsGroupDetail AGD           On      PI.Agent1Code = AGD.AgentCode "
-"        Join    AgentsGroupDetail AGD           On      PI.Agent1Code = AGD.AgentCode "
 "        Join    AgentsGroup AgGrp               On      AGD.AgentsGroupCode = AgGrp.Code "
 "        Join SalesDocument SD                   ON    PI.CODE = SD.PROVISIONALCODE "
 "                                                And SD.DOCUMENTTYPETYPE = '06' "
@@ -137,7 +138,7 @@ def BrokerWiseSalesSummary(LSCompany,LSAllCompanies,LSParty,LSAllParties,LSBroke
 "                                                And OP.CustomerSupplierType = 1"
 "        Join BusinessPartner BP ON OP.OrderBusinessPartnerNumberId = BP.NumberId "
 "  where pi.invoicedate between '"+str(LDStartDate)+"' and '"+str(LDEndDate)+"'"+LSCompany+LSParty+LSBrokerGroup+" "
-"        group by product.longdescription,BP.Legalname1,AgGrp.LONGDESCRIPTION,Plant.LONGDESCRIPTION "
+"        group by SD.PROVISIONALCODE,SD.PROVISIONALDOCUMENTDATE,BP.Legalname1,AgGrp.LONGDESCRIPTION,Plant.LONGDESCRIPTION "
 " Order By agentgroup ")
     stmt = con.db.prepare(con.conn, sql)
     stdt = datetime.strptime(LDStartDate, '%Y-%m-%d').date()
@@ -174,6 +175,7 @@ def BrokerWiseSalesSummary(LSCompany,LSAllCompanies,LSParty,LSAllParties,LSBroke
     pdfrpt2.c.setPageSize(pdfrpt2.A4)
     pdfrpt2.c.showPage()
     pdfrpt2.c.save()
+    pdfrpt2.newrequest()
 
 
 def BrokerWiseSalesSummaryItemWise(LSCompany,LSAllCompanies,LSParty,LSAllParties,LSBrokerGroup,LSAllBrokerGroup,LDEndDate,LDStartDate,
@@ -260,6 +262,7 @@ def BrokerWiseSalesSummaryItemWise(LSCompany,LSAllCompanies,LSParty,LSAllParties
     pdfrpt3.c.setPageSize(pdfrpt3.A4)
     pdfrpt3.c.showPage()
     pdfrpt3.c.save()
+    pdfrpt3.newrequest()
 
 def BrokerWiseSalesSummarySummaryWise(LSCompany,LSAllCompanies,LSParty,LSAllParties,LSBrokerGroup,LSAllBrokerGroup,LDEndDate,LDStartDate,
     ItemWise,SummaryWise):    
@@ -276,8 +279,8 @@ def BrokerWiseSalesSummarySummaryWise(LSCompany,LSAllCompanies,LSParty,LSAllPart
     elif LSBrokerGroup:
         LSBrokerGroup= " And AGENTSGROUP.CODE in("+str(LSBrokerGroup)[1:-1]+")"
   
-    sql=("Select Plant.LONGDESCRIPTION as company,AgGrp.LONGDESCRIPTION as agentgroup, BP.Legalname1 as Party, product.longdescription as item" 
-" ,sum(PI.totalquantity) as quantity,sum(pi.BASICVALUE) as amount"
+    sql=("Select Plant.LONGDESCRIPTION as company,AgGrp.LONGDESCRIPTION as agentgroup, BP.Legalname1 as Party" 
+" ,sum(pi.BASICVALUE) as amount"
 " from PlantInvoice as PI"
 "        Join Plant                              ON PI.FactoryCode = Plant.code"
 "        JOIN plantinvoiceline as PIL"
@@ -299,7 +302,6 @@ def BrokerWiseSalesSummarySummaryWise(LSCompany,LSAllCompanies,LSParty,LSAllPart
 " JOIN product    ON PIL.itemtypecode = product.itemtypecode  "
 "                AND FIKD.itemuniqueid = product.absuniqueid "
 "        Join    AgentsGroupDetail AGD           On      PI.Agent1Code = AGD.AgentCode "
-"        Join    AgentsGroupDetail AGD           On      PI.Agent1Code = AGD.AgentCode "
 "        Join    AgentsGroup AgGrp               On      AGD.AgentsGroupCode = AgGrp.Code "
 "        Join SalesDocument SD                   ON    PI.CODE = SD.PROVISIONALCODE "
 "                                                And SD.DOCUMENTTYPETYPE = '06' "
@@ -307,7 +309,7 @@ def BrokerWiseSalesSummarySummaryWise(LSCompany,LSAllCompanies,LSParty,LSAllPart
 "                                                And OP.CustomerSupplierType = 1"
 "        Join BusinessPartner BP ON OP.OrderBusinessPartnerNumberId = BP.NumberId "
 "        where pi.invoicedate between '"+str(LDStartDate)+"' and '"+str(LDEndDate)+"'"+LSCompany+LSParty+LSBrokerGroup+" "
-"        group by product.longdescription,BP.Legalname1,AgGrp.LONGDESCRIPTION,Plant.LONGDESCRIPTION "
+"        group by BP.Legalname1,AgGrp.LONGDESCRIPTION,Plant.LONGDESCRIPTION "
 " Order By agentgroup ")
     stmt = con.db.prepare(con.conn, sql)
     stdt = datetime.strptime(LDStartDate, '%Y-%m-%d').date()
@@ -344,3 +346,4 @@ def BrokerWiseSalesSummarySummaryWise(LSCompany,LSAllCompanies,LSParty,LSAllPart
     pdfrpt4.c.setPageSize(pdfrpt4.A4)
     pdfrpt4.c.showPage()
     pdfrpt4.c.save()
+    pdfrpt4.newrequest()

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head style="font-family:arial;">
+    <meta charset="UTF-8">
+<title >Party Bill OutStanding As On Ledger</title>
+    {% load static %}
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+<style>
+.one{position: absolute;
+    margin-top: 10px;
+    margin-left:50px ;
+}
+
+.one2{position: absolute;
+    margin-top: 80px;
+    margin-left:50px ;
+}
+
+.two{position: absolute;
+    margin-top:140px;
+    margin-left:50px ;
+}
+.three{ position: absolute;
+    margin-top: 140px;
+    margin-left:380px ;
+}
+
+.four{position: absolute;
+    margin-top: 140px;
+    margin-left:660px ;
+}
+.eight{position: absolute;
+    margin-top: 300px;
+    margin-left:360px ;
+}
+.ten{position: absolute;
+    margin-top: 400px;
+    margin-left:920px ;
+}
+
+.select2 {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 0 !important;
+    display: block;
+}
+.select2-container .select2-selection {
+    height: 150px;
+    overflow: scroll;
+}
+.select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+    line-height: 30px;
+    font-size: 13p;
+    border: 1px solid #fafafa;
+}
+
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+
+   function date(event){
+    var startDate = document.getElementById("startdate").value;
+    var endDate = document.getElementById("enddate").value;
+    var asondate = document.getElementById("asondate").value;
+    if (!Date.parse(startDate)&&!Date.parse(endDate)){
+    alert("Please Enter Bills Upto Date, PR Date And As On Date");
+        event.preventDefault();
+    }
+    else{
+        if (!Date.parse(startDate)){
+        alert("Please Enter Bills Upto Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(endDate)){
+        alert("Please Enter PR Date");
+            event.preventDefault();
+        }
+        if (!Date.parse(asondate)){
+        alert("Please Enter As On Date");
+            event.preventDefault();
+        }        
+        if ((Date.parse(startDate) > Date.parse(endDate))) {
+        alert("End date should be greater Or Equall To Start date");
+        event.preventDefault();
+    }
+     return true;
+    }
+
+}
+
+function COMPANY(allcompany)
+	{
+		var Comp=document.getElementById("company");
+		Comp.disabled=!!allcompany.checked;
+		if (Comp.disabled)
+		{
+			Comp.focus();
+		}
+	}
+
+function Branch(allBranch)
+	{
+		var Comp=document.getElementById("Branch");
+		Comp.disabled=!!allBranch.checked;
+		if (Comp.disabled)
+		{
+			Comp.focus();
+		}
+	}
+function PARTY(allParty)
+	{
+		var Comp=document.getElementById("Party");
+		Comp.disabled=!!allParty.checked;
+		if (Comp.disabled)
+		{
+			Comp.focus();
+		}
+	}
+    $(document).ready(function()
+	{
+        var itemlist=[]
+        $("#company").select2({data:itemlist});
+        $("#Party").select2({data:itemlist});
+        $("#Branch").select2({data:itemlist});
+	});
+
+	$(document).ready( function() {
+    var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+   $('#enddate').val(today);
+   $('#startdate').val(today);
+   $('#asondate').val(today);
+   $('#enddate').attr('max', today);
+   $('#startdate').attr('max', today);
+   $('#asondate').attr('max', today);
+   
+});
+
+</script>
+    <h1 style="font-family:arial;margin-left: 50px;">Party Bill OutStanding As On Ledger</h1>
+</head>
+<body  style="background-color:Lavender;">
+
+
+<form action='PartyWiseAgentLifting' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+
+
+<!--Date-->
+<div class="one">
+<label for='startdate'><b>Bills UpTo:</b></label>
+<input type='date' id='startdate' name='startdate'>
+
+<label for='enddate'><b>&emsp;Payment Received UpTo:</b></label>
+<input type='date' id='enddate' name='enddate'>
+
+
+<label for='asondate'><b>&emsp;As On Date:</b></label>
+<input type='date' id='asondate' name='asondate'>
+</div>
+
+<!--    Report Type-->
+<div class="one2">
+    <label for="rt"><b>Report Type:</b></label>
+    <select name="rt" id="rt">
+        <option value="1"> Summary </option>
+        <option value="2"> Detail </option>
+        <option value="3"> Detail For XLS </option>
+    </select>
+    <label for="days"><b> Days:</b></label>
+    <input type="text" style="width: 50px;" name="days"id="days">
+</div>
+
+
+
+<!-------Company-------->
+<div class="two">
+ <label for='company' ><b>&emsp13;Company</b></label>
+ <label for="allcompany">&emsp13; All Companies</label>
+ <input type="checkbox" id="allcompany" name="allcompany" value=1 onclick="COMPANY(this)"/> <br>
+ <select  name='company' id='company' style="width:300px;" multiple>
+   {%for i in GDataCompany%}
+          <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--Party    -->
+<div class="three">
+ <label for='Party' ><b>&emsp13;Party :</b></label>
+ <label for="allParty">&emsp13; All Parties</label>
+ <input type="checkbox" id="allParty" name="allParty" value=1 onclick="PARTY(this)"/> <br>
+ <select  name='Party' id='Party' style="width:250px;" multiple>
+   {%for i in GDataParty%}
+          <option value="{{ i.NUMBERID }} ">{{ i.LEGALNAME1 }}-{{ i.NUMBERID }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<!--Branch-->
+<div class="four">
+ <label for='Branch' ><b>&emsp13;Branch :</b></label>
+ <label for="allBranch">&emsp13; All Branch </label>
+ <input type="checkbox" id="allBranch" name="allBranch" value=1 onclick="Branch(this)"/> <br>
+ <select  name='Branch' id='Branch' style="width: 250px;;" multiple>
+   {%for i in GDataBranch%}
+          <option value="{{ i.CODE }} ">{{ i.SHORTDESCRIPTION }}-{{ i.CODE }}</option>
+  {% endfor %}
+ </select>
+</div>
+
+<div class="ten">
+<br><br>
+    <label for='format' ><b>Report:</b></label>
+<button type='submit' style="background-color:#808080; color:#ffffff;" form='form1' value='PDF' class="mar" id="submit_check" > PDF</button>
+</div>
+
+</form>
+<div class="eight">
+<label for='exception'><b>{%if Exception %}
+<script>alert("No Report Found In Given Criteria");</script>
+{% endif %}
+</b></label>
+</div>
+
+</body>
+
+</html>

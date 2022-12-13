@@ -1,4 +1,3 @@
-from glob import glob
 from reportlab.lib.pagesizes import  A4
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -12,14 +11,12 @@ pdfmetrics.registerFont(TTFont('MyOwnArialBold', 'arialbd.ttf'))
 
 c = canvas.Canvas("1.pdf",pagesize=(A4))
 c.setPageSize(A4)
-d = 730
+d = 760
 
 divisioncode=[]
 agentgroup=[]
 party=[]
 
-TotalPartyQty=0
-TotalBrokerQty=0
 TotalPartyAmt=0
 TotalBrokerAmt=0
 pageno=0
@@ -58,42 +55,29 @@ def header(stdt,etdt,divisioncode,agentgroup):
     c.drawString(500,800,"Page No."+str(p))
     c.line(0, 790, 650, 790)
     c.line(0, 770, 650, 770)
-    c.drawString(10, 778, "Voucher No.")
-    c.drawString(80, 778, "Voucher Date")
-    c.drawString(155, 778, "Item Name")
-    c.drawString(400, 778, "Quantity")
-    c.drawString(470, 778, "Rate")
+    c.drawString(10, 778, "Party Name")
+    c.drawString(330, 778, "Voucher No.")
+    c.drawString(400, 778, "Voucher Date")
     c.drawString(550, 778, "Ammount")
 
 def data(result,d):
     fonts(8)
     if result['VCHNO']!=None:
-        c.drawString(10, d, str(result['VCHNO']))
+        c.drawString(330, d, str(result['VCHNO']))
     if result['VCHDATE']!=None:
-        c.drawString(80, d, str(result['VCHDATE']))
-    if result['ITEM']!=None:
-        c.drawString(155, d, str(result['ITEM']))
-    if result['QUANTITY']!=None:
-        c.drawAlignedString(410, d, str(result['QUANTITY']))
-    if result['RATE']!=None:
-        c.drawAlignedString(480, d, str(result['RATE']))
+        c.drawString(400, d, str(result['VCHDATE']))
     if result['AMOUNT']!=None:
         c.drawAlignedString(560, d, str(result['AMOUNT']))
     partytotal(result)
     brokertotal(result)
 
 def partytotal(result):
-    global TotalPartyQty
     global TotalPartyAmt
-    TotalPartyQty=TotalPartyQty+float(float("%.2f"%float(result['QUANTITY'])))
     TotalPartyAmt=TotalPartyAmt+(float("%.2f"%float(result['AMOUNT'])))
 
 
 def brokertotal(result):
-    global TotalBrokerQty
     global TotalBrokerAmt
-    if result['QUANTITY']!=None:
-        TotalBrokerQty=TotalBrokerQty+(float("%.2f"%float(result['QUANTITY'])))
     if result['AMOUNT']!=None:
         TotalBrokerAmt=TotalBrokerAmt+(float("%.2f"%float(result['AMOUNT'])))
 
@@ -102,25 +86,18 @@ def partytotalprint(d,stdt,etdt):
     global TotalPartyAmt
 
     c.line(390,(d+5),590,(d+5))
-    c.drawString(315,(d-5),"Total Party QTY:")
     c.drawString(460,(d-5),"Total Party Amt:")
-    c.drawAlignedString(410,(d-5),str(round(TotalPartyQty,3)))
     c.drawAlignedString(560,(d-5),str(round(TotalPartyAmt,2)))
-
     c.line(390,(d-10),590,(d-10))
-    TotalPartyQty=0
     TotalPartyAmt=0
 
 def brokertotalprint(d,stdt,etdt):
     global TotalBrokerQty
     global TotalBrokerAmt
 
-    c.drawAlignedString(380,(d),"Total Broker QTY:")
     c.drawAlignedString(520,(d),"Total Broker Amt:")
-    c.drawAlignedString(410,(d),str(round(TotalBrokerQty,3)))
     c.drawAlignedString(560,(d),str(round(TotalBrokerAmt,2)))
     c.line(390,(d-5),590,(d-5))
-    TotalBrokerQty=0
     TotalBrokerAmt=0
 
 def logic(result):
@@ -142,12 +119,12 @@ def newrequest():
     global TotalBrokerQty
     global TotalPartyAmt
     global TotalPartyQty
+    global d
+    d = 760
     divisioncode=[]
     pageno=0
     agentgroup=[]
     party=[]
-    TotalPartyQty=0
-    TotalBrokerQty=0
     TotalPartyAmt=0
     TotalBrokerAmt=0
 
@@ -158,8 +135,6 @@ def companyclean():
     global TotalPartyAmt
     global TotalPartyQty
     pageno =0
-    TotalPartyQty=0
-    TotalBrokerQty=0
     TotalPartyAmt=0
     TotalBrokerAmt=0
 

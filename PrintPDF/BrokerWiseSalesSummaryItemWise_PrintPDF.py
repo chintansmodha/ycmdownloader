@@ -12,7 +12,7 @@ pdfmetrics.registerFont(TTFont('MyOwnArialBold', 'arialbd.ttf'))
 
 c = canvas.Canvas("1.pdf",pagesize=(A4))
 c.setPageSize(A4)
-d = 730
+d = 760
 
 divisioncode=[]
 agentgroup=[]
@@ -142,6 +142,8 @@ def newrequest():
     global TotalBrokerQty
     global TotalPartyAmt
     global TotalPartyQty
+    global d
+    d = 760
     divisioncode=[]
     pageno=0
     agentgroup=[]

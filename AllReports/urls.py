@@ -10,8 +10,8 @@ from ProcessSelection import BrokerWiseSalesSummary_ProcessSelection as BWSSPS1
 # from ProcessSelection import BankCashStatement_ProcessSelection as BankCashStatement_View
 # from FormLoad import GSTRegister_FormLoad as GSTviews
 # from ProcessSelection import GSTRegister_ProcessSelection as GSTRegister_Views
-# from ProcessSelection import MISBrokerWiseOS_ProcessSelection as MBWOSviews
-# from GetDataFromDB import MISBrokerWiseOS_GetDataFromDB as MISBrokerWiseOS_Views
+from ProcessSelection import MISBrokerWiseOS_ProcessSelection as MBWOSviews
+from GetDataFromDB import MISBrokerWiseOS_GetDataFromDB as MISBrokerWiseOS_Views
 # from ProcessSelection import MISCompany_ProcessSelection as MCWOSviews
 # from FormLoad import MRNRegister_FormLoad as MRNviews
 # from ProcessSelection import MRNRegister_ProcessSelection as MRNRegister_Views
@@ -123,8 +123,8 @@ from ProcessSelection import Doctype
 # from ProcessSelection import ContractPendingMisView as PCPV
 # from FormLoad import ContractPending_FormLoad as CPview
 # from FormLoad import ContractPending_AgentWise as CPAview
-# from FormLoad import AgentLiftingDetailsFormLoad as AgntFld
-# from ProcessSelection import AgentLiftingDetailsProcessSelection as AgntPro
+from FormLoad import AgentLiftingDetailsFormLoad as AgntFld
+from ProcessSelection import AgentLiftingDetailsProcessSelection as AgntPro
 # from FormLoad import ContractListMis_FormLoad as ContList
 # from FormLoad import Liftingsummary as LSumm
 # from ProcessSelection import MISBrokerWiseOS_SI_InvoiceDetails_ProcessSelection as MISBrokerWiseOS_SI_InvoiceDetails_Views
@@ -151,6 +151,14 @@ from ProcessSelection import SalesOrder_ProcessSelection as SOPS
 from FormLoad import AdhocLedgerU_FormLOad
 from ProcessSelection import AdhocLedgerU_ProcessSelection
 from FormLoad import ExciseRegister_FormLoad as ERFL
+from FormLoad import PartyWiseAgentLifting_FormLoad as PWALFL
+from ProcessSelection import PartyWiseAgentLifting_ProcessSelection as PWALPS
+from FormLoad import PartyWiseBookDebits_FormLoad as PWBDFL
+
+from FormLoad import PartyBillOSAsOnLedger_FormLoad as PBOSAOLFL
+
+from FormLoad import OSDebitCreditNotes_FormLoad as OSDCNFL
+from ProcessSelection import OSDebitCreditNotes_ProcessSelection as OSDCNPS
 urlpatterns = [
     path('', views.home, name='home'),
 #     path('AdhocLedger.html', AHLviews.AdhocLedger, name="AdhocLedger"),
@@ -162,16 +170,16 @@ urlpatterns = [
 #     path('BankCashStatement', BankCashStatement_View.BankCashStatement, name='BankCashStatement'),
 #     path('GSTRegister.html', GSTviews.GSTRegisterHtml, name="GSTRegisterHtml"),
 #     path('GSTRegister', GSTRegister_Views.GSTRegister, name="GSTRegister"),
-    # path('BrokerWiseOS.html', MBWOSviews.BrokerWiseOS, name="BrokerWiseOS"),
-    # path('BrokerWiseOSUpto15.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    # path('BrokerWiseOSRange16.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    # path('BrokerWiseOSOver30.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    # path('BrokerWiseOSDnAmt.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    # path('BrokerWiseOSUnbilled.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    # path('BrokerWiseOSAdvance.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    # path('BrokerWiseOSUnAdj.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    # path('BrokerWiseOSOdDay.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    # path('BrokerWiseOSUpdateYear',MBWOSviews.updateYear,name="updateYear"),
+    path('BrokerWiseOS.html', MBWOSviews.BrokerWiseOS, name="BrokerWiseOS"),
+    path('BrokerWiseOSUpto15.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+    path('BrokerWiseOSRange16.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+    path('BrokerWiseOSOver30.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+    path('BrokerWiseOSDnAmt.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+    path('BrokerWiseOSUnbilled.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+    path('BrokerWiseOSAdvance.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+    path('BrokerWiseOSUnAdj.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+    path('BrokerWiseOSOdDay.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+    path('BrokerWiseOSUpdateYear',MBWOSviews.updateYear,name="updateYear"),
 #     path('ChallanRegister.html', CRviews.challanregisterhtml,name="Challanregisterhtml"),
 #     path('ChallanRegister',ChallanRegister_View.ChallanRegister,name="ChallanRegister"),
 #     path('CompanyWiseOS.html', MCWOSviews.CompanyWiseOS, name="CompanyWiseOS"),
@@ -322,8 +330,8 @@ urlpatterns = [
 #     path('ContractPending_AgentWise',CPAview.ContractPending_AgentWise,name="ContractPending_AgentWise"),
 #     path('ContractPending_AgentItemDetail',CPAview.ContractPending_AgentItemDetail,name="ContractPending_AgentItemDetail"),
 #     path('ContractPending_AgentItemSubDetail',CPAview.ContractPending_AgentItemSubDetail,name="ContractPending_AgentItemSubDetail"),
-#     path('AgentLiftingDetails.html', AgntFld.AgentLiftingHTML,name='AgentLiftingHTML'),
-#     path('AgentLifting', AgntPro.AgentLifting,name='AgentLifting'),
+    path('AgentLiftingDetails.html', AgntFld.AgentLiftingHTML,name='AgentLiftingHTML'),
+    path('AgentLifting', AgntPro.AgentLifting,name='AgentLifting'),
 #     path('ContractListMis.html', ContList.ContractListMis,name='ContractListMis'),
 #     path('ContListItemWisefunctions', ContList.ContListItemWisefunctions,name='ContListItemWisefunctions'),
 #     path('ContListAgentWisefunctions', ContList.ContListAgentWisefunctions,name='ContListAgentWisefunctions'),
@@ -382,7 +390,14 @@ urlpatterns = [
     path("ExciseRegister.html",ERFL.ExciseRegister,name="ExciseRegister"),
     path("ExciseRegister",ERPS.ExciseRegister,name="ExciseRegister"),
     path("BrokerWiseSalesSummary.html",BWSS.bwssfl,name="BrokerWiseSalesSummary"),
-    path("BrokerWiseSalesSummary",BWSSPS1.bwssps,name="BrokerWiseSalesSummary")
+    path("BrokerWiseSalesSummary",BWSSPS1.bwssps,name="BrokerWiseSalesSummary"),
+    path("PartyWiseAgentLifting.html",PWALFL.PartyWiseAgentLiftingFormLoad,name="PartyWiseAgentLifting"),
+    path("PartyWiseAgentLifting",PWALPS.PartyWiseAgentLiftingProcessSelection,name="PartyWiseAgentLifting"),
+    path("PartyWiseBookDebits.html",PWBDFL.PartyWiseBookDebitsFormLoad,name="PartyWiseBookDebits"),
+    path("PartyBillOSAsOnLedger.html",PBOSAOLFL.PartyBillOSAsOnLedgerFormLoad,name="PartyBillOSAsOnLedger"),
+    path("OSDebitCreditNotes.html",OSDCNFL.OSDebitCreditNotesFromLoad,name="OSDebitCreditNotes"),
+    path("OSDebitCreditNotes",OSDCNPS.OSDebitCreditNotesProcessSelection,name="OSDebitCreditNotes"),
+    
 
 
 ]

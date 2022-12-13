@@ -1,4 +1,3 @@
-from glob import glob
 from reportlab.lib.pagesizes import  A4
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -12,7 +11,7 @@ pdfmetrics.registerFont(TTFont('MyOwnArialBold', 'arialbd.ttf'))
 
 c = canvas.Canvas("1.pdf",pagesize=(A4))
 c.setPageSize(A4)
-d = 730
+d = 760
 
 divisioncode=[]
 agentgroup=[]
@@ -54,6 +53,7 @@ def header(stdt,etdt,divisioncode):
     c.drawCentredString(310, 820, divisioncode[-1]) 
     fonts(8)
     c.drawCentredString(310, 810, "BrokerWiseSalesSummary From " + stdt.strftime('%d-%m-%Y') + " To " + etdt.strftime('%d-%m-%Y'))
+    c.drawCentredString(310,800,agentgroup[-1])
     now = datetime.now()
     c.drawString(15,800,""+str(now))
     p=page()
@@ -72,12 +72,10 @@ def data(result,d):
         c.drawAlignedString(410, d, str(result['QUANTITY']))
     if result['AMOUNT']!=None:
         c.drawAlignedString(560, d, str(result['AMOUNT']))
-    itemtotal(result)
     partytotal(result)
     brokertotal(result)
 
-def itemtotal(result):
-    global item
+
 def partytotal(result):
     global TotalPartyQty
     global TotalPartyAmt
@@ -139,6 +137,8 @@ def newrequest():
     global TotalBrokerQty
     global TotalPartyAmt
     global TotalPartyQty
+    global d
+    d = 760
     divisioncode=[]
     pageno=0
     agentgroup=[]
