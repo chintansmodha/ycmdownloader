@@ -159,6 +159,8 @@ from FormLoad import PartyBillOSAsOnLedger_FormLoad as PBOSAOLFL
 
 from FormLoad import OSDebitCreditNotes_FormLoad as OSDCNFL
 from ProcessSelection import OSDebitCreditNotes_ProcessSelection as OSDCNPS
+from FormLoad import PartyBillOS_FormLoad
+from ProcessSelection import PartyBillOS_ProcessSelection
 urlpatterns = [
     path('', views.home, name='home'),
 #     path('AdhocLedger.html', AHLviews.AdhocLedger, name="AdhocLedger"),
@@ -397,6 +399,9 @@ urlpatterns = [
     path("PartyBillOSAsOnLedger.html",PBOSAOLFL.PartyBillOSAsOnLedgerFormLoad,name="PartyBillOSAsOnLedger"),
     path("OSDebitCreditNotes.html",OSDCNFL.OSDebitCreditNotesFromLoad,name="OSDebitCreditNotes"),
     path("OSDebitCreditNotes",OSDCNPS.OSDebitCreditNotesProcessSelection,name="OSDebitCreditNotes"),
+    path("PartyBillOS.html",PartyBillOS_FormLoad.PartyBillOSHtml,name="PartyBillOS"),
+    path("PartyBillOSPS",PartyBillOS_ProcessSelection.PartyBillOSPS,name="PartyBillOSPS"),
+
     
 
 
