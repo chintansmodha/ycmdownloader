@@ -1,17 +1,17 @@
 from django.urls import path
 from AllReports import views
-from ProcessSelection import ExciseRegister_ProcessSelection as ERPS
+# from ProcessSelection import ExciseRegister_ProcessSelection as ERPS
 from FormLoad import BrokerWiseSalesSummary_FormLoad as BWSS
 from ProcessSelection import BrokerWiseSalesSummary_ProcessSelection as BWSSPS1
-# from FormLoad import *
+# # from FormLoad import *
 # from FormLoad import AdhocLedger_FormLoad as AHLviews
 # from ProcessSelection import AdhocLedger_ProcessSelection as AdhocLedger_Views
 # from FormLoad import BankCashStatement_FormLoad as BCSviews
 # from ProcessSelection import BankCashStatement_ProcessSelection as BankCashStatement_View
 # from FormLoad import GSTRegister_FormLoad as GSTviews
 # from ProcessSelection import GSTRegister_ProcessSelection as GSTRegister_Views
-from ProcessSelection import MISBrokerWiseOS_ProcessSelection as MBWOSviews
-from GetDataFromDB import MISBrokerWiseOS_GetDataFromDB as MISBrokerWiseOS_Views
+# from ProcessSelection import MISBrokerWiseOS_ProcessSelection as MBWOSviews
+# from GetDataFromDB import MISBrokerWiseOS_GetDataFromDB as MISBrokerWiseOS_Views
 # from ProcessSelection import MISCompany_ProcessSelection as MCWOSviews
 # from FormLoad import MRNRegister_FormLoad as MRNviews
 # from ProcessSelection import MRNRegister_ProcessSelection as MRNRegister_Views
@@ -56,15 +56,15 @@ from GetDataFromDB import MISBrokerWiseOS_GetDataFromDB as MISBrokerWiseOS_Views
 # from GetDataFromDB import PrintChallanAdvice_GetFromDB as PrintChallanAdvGetData
 # from FormLoad import PurchaseOrder_FormLoad as POrder_Views
 # from GetDataFromDB import PurchaseOrder_GetFromDB as POrder
-from FormLoad import FinishedStock_FormLoad as FSview
-from FormLoad import FinishedStock_Apply_FormLoad as FSAview
-from FormLoad import FinishedStock_Detail_FormLoad as FSDview
+# from FormLoad import FinishedStock_FormLoad as FSview
+# from FormLoad import FinishedStock_Apply_FormLoad as FSAview
+# from FormLoad import FinishedStock_Detail_FormLoad as FSDview
 # from GetDataFromDB import PrintChallanBoxNoWiseInternal_GetDataFromDB as PrintChallanInternal_Views
 # from FormLoad import BrokerGroupCompanyWiseOS_FormLoad as BrokerGrpviews
 # from ProcessSelection import BrokerGroupCompanyWiseOS_ProcessSelection as BrokerGrp_Views
 # from FormLoad import ContractProgress_FormLoad as CotractP_Views
 # from ProcessSelection import ContractProgress_ProcessSelection as CotractP_Selection
-from ProcessSelection import Doctype
+# from ProcessSelection import Doctype
 # from GetDataFromDB import Print_GST_Invoice_GetDataFromDB as Print_GST_Invoice_Views
 # from GetDataFromDB import Print_Export_GST_Invoice_GetDataFromDB as Print_Export_GST_Invoice_Views
 # from FormLoad import PrintPalleteGatePass_FormLoad as PPGPviews
@@ -123,8 +123,8 @@ from ProcessSelection import Doctype
 # from ProcessSelection import ContractPendingMisView as PCPV
 # from FormLoad import ContractPending_FormLoad as CPview
 # from FormLoad import ContractPending_AgentWise as CPAview
-from FormLoad import AgentLiftingDetailsFormLoad as AgntFld
-from ProcessSelection import AgentLiftingDetailsProcessSelection as AgntPro
+# from FormLoad import AgentLiftingDetailsFormLoad as AgntFld
+# from ProcessSelection import AgentLiftingDetailsProcessSelection as AgntPro
 # from FormLoad import ContractListMis_FormLoad as ContList
 # from FormLoad import Liftingsummary as LSumm
 # from ProcessSelection import MISBrokerWiseOS_SI_InvoiceDetails_ProcessSelection as MISBrokerWiseOS_SI_InvoiceDetails_Views
@@ -146,42 +146,44 @@ from ProcessSelection import AgentLiftingDetailsProcessSelection as AgntPro
 # from FormLoad import StockLedger_FormLoad as SLFL
 # from ProcessSelection import StockLedger_ProcessSelection as SLPS
 # from Templates import StockLedgerItemLoad
-from FormLoad import SalesOrder_FormLoad as SOFL
-from ProcessSelection import SalesOrder_ProcessSelection as SOPS
-from FormLoad import AdhocLedgerU_FormLOad
-from ProcessSelection import AdhocLedgerU_ProcessSelection
-from FormLoad import ExciseRegister_FormLoad as ERFL
-from FormLoad import PartyWiseAgentLifting_FormLoad as PWALFL
-from ProcessSelection import PartyWiseAgentLifting_ProcessSelection as PWALPS
-from FormLoad import PartyWiseBookDebits_FormLoad as PWBDFL
+# from FormLoad import SalesOrder_FormLoad as SOFL
+# from ProcessSelection import SalesOrder_ProcessSelection as SOPS
+# from FormLoad import AdhocLedgerU_FormLOad
+# from ProcessSelection import AdhocLedgerU_ProcessSelection
+# from FormLoad import ExciseRegister_FormLoad as ERFL
+# from FormLoad import PartyWiseAgentLifting_FormLoad as PWALFL
+# from ProcessSelection import PartyWiseAgentLifting_ProcessSelection as PWALPS
+# from FormLoad import PartyWiseBookDebits_FormLoad as PWBDFL
+# from ProcessSelection import PartyWiseBookDebits_ProcessSelection as PWBDPS
+# from FormLoad import PartyBillOSAsOnLedger_FormLoad as PBOSAOLFL
 
-from FormLoad import PartyBillOSAsOnLedger_FormLoad as PBOSAOLFL
+# from FormLoad import OSDebitCreditNotes_FormLoad as OSDCNFL
+# from ProcessSelection import OSDebitCreditNotes_ProcessSelection as OSDCNPS
+# from FormLoad import PartyBillOS_FormLoad
+# from ProcessSelection import PartyBillOS_ProcessSelection
 
-from FormLoad import OSDebitCreditNotes_FormLoad as OSDCNFL
-from ProcessSelection import OSDebitCreditNotes_ProcessSelection as OSDCNPS
-from FormLoad import PartyBillOS_FormLoad
-from ProcessSelection import PartyBillOS_ProcessSelection
+from FormLoad import BankCashVoucher_FormLoad as BCV
 urlpatterns = [
     path('', views.home, name='home'),
 #     path('AdhocLedger.html', AHLviews.AdhocLedger, name="AdhocLedger"),
 #     path('AdhocLedgerSummary', AHLviews.AdhocLedgerSummary, name="AdhocLedgerSummary"),
 #     path('AdhocLedgerDetail', AdhocLedger_Views.AdhocLedgerDetail, name="AdhocLedgerDetail"),
-    path('Doctype',Doctype.Doctype,name="Doctype"),
+#     path('Doctype',Doctype.Doctype,name="Doctype"),
 #     path('SalesDocumentItemGST',MISBrokerWiseOS_SI_InvoiceDetails_Views.ItemGST,name="ItemGST"),
 #     path('BankCashStatement.html', BCSviews.BankCashStatementHtml,name="BankCashStatementHtml"),
 #     path('BankCashStatement', BankCashStatement_View.BankCashStatement, name='BankCashStatement'),
 #     path('GSTRegister.html', GSTviews.GSTRegisterHtml, name="GSTRegisterHtml"),
 #     path('GSTRegister', GSTRegister_Views.GSTRegister, name="GSTRegister"),
-    path('BrokerWiseOS.html', MBWOSviews.BrokerWiseOS, name="BrokerWiseOS"),
-    path('BrokerWiseOSUpto15.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    path('BrokerWiseOSRange16.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    path('BrokerWiseOSOver30.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    path('BrokerWiseOSDnAmt.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    path('BrokerWiseOSUnbilled.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    path('BrokerWiseOSAdvance.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    path('BrokerWiseOSUnAdj.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    path('BrokerWiseOSOdDay.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
-    path('BrokerWiseOSUpdateYear',MBWOSviews.updateYear,name="updateYear"),
+#     path('BrokerWiseOS.html', MBWOSviews.BrokerWiseOS, name="BrokerWiseOS"),
+#     path('BrokerWiseOSUpto15.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+#     path('BrokerWiseOSRange16.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+#     path('BrokerWiseOSOver30.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+#     path('BrokerWiseOSDnAmt.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+#     path('BrokerWiseOSUnbilled.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+#     path('BrokerWiseOSAdvance.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+#     path('BrokerWiseOSUnAdj.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+#     path('BrokerWiseOSOdDay.html', MISBrokerWiseOS_Views.BrokerWiseOSDetail, name="BrokerWiseOSDetail"),
+#     path('BrokerWiseOSUpdateYear',MBWOSviews.updateYear,name="updateYear"),
 #     path('ChallanRegister.html', CRviews.challanregisterhtml,name="Challanregisterhtml"),
 #     path('ChallanRegister',ChallanRegister_View.ChallanRegister,name="ChallanRegister"),
 #     path('CompanyWiseOS.html', MCWOSviews.CompanyWiseOS, name="CompanyWiseOS"),
@@ -194,8 +196,8 @@ urlpatterns = [
 #     path('OnlineBankBalance', OBBviews.OnlineBankBalanceSummary, name="OnlineBankBalanceSummary"),
 #     path('PendingPurchaseRegister.html', PPRviews.PendingPurchaseRegisterHtml, name="PendingPurchaseRegisterHtml"),
 #     path('PendingPurchaseRegister', PendingPurchaseRegister_View.PendingPurchaseRegister, name="PendingPurchaseRegister"),
-    # path('PrintChallan.html', PYCviews.PrintChallanHtml, name="PrintChallanHtml"),
-    # path('PrintChallanTable', PYCviews.PrintChallanTableHtml, name="PrintChallanTableHtml"),
+#     path('PrintChallan.html', PYCviews.PrintChallanHtml, name="PrintChallanHtml"),
+#     path('PrintChallanTable', PYCviews.PrintChallanTableHtml, name="PrintChallanTableHtml"),
 #     path('PrintChallanPDF', PrintYarnChallan_Views.PrintChallanPDF, name="PrintChallanPDF"),
 #     path('PrintChallanRule55PDF', PrintChallanRule55_Views.PrintChallan_Rule55_PDF, name="PrintChallan_Rule55_PDF"),
 #     path('PrintChallanBoxNoWisePDF', PrintChallanBoxNoWise_Views.PrintChallanBoxNoWise_PDF,name="PrintChallanBoxNoWise_PDF"),
@@ -221,8 +223,8 @@ urlpatterns = [
 #     path('LotNoListing.html', Lotviews.LotNoListingHtml, name="LotNoListingHtml"),
 #     path('LotNoListing', Lot_Views.LotNoListing, name="LotNoListing"),
 #     path('hedStockInHand.html', FSIH_Views.FinishedStockInHandHTML, name='FinishedStockInHandHTML'),
-    # path('FiFinisnishedStockInHand', FSIH_PS.FinishedStockInHand, name='FinishedStockInHand'),
-    # path('PackingReports.html', PackR_Views.PackingReportHtml, name='PackingReportHtml'),
+#     path('FiFinisnishedStockInHand', FSIH_PS.FinishedStockInHand, name='FinishedStockInHand'),
+#     path('PackingReports.html', PackR_Views.PackingReportHtml, name='PackingReportHtml'),
 #     path('PackingReport', PackR_PS.PackingReport, name='PackingReport'),
 #     path('PrintChallanAdvice.html', PCA_Views.PrintChallanAdviceHTML, name='PrintChallanAdviceHTML'),
 #     path('PrintChallanAdviceTable', PCA_Views.PrintChallanAdviceTableHTML, name='PrintChallanAdviceTableHTML'),
@@ -230,18 +232,18 @@ urlpatterns = [
 #     path('PurchaseOrder.html', POrder_Views.PurchaseOrderHtml, name='PurchaseOrderHtml'),
 #     path('PurchaseOrder', POrder_Views.PurchaseOrderTableHtml, name='PurchaseOrderTableHtml'),
 #     path('PurchaseOrder_PDF', POrder.PurchaseOrder_PDF, name='PurchaseOrder_PDF'),path('FinishedStock.html',FSview.FinishedStockHtml,name="FinishedStockHtml"),
-    path('FinishedStock.html', FSview.FinishedStockHtml, name="FinishedStockHtml"),
-    path('FinishedStock.html', FSview.FinishedStockHtml, name="FinishedStockHtml"),
-    path('FinishedStock_Apply', FSAview.Apply, name="Apply"),
-    path('FinishedStock_ItemDetail_ClosingQty', FSDview.FinishedStock_ItemDetail_ClosingQty,
-         name="FinishedStock_ItemDetail_ClosingQty"),
-    path('FinishedStock_ItemDetail_OrdPendQty', FSDview.FinishedStock_ItemDetail_OrdPendQty,
-         name="FinishedStock_ItemDetail_OrdPendQty"),
+#     path('FinishedStock.html', FSview.FinishedStockHtml, name="FinishedStockHtml"),
+#     path('FinishedStock.html', FSview.FinishedStockHtml, name="FinishedStockHtml"),
+#     path('FinishedStock_Apply', FSAview.Apply, name="Apply"),
+#     path('FinishedStock_ItemDetail_ClosingQty', FSDview.FinishedStock_ItemDetail_ClosingQty,
+#          name="FinishedStock_ItemDetail_ClosingQty"),
+#     path('FinishedStock_ItemDetail_OrdPendQty', FSDview.FinishedStock_ItemDetail_OrdPendQty,
+#          name="FinishedStock_ItemDetail_OrdPendQty"),
 #     path('PrintChallanBoxNoWiseInternalPDF', PrintChallanInternal_Views.PrintChallanBoxNoWiseInternalPDF,name="PrintChallanBoxNoWiseInternalPDF"),
 #     path('BrokerGroupCompanyWiseOS.html', BrokerGrpviews.BrokerGroupCompanyWiseOShtml, name="BrokerGroupCompanyWiseOShtml"),
 #     path('BrokerGroupCompanyWiseOS', BrokerGrp_Views.BrokerGroupCompanyWiseOS, name="BrokerGroupCompanyWiseOS"),
-    # path('ContractProgress.html', CotractP_Views.ContractProgressHTML, name='ContractProgressHTML'),
-    # path('ContractProgress', CotractP_Selection.ContractProgress, name='ContractProgress'),
+#     path('ContractProgress.html', CotractP_Views.ContractProgressHTML, name='ContractProgressHTML'),
+#     path('ContractProgress', CotractP_Selection.ContractProgress, name='ContractProgress'),
 #     path('PrintChallan_GST_Invoice_PDF', Print_GST_Invoice_Views.PrintChallan_GST_Invoice_PDF,
 #          name="PrintChallan_GST_Invoice_PDF"),
 #     path('PrintChallan_Export_GST_Invoice_PDF', Print_Export_GST_Invoice_Views.PrintChallan_Export_GST_Invoice_PDF,
@@ -274,9 +276,9 @@ urlpatterns = [
 #     path('ItemRate_PDF',ItmRate.ItemRate_PDF,name="ItemRate_PDF"),
 #     path('PackingRegister.html',Packingviews.PackingRegisterHtml,name="PackingRegisterHtml"),
 #     path('PackingRegister',PackingRegister_Views.PackingRegister,name="PackingRegister"),
-    # path('ProductLedger.html', PLviews.ProductLedger, name="ProductLedger"),
-    # path('ProductLedgerSummary', PLviews.ProductLedgerSummary, name="ProductLedgerSummary"),
-    # path('ProductLedgerDetail', PLviews.ProductLedgerDetail, name="ProductLedgerDetail"),
+#     path('ProductLedger.html', PLviews.ProductLedger, name="ProductLedger"),
+#     path('ProductLedgerSummary', PLviews.ProductLedgerSummary, name="ProductLedgerSummary"),
+#     path('ProductLedgerDetail', PLviews.ProductLedgerDetail, name="ProductLedgerDetail"),
 #     path('DailyGeneralReport.html', DGRviews.DailyGeneralReport, name="DailyGeneralReport"),
 #     path('DailyGeneralReport', DailyGeneralReport_ProcessSelection.DailyGeneralReport, name="DailyGeneralReport"),
 #     path('StoreRegister.html',Storeviews.StoreRegisterHtml,name="StoreRegisterHtml"),
@@ -332,8 +334,8 @@ urlpatterns = [
 #     path('ContractPending_AgentWise',CPAview.ContractPending_AgentWise,name="ContractPending_AgentWise"),
 #     path('ContractPending_AgentItemDetail',CPAview.ContractPending_AgentItemDetail,name="ContractPending_AgentItemDetail"),
 #     path('ContractPending_AgentItemSubDetail',CPAview.ContractPending_AgentItemSubDetail,name="ContractPending_AgentItemSubDetail"),
-    path('AgentLiftingDetails.html', AgntFld.AgentLiftingHTML,name='AgentLiftingHTML'),
-    path('AgentLifting', AgntPro.AgentLifting,name='AgentLifting'),
+#     path('AgentLiftingDetails.html', AgntFld.AgentLiftingHTML,name='AgentLiftingHTML'),
+#     path('AgentLifting', AgntPro.AgentLifting,name='AgentLifting'),
 #     path('ContractListMis.html', ContList.ContractListMis,name='ContractListMis'),
 #     path('ContListItemWisefunctions', ContList.ContListItemWisefunctions,name='ContListItemWisefunctions'),
 #     path('ContListAgentWisefunctions', ContList.ContListAgentWisefunctions,name='ContListAgentWisefunctions'),
@@ -345,16 +347,16 @@ urlpatterns = [
 #     path('AgentWiseCollectionMIS', AgentWiseCollectionMISSviews.AgentWiseCollectionMIS, name='AgentWiseCollectionMIS'),
 #     path('FinishedStockInHandAgeing.html', FSIH_Views.FinishedStockInHandAgeingHTML, name='FinishedStockInHandAgeingHTML'),
 #     path('FinishedStockInHandAgeing', FSIH_A.FinishedStockInHandAgeing, name='FinishedStockInHandAgeing'),
-    # path('FinishedStockInHand.html', FSIH_Views.FinishedStockInHandHTML, name='FinishedStockInHandHTML'),
-    # path('FinishedStockInHand', FSIH_PS.FinishedStockInHand, name='FinishedStockInHand'),
+#     path('FinishedStockInHand.html', FSIH_Views.FinishedStockInHandHTML, name='FinishedStockInHandHTML'),
+#     path('FinishedStockInHand', FSIH_PS.FinishedStockInHand, name='FinishedStockInHand'),
 #     path('DGGainLoss.html', DGG_Views.DGGainLossHtml, name='DGGainLossHtml'),
 #     path('DGGainLoss', DGGainLoss.DGGainLoss, name='DGGainLoss'),
 #     path('Challan_Register_Customer.html', ChallanRegisterCustomerviews.ChallanRegisterCustomer,
 #          name='ChallanRegisterCustomer'),
 #     path('ChallanRegisterCustomer_Purchase', ChallanRegisterCustomer_Views.ChallanRegisterCustomer_Purchase,
 #          name='ChallanRegisterCustomer_Purchase'),
-    # path('POYStock.html', POYStock_FormLoad.POYStock, name="POYStock"),
-    # path('POYStock', POYSPS.POYStock, name="POYStock"),
+#     path('POYStock.html', POYStock_FormLoad.POYStock, name="POYStock"),
+#     path('POYStock', POYSPS.POYStock, name="POYStock"),
 #     path('GainLossReport.html', gainLoss.GainLossHtml, name='GainLossHtml'),
 #     path('GainLoss', gainnLossR.GainLoss, name='GainLoss'),
 #     path('MachineWiseProduction.html', MWPr_F.MachineWiseProductionHtml, name='MachineWiseProductionHtml'),
@@ -385,23 +387,24 @@ urlpatterns = [
 #     ),
 #     path('getItem', StockLedgerItemLoad.itemLoad,name="getItem"),
 #     path('fetchItem', StockLedgerItemLoad.fetchItem,name="fetchItem"),
-    path("SalesOrder.html",SOFL.SalesOrderHtml,name="SalesOrder.html"),
-    path("SalesOrder",SOPS.SalesOrder,name="SalesOrder"),
-    path("AdhocLedgerU.html",AdhocLedgerU_FormLOad.AdhocLedgerU,name="AdhocLedgerU"),
-    path("AdhocLedgerU",AdhocLedgerU_ProcessSelection.adhocLedgerU_ProcessData,name="adhocLedgerU_ProcessData"),
-    path("ExciseRegister.html",ERFL.ExciseRegister,name="ExciseRegister"),
-    path("ExciseRegister",ERPS.ExciseRegister,name="ExciseRegister"),
+#     path("SalesOrder.html",SOFL.SalesOrderHtml,name="SalesOrder.html"),
+#     path("SalesOrder",SOPS.SalesOrder,name="SalesOrder"),
+#     path("AdhocLedgerU.html",AdhocLedgerU_FormLOad.AdhocLedgerU,name="AdhocLedgerU"),
+#     path("AdhocLedgerU",AdhocLedgerU_ProcessSelection.adhocLedgerU_ProcessData,name="adhocLedgerU_ProcessData"),
+#     path("ExciseRegister.html",ERFL.ExciseRegister,name="ExciseRegister"),
+#     path("ExciseRegister",ERPS.ExciseRegister,name="ExciseRegister"),
     path("BrokerWiseSalesSummary.html",BWSS.bwssfl,name="BrokerWiseSalesSummary"),
     path("BrokerWiseSalesSummary",BWSSPS1.bwssps,name="BrokerWiseSalesSummary"),
-    path("PartyWiseAgentLifting.html",PWALFL.PartyWiseAgentLiftingFormLoad,name="PartyWiseAgentLifting"),
-    path("PartyWiseAgentLifting",PWALPS.PartyWiseAgentLiftingProcessSelection,name="PartyWiseAgentLifting"),
-    path("PartyWiseBookDebits.html",PWBDFL.PartyWiseBookDebitsFormLoad,name="PartyWiseBookDebits"),
-    path("PartyBillOSAsOnLedger.html",PBOSAOLFL.PartyBillOSAsOnLedgerFormLoad,name="PartyBillOSAsOnLedger"),
-    path("OSDebitCreditNotes.html",OSDCNFL.OSDebitCreditNotesFromLoad,name="OSDebitCreditNotes"),
-    path("OSDebitCreditNotes",OSDCNPS.OSDebitCreditNotesProcessSelection,name="OSDebitCreditNotes"),
-    path("PartyBillOS.html",PartyBillOS_FormLoad.PartyBillOSHtml,name="PartyBillOS"),
-    path("PartyBillOSPS",PartyBillOS_ProcessSelection.PartyBillOSPS,name="PartyBillOSPS"),
-
+#     path("PartyWiseAgentLifting.html",PWALFL.PartyWiseAgentLiftingFormLoad,name="PartyWiseAgentLifting"),
+#     path("PartyWiseAgentLifting",PWALPS.PartyWiseAgentLiftingProcessSelection,name="PartyWiseAgentLifting"),
+#     path("PartyWiseBookDebits.html",PWBDFL.PartyWiseBookDebitsFormLoad,name="PartyWiseBookDebits"),
+#     path("PartyWiseBookDebits",PWBDPS.PartyWiseBookDebits,name="PartyWiseBookDebits"),
+#     path("PartyBillOSAsOnLedger.html",PBOSAOLFL.PartyBillOSAsOnLedgerFormLoad,name="PartyBillOSAsOnLedger"),
+#     path("OSDebitCreditNotes.html",OSDCNFL.OSDebitCreditNotesFromLoad,name="OSDebitCreditNotes"),
+#     path("OSDebitCreditNotes",OSDCNPS.OSDebitCreditNotesProcessSelection,name="OSDebitCreditNotes"),
+#     path("PartyBillOS.html",PartyBillOS_FormLoad.PartyBillOSHtml,name="PartyBillOS"),
+#     path("PartyBillOSPS",PartyBillOS_ProcessSelection.PartyBillOSPS,name="PartyBillOSPS"),
+    path("BankCashVoucher.html",BCV.BankCashVoucherHtml,name="BancCashVoucher")
     
 
 

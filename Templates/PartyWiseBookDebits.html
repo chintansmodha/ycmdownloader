@@ -126,7 +126,7 @@ function PARTY(allParty)
 <body  style="background-color:Lavender;">
 
 
-<form action='PartyWiseAgentLifting' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+<form action='PartyWiseBookDebits' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
 
 
 <!--Date-->
@@ -148,11 +148,11 @@ function PARTY(allParty)
 
 <div class="range" id="range">
 <label for="1"><b>&emsp13;Range:   1</b></label>
- <input type='text' id='1' placeholder="0" style ="width: 40px;" > 
+ <input type='number' name="1" id='1' placeholder="0" style ="width: 40px;" > 
 <label for="2"><b>&emsp13;2</b></label>
- <input type='text' id='2' placeholder="0" style ="width: 40px;">
+ <input type='number' name="2" id='2' placeholder="0" style ="width: 40px;">
 <label for="3"><b>&emsp13;3</b></label>
-<input type='text' id='3' placeholder="0" style ="width: 40px;">
+<input type='number' id='3' name="3" placeholder="0" style ="width: 40px;">
 </div>   
 
 
@@ -184,7 +184,7 @@ function PARTY(allParty)
 <div class="four">
 <br><br>
     <label for='format' ><b>Report:</b></label>
-<button type='submit' style="background-color:#808080; color:#ffffff;" form='form1' value='PDF' class="mar" id="submit_check" > PDF</button>
+<button type='submit' style="background-color:#808080; color:#ffffff;" form='form1' value='PDF' class="mar" > PDF</button>
 </div>
 
 </form>

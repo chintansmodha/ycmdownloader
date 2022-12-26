@@ -1,11 +1,13 @@
 from datetime import datetime
 import os.path
-
 from django.http import FileResponse
 from django.shortcuts import render
 from FormLoad import PartyBillOS_FormLoad as views
 from GetDataFromDB import PartyBillOS_GetDataFromDB
-from PrintPDF import PartyBillOS_PrintPDF as pdfrpt
+from PrintPDF import PartyBillOS_PrintPDF1 as pdfrpt1
+from PrintPDF import PartyBillOS_PrintPDF2 as pdfrpt2
+from PrintPDF import PartyBillOS_PrintPDF3 as pdfrpt3
+from PrintPDF import PartyBillOS_PrintPDF4 as pdfrpt4
 Exceptions=""
 save_name=""
 LSFileName=""
@@ -18,9 +20,8 @@ def PartyBillOSPS(request):
     LSName = datetime.now()
     LSstring = str(LSName)
     LSFileName = LSstring[0:4] + LSstring[5:7] + LSstring[8:10] + LSstring[11:13] + LSstring[14:16] + LSstring[17:19] + LSstring[20:]
-    LSFileName = "SalesOrder" + LSFileName
+    LSFileName = "Party Bill OS" + LSFileName
     save_name = os.path.join(os.path.expanduser("~"),LSFileName)
-    pdfrpt.c = pdfrpt.canvas.Canvas(save_name + ".pdf")
 
     LSCompany=request.GET.getlist('unit')
     LSAllCompany=request.GET.getlist('allcomp')
@@ -34,27 +35,27 @@ def PartyBillOSPS(request):
     LDAsOnDate=request.GET['startdate']
     LDYear=request.GET['year']
 
-
-    print(type(LSType))
     if LSType=='1':
-        if LSInter == '1' and LSSummary =='1':
-            pass
-        elif LSInter == '1' and LSSummary =='2':
-            print("jbcksdbksdkcvksdbkhb")
+        pass
+        if LSSummary=='1':
             PartyBillOS_GetDataFromDB.GetDataSummary(LSCompany,LSAllCompany,LSParty,LSAllParty,LSBroker,LSAllBroker,LDAsOnDate,LDYear)
-        elif LSInter == '2' and LSSummary =='1':
-            pass
-        elif LSInter == '2' and LSSummary =='2':
+        elif LSSummary=='2':
             pass
     elif LSType=='2':
-        pass
+        LSFileName="PartyBillOSCredit"+LSFileName
+        save_name = os.path.join(os.path.expanduser("~"), LSFileName)
+        pdfrpt1.c=pdfrpt1.canvas.Canvas(save_name + ".pdf")
+        PartyBillOS_GetDataFromDB.GetDataSummary21(LSCompany,LSAllCompany,LSParty,LSAllParty,LSBroker,LSAllBroker,LDAsOnDate,LDYear)
+        
     elif LSType=='3':
-        pass
-
+        LSFileName="PartyBillOSDebit"+LSFileName
+        save_name = os.path.join(os.path.expanduser("~"), LSFileName)
+        pdfrpt3.c=pdfrpt3.canvas.Canvas(save_name + ".pdf")
+        PartyBillOS_GetDataFromDB.GetDataSummary31(LSCompany,LSAllCompany,LSParty,LSAllParty,LSBroker,LSAllBroker,LDAsOnDate,LDYear)
+    
     filepath = save_name + ".pdf"
     if not os.path.isfile(filepath):
-        return render(request, 'PartyBillOS.html',
-                  {'GDataCompany': views.GDataCompany, 'GDataParty': views.GDataParty, 'GDataBroker': views.GDataBroker, 'GDataYear':views.GDataYear })
+        return render(request, 'PartyBillOS.html',{'GDataCompany': views.GDataCompany, 'GDataParty': views.GDataParty, 'GDataBroker': views.GDataBroker, 'GDataYear':views.GDataYear })
     response = FileResponse(open(filepath, 'rb'))
     response['Content-Disposition'] = "attachment; filename=%s" % filepath
     return response

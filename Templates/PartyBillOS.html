@@ -3,84 +3,111 @@
 
 <head style="font-family:arial;">
     <meta charset="UTF-8">
-<title >Party Bill OS</title>
+    <title >Party Bill OS</title>
     {% load static %}
-<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-<h1 style="font-family:arial;margin-left: 50px">Party Bill OS</h1>
-    <style>
-.one{position: absolute;
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <h1 style="font-family:arial;margin-left: 50px">Party Bill OS</h1>
+<style>
+.one
+{
+    position: absolute;
     margin-top: 400px;
     margin-left:50px ;
 }
-        .two{
-            position: absolute;
-            margin-top: 10px;
+.two
+{
+    position: absolute;
+    margin-top: 10px;
     margin-left:500px ;
 }
-        .three{position: absolute;
+.three
+{
+    position: absolute;
     margin-top: 500px;
     margin-left:50px ;
 }
-        .four{position: absolute;
+.four
+{
+    position: absolute;
     margin-top: 10px;
     margin-left:230px ;
 }
-        .five{position: absolute;
+.five
+{
+    position: absolute;
     margin-top: 10px;
     margin-left:1050px ;
 }
- .six{position: absolute;
+ .six
+ {
+    position: absolute;
     margin-top: 400px;
     margin-left:50px ;
 }
-.yeartype{
-position: absolute;
+.yeartype
+{
+    position: absolute;
     margin-top: 10px;
     margin-left: 50px;
 
 }
-.type{
+.type
+{
     position: absolute;
     margin-top: 100px;
     margin-left: 50px;
 }
 
-.inter{
+.inter
+{
     position: absolute;
     margin-top: 200px;
     margin-left: 50px;
 }
 
-.summary{
+.summary
+{
     position: absolute;
     margin-top: 300px;
     margin-left: 50px;
 }
 
 select,
-.select2 {
+.select2 
+{
     width: 100%;
     margin: 0 auto;
     border-radius: 0 !important;
     display: block;
 }
-.select2-container .select2-selection {
+.select2-container .select2-selection
+{
     height: 200px;
     overflow: scroll;
 }
-.select2-container--default .select2-selection--multiple {
+.select2-container--default .select2-selection--multiple 
+{
     border-radius: 0;
     line-height: 30px;
     font-size: 14p;
     border: 1px solid #fafafa;
-
+}
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
-	function itemtype(allaccount)
+    function company(allcomp)
+	{
+		var comp=document.getElementById("unit");
+		comp.disabled=!!allcomp.checked;
+		if (comp.disabled)
+		{
+			comp.focus();
+		}
+	}
+    function itemtype(allaccount)
 	{
 		var comp=document.getElementById("account");
 		comp.disabled=!!allaccount.checked;
@@ -119,15 +146,6 @@ select,
     }
      return true;
 }
-	function company(allcomp)
-	{
-		var comp=document.getElementById("unit");
-		comp.disabled=!!allcomp.checked;
-		if (comp.disabled)
-		{
-			comp.focus();
-		}
-	}
     const a1 = new Date("2022-04-01");
     const d2 = new Date("2023-03-31");
     $(document).ready(function()
@@ -139,6 +157,17 @@ select,
 	$("#account").select2();
 
 	});
+    Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+    });
+        $(document).ready( function() {
+        $('#startdate').val(new Date().toDateInputValue());
+    });
+    $(document).ready( function() {
+        $('#enddate').val(new Date().toDateInputValue());
+    });
 </script>
 </head>
 <body  style="background-color:Lavender;">
@@ -146,12 +175,12 @@ select,
 
 <form action='PartyBillOSPS' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
 
-    <div class="yeartype">
- <label for='year'><b>Financial Year:</b></label>
-<select name='year' id='year' onchange="updateDate();">
+<div class="yeartype">
+    <label for='year'><b>Financial Year:</b></label>
+    <select name='year' id='year'>
     {% for i in GDataYear%}
-<option value={{i.CODE}}>{{i.CODE}}</option>
-{%endfor%}
+    <option value={{i.CODE}}>{{i.CODE}}</option>
+    {%endfor%}
 </select>
     </div>
 
@@ -159,7 +188,7 @@ select,
 
     <div class="type">
  <label for='type'><b>Type:</b></label>
-<select name='type' id='type'">
+<select name='type' id='type'>
 <option value=1 selected>Plant Invoice</option>
 <option value=2>Credit</option>
 <option value=3>Debit</option>
@@ -168,7 +197,7 @@ select,
 
     <div class="inter">
  <label for='inter'><b>Inter Company:</b></label>
-<select name='inter' id='inter'">
+<select name='inter' id='inter'>
 <option value=1 selected>Yes</option>
 <option value=2>No</option>
 </select>
@@ -177,7 +206,7 @@ select,
     
     <div class="summary">
  <label for='summary'><b>Summary</b></label>
-<select name='summary' id='summary'">
+<select name='summary' id='summary'>
 <option value=1 selected>Yes</option>
 <option value=2>No</option>
 </select>
@@ -189,7 +218,7 @@ select,
 <label for='startdate'><b>As on date:</b></label><br>
 <input type='date' id='startdate' name='startdate'>
 <br><br>
-<label style="display: none; for='enddate'><b>End Date:</b></label><br>
+<label style="display: none;" for='enddate'><b>End Date:</b></label><br>
 <input style="display: none;" type='date' id='enddate' name='enddate'>
 </div>
 
