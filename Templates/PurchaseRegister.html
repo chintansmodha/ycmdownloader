@@ -81,7 +81,7 @@ select,
         event.preventDefault();
     }
 
-    if ((Date.parse(startDate) > Date.parse(endDate))) {
+    if ((Date.parse(startDate) >= Date.parse(endDate))) {
         alert("End date should be greater than Start date");
         event.preventDefault();
     }

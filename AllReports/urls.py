@@ -4,8 +4,8 @@ from AllReports import views
 from FormLoad import BrokerWiseSalesSummary_FormLoad as BWSS
 from ProcessSelection import BrokerWiseSalesSummary_ProcessSelection as BWSSPS1
 # # from FormLoad import *
-# from FormLoad import AdhocLedger_FormLoad as AHLviews
-# from ProcessSelection import AdhocLedger_ProcessSelection as AdhocLedger_Views
+from FormLoad import AdhocLedger_FormLoad as AHLviews
+from ProcessSelection import AdhocLedger_ProcessSelection as AdhocLedger_Views
 # from FormLoad import BankCashStatement_FormLoad as BCSviews
 # from ProcessSelection import BankCashStatement_ProcessSelection as BankCashStatement_View
 # from FormLoad import GSTRegister_FormLoad as GSTviews
@@ -75,8 +75,8 @@ from ProcessSelection import BrokerWiseSalesSummary_ProcessSelection as BWSSPS1
 # from FormLoad import RawMaterialStock_FormLoad as RAWview
 # from FormLoad import IndentRequisition_FormLoad as IRQviews
 # from GetDataFromDB import IndentRequisition_GetDataFromDB as IndentRequisition_Views
-# from FormLoad import Export_Invoice_FormLoad as ExportInvoiceviews
-# from ProcessSelection import Export_Invoice_ProcessSelection as ExportInvoice_Views
+from FormLoad import Export_Invoice_FormLoad as ExportInvoiceviews
+from ProcessSelection import Export_Invoice_ProcessSelection as ExportInvoice_Views
 # from FormLoad import PrintProformaInv_Formload as PrintProformaInv_Views
 # from ProcessSelection import PrintProformaInv_ProcessSelection as PrintProfInv
 # from FormLoad import ItemRate_FormLoad as ItmViews
@@ -161,13 +161,21 @@ from ProcessSelection import BrokerWiseSalesSummary_ProcessSelection as BWSSPS1
 # from ProcessSelection import OSDebitCreditNotes_ProcessSelection as OSDCNPS
 # from FormLoad import PartyBillOS_FormLoad
 # from ProcessSelection import PartyBillOS_ProcessSelection
-
+from ProcessSelection import BankCashVoucher_ProcessSelection as BCVPS
 from FormLoad import BankCashVoucher_FormLoad as BCV
+from FormLoad import TCSReport_SaleInvoice_Formload as TSF
+from FormLoad import TDSReport_PurInvoice_Formload as TPF
+from ProcessSelection import TCSReport_ProcesSelection as TRPS
+from ProcessSelection import TDSReport_ProcessSelection as TDRPS
+from FormLoad import GSTRONE_FormLoad as GSTRFL
+from ProcessSelection import GSTRONE_ProcessSelection as GSTRPS
+from FormLoad import LedgerAccount_FormLoad as LAFL
+from ProcessSelection import LedgerAccount_ProcessSelection as LAPS
 urlpatterns = [
     path('', views.home, name='home'),
-#     path('AdhocLedger.html', AHLviews.AdhocLedger, name="AdhocLedger"),
-#     path('AdhocLedgerSummary', AHLviews.AdhocLedgerSummary, name="AdhocLedgerSummary"),
-#     path('AdhocLedgerDetail', AdhocLedger_Views.AdhocLedgerDetail, name="AdhocLedgerDetail"),
+    path('AdhocLedger.html', AHLviews.AdhocLedger, name="AdhocLedger"),
+    path('AdhocLedgerSummary', AHLviews.AdhocLedgerSummary, name="AdhocLedgerSummary"),
+    path('AdhocLedgerDetail', AdhocLedger_Views.AdhocLedgerDetail, name="AdhocLedgerDetail"),
 #     path('Doctype',Doctype.Doctype,name="Doctype"),
 #     path('SalesDocumentItemGST',MISBrokerWiseOS_SI_InvoiceDetails_Views.ItemGST,name="ItemGST"),
 #     path('BankCashStatement.html', BCSviews.BankCashStatementHtml,name="BankCashStatementHtml"),
@@ -260,8 +268,8 @@ urlpatterns = [
 #     path('IndentRequisition.html',IRQviews.IndentRequisitionHtml,name="IndentRequisitionHtml"),
 #     path('IndentRequisitionTable',IRQviews.IndentRequisitionTableHtml,name="IndentRequisitionTableHtml"),
 #     path('IndentRequisitionPDF',IndentRequisition_Views.IndentRequisitionPDF,name="IndentRequisitionPDF"),
-#     path('Export_Invoice.html',ExportInvoiceviews.Export_InvoiceHtml,name="Export_InvoiceHtml"),
-#     path('Export_InvoiceRegister',ExportInvoice_Views.Export_InvoiceRegister,name="Export_InvoiceRegister"),
+    path('Export_Invoice.html',ExportInvoiceviews.Export_InvoiceHtml,name="Export_InvoiceHtml"),
+    path('Export_InvoiceRegister',ExportInvoice_Views.Export_InvoiceRegister,name="Export_InvoiceRegister"),
 #     path('PrintProformaInv.html', PrintProformaInv_Views.PrintProformaInvHtml, name='PrintProformaInvHtml'),
 #     path('PrintProformaInvGrid', PrintProformaInv_Views.PrintProformaInvGrid, name='PrintProformaInvGrid'),
 #     path('PrintProformaInv_PDF', PrintProfInv.PrintProformaInv_PDF, name='PrintProformaInv_PDF'),
@@ -404,8 +412,16 @@ urlpatterns = [
 #     path("OSDebitCreditNotes",OSDCNPS.OSDebitCreditNotesProcessSelection,name="OSDebitCreditNotes"),
 #     path("PartyBillOS.html",PartyBillOS_FormLoad.PartyBillOSHtml,name="PartyBillOS"),
 #     path("PartyBillOSPS",PartyBillOS_ProcessSelection.PartyBillOSPS,name="PartyBillOSPS"),
-    path("BankCashVoucher.html",BCV.BankCashVoucherHtml,name="BancCashVoucher")
-    
-
+    path("BankCashVoucher.html",BCV.BankCashVoucherHtml,name="BancCashVoucher"),
+    path("BankCashVoucherSummary",BCV.BankCashVoucherSummary,name="BankCashVoucherSummary"),
+    path("BanckCashVoucherPDF",BCVPS.BankCashVoucher,name="BanckCashVoucherPDF"),
+    path("TCSReport.html",TSF.TCSReportHtml,name="TCSReport.html"),
+    path("TCSReport",TRPS.TCSReportProcess,name="TCSReport.html"),
+    path("TDSReport.html",TPF.TDSReportHtml,name="TDSReport.html"),
+    path("TDSReport",TDRPS.TDSReportProcess,name="TCSReport.html"),
+    path("GSTRONE.html",GSTRFL.GSTRONEHtml,name="GSTRONEHTML"),
+    path('GSTRONE',GSTRPS.GSTRONEPROCESS,name="GSTRONE"),
+    path("LedgerAccount.html",LAFL.LedgerAccountHtml,name="LedgerAccount.html"),
+    path("LedgerAccount",LAPS.LedgerAccount_Process,name="LedgerAccount")
 
 ]

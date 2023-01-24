@@ -189,6 +189,11 @@
             margin-top: 580px;
             margin-left: 50px;
 }
+.btns{
+    position: absolute;
+            margin-top: 680px;
+            margin-left: 50px;  
+}
 #comp{
  width:350px;
 }
@@ -277,135 +282,122 @@ width:80px;
 }
 
 </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+     var clicked = false;
+$("#select").on("click", function() {
+  $('input:checkbox').prop("checked", !clicked);
+});
+});
+$(document).ready(function(){
+     var clicked = true;
+$("#deselect").on("click", function() {
+  $('input:checkbox').prop("checked", !clicked);
+});
+});
+</script>
+<script>
+function GetSelected() {
+        //Reference the Table.
+        var grid = document.getElementById("tableMain");
 
+        //Reference the CheckBoxes in Table.
+        var checkBoxes = grid.getElementsByTagName("INPUT");
+        var PoNo = "";
+        var PoDt = "";
+        var Amount = "";
+
+        //Loop through the CheckBoxes.
+        for (var i = 0; i < checkBoxes.length; i++) {
+            if (checkBoxes[i].checked) {
+                var row = checkBoxes[i].parentNode.parentNode;
+                PoNo += "&vchno=" +row.cells[2].innerHTML;
+                PoDt += "&vchdate=" +row.cells[3].innerHTML;
+                Amount += "&partycode=" +row.cells[1].innerHTML;
+
+            }
+        }
+
+        //Display selected Row data in Alert Box.
+           if (PoNo == ""){
+                alert("Please select at least one check box");
+           }else{
+                window.open("BanckCashVoucherPDF?="+PoNo+PoDt+Amount);
+           }
+
+    }
+</script>
+</head>
 <body style="background-color:Lavender;">
 
 
-<form action='BankCashVoucherTable' id='form1' class="mar" onsubmit=" date(event);" target="_blank" style="font-family:arial;">
+<form action='BankCashVoucherSummary' id='form1' class="mar"  onsubmit=" date(event);" target="_blank" style="font-family:arial;">
 
 <div class="comp">
 <label for='comp'><b>Company:</b></label>
     <BR>
-<input type='text' id='comp' name='comp'>
+        <select  name='comp' id='comp'>
+            <option value=""></option>
+            {%for i in GDataCompany%}
+           <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+           {% endfor %}
+           </select>
 </div>
 
 <div class="bank">
 <label for='bank'><b>Bank:</b></label>
     <br>
-<input type='text' id='bank' name='bank'>
-</div>
-
-
-<div class="party">
-<label for='party'><b>Party:</b></label>
-    <br>
-<input type='text' id='party' name='party'>
-</div>
-
-
-    <div class="sumhead">
-<label for='sumhead'><b>Sum Head:</b></label>
-    <br>
-<input type='text' id='sumhead' name='sumhead'>
-</div>
-
-        <div class="broker">
-<label for='broker'><b>Broker:</b></label>
-    <br>
-<input type='text' id='broker' name='sumhead'>
-</div>
-
-    <div class="type">
-<label for='type'><b>Type:</b></label>
-<br>
-<select name='type' id='type'>
-</select>
-</div>
-
-
-<div class="amt">
-<label for='amt'><b>Amount:</b></label><br>
-<input type="number" id="amt" name="amt">
-<br> <br>
-</div>
-
-
-<div class="chqno">
-<label for='chqno'><b>Chq. No:</b></label>
-<input type='text' id='chqno' name='chqno'>
-</div>
-
-<div class="chqdate">
-<label for='chqdate'><b>Chq. Date:</b></label>
-<input type ='date' id='chqdate' name='chqdate'>
-<br> <br>
-</div>
-
-<div class="narr">
-<label for='narr'><b>Narration:</b></label><br>
-<input type="text" id="narr" name="narr">
-<br> <br>
+    <select  name='bank' id='bank'>
+        <option value=""></option>
+        {%for i in GDataBank%}
+       <option value="{{ i.CODE }} ">{{ i.LONGDESCRIPTION }}-{{ i.CODE }}</option>
+       {% endfor %}
+       </select>
 </div>
 
 <div class="vchno">
-<label for='vchno'><b>Vch. No:</b></label>
-<input type='text' id='vchno' name='vchno'>
+<label for='vchno'><b>Start Vch. No:</b></label>
+<select  name='vchno' id='vchno'>
+    <option value=""></option>
+    {%for i in GDataVChNo%}
+   <option value="{{ i.CODE }} ">{{ i.CODE }}</option>
+   {% endfor %}
+   </select>
 </div>
 
 <div class="vchdate">
-<label for='vchdate'><b>Vch. Date:</b></label>
+<label for='vchdate'><b>End Date:</b></label>
 <input type ='date' id='vchdate' name='vchdate'>
 <br> <br>
 </div>
 
 <div class="refno">
-<label for='refno'><b>Ref. No:</b></label>
-<input type='text' id='refno' name='refno'>
+<label for='refno'><b>End Vch. No.</b></label>
+<select  name='refno' id='refno'>
+    <option value=""></option>
+    {%for i in GDataVChNo%}
+   <option value="{{ i.CODE }} ">{{ i.CODE }}</option>
+   {% endfor %}
+   </select>
 </div>
 
+<div class="type">
+    <label for='type'><b>Type</b></label>
+    <select  name='type' id='type'>
+        <option value="1">Payment</option>
+        <option value="2">Receipt</option>
+       </select>
+    </div>
+
+
 <div class="refdate">
-<label for='refdate'><b>Ref. Date:</b></label>
+<label for='refdate'><b>Start Date:</b></label>
 <input type ='date' id='refdate' name='refdate'>
 <br> <br>
 </div>
 
-<div class="recodate">
-<label for='recodate'><b>Reco. Date:</b></label>
-<input type ='date' id='recodate' name='recodate'>
-<br> <br>
-</div>
 
-           <div class="curstate">
-<label for='curstate'><b>Curr. Status:</b></label>
-<input type='text' id='curstate' name='curstate'>
-</div>
-
-           <div class="docstate">
-<label for='docstate'><b>Doc. Status:</b></label>
-<input type='text' id='docstate' name='docstate'>
-</div>
-
-
-       <div class="tdsgl">
-<label for='tdsgl'><b>TDS GlCode:</b></label>
-<input type='text' id='tdsgl' name='tdsgl'>
-</div>
-
-   <div class="tds">
-<label for='tds'><b>TDS %:</b></label>
-<input type='text' id='tds' name='tds'>
-</div>
-
-     <div class="tdsamt">
-<label for='tdsamt'><b>TDS Amount:</b></label>
-<input type='text' id='tdsamt' name='tds'>
-</div>
-
-
-    <div class="tdsappamt">
-<label for='tdsappamt'><b>TDS Applicable Amount:</b></label>
-<input type='text' id='tdsappamt' name='tds'>
-</div>
 
 <div class="container" id="wrap" >
 
@@ -413,17 +405,13 @@ width:80px;
                 <thead>
 
                     <tr style=" font-family:arial;font-weight: bold;">
-                        <th>A/C HEAD</th>
-                        <th>LEDGER ACCOUNT</th>
-                        <th>SUB LEDGER</th>
-                        <th>TYPE</th>
-                        <th>REF No.</th>
-                        <th>REF DATE</th>
-                        <th>DR/CR</th>
-                        <th>INR AMOUNT</th>
-                        <th>DOC. AMT.</th>
-                        <th>CURR.</th>
-                        <th>DETAIL REMARKS</th>
+                        <th>Party</th>
+                        <th>Voucher No.</th>
+                        <th>Voucher Date.</th>
+                        <th>Amount</th>
+                        <th>Cheq No.</th>
+                        <th>Print</th>
+                        <th>Party Email ID</th>
                     </tr>
 
                 </thead>
@@ -433,27 +421,21 @@ width:80px;
                         {%for i in GDataBankCashVoucher%}
 
     <tr>
-        <td style="text-align:left;width:60px;">{{ i.ACHEAD  }}</td>
+        <td style="text-align:left">{{ i.PARTY  }}</td>
 
-        <td style="text-align:left;">{{ i.FDL_LEDGERACCOUNT }}</td>
+        <td style="text-align:left; display: none;">{{ i.PARTYCODE  }}</td>
 
-        <td style="text-align:left;">{{ i.FDL_SUBLEDGER }}</td>
+        <td style="text-align:left;">{{ i.VCHNO }}</td>
 
-        <td style="text-align:center;width:70px;">{{ i.PAYMENTTYPE }}</td>
+        <td style="text-align:left;">{{ i.VCHDATE }}</td>
 
-        <td style="text-align:left;">{{ i. }}</td>
+        <td style="text-align:right">{{ i.AMOUNT }}</td>
 
-        <td style="text-align:center;">{{ i. }}</td>
+        <td style="text-align:left;">{{ i.CHQNO }}</td>
+
+        <td style="text-align:center;"><input type="checkbox" id="print" name="print" value=1 ></td>
 
         <td style="text-align:left;">{{ i.DRCR }}</td>
-
-        <td style="text-align:right;">{{ i.AMOUNT }}</td>
-
-        <td style="text-align:right;">{{ i.CURR_AMT}}</td>
-
-        <td style="text-align:center;width:30px;">{{ i.CURRANCY}}</td>
-
-        <td style="text-align:left;">{{ i.DETAIL_REMARKS}}</td>
 
     </tr>
     {% endfor %}
@@ -463,8 +445,14 @@ width:80px;
             </table>
 
         </div>
+        
 </form>
-
+<div class="btns">
+<button type='submit' form='form1' value='PDF' class="mar" >Process</button>
+<button type='submit' style="background-color:#808080; color:#ffffff;" onclick="GetSelected()" value='PDF'  ><b>PDF</b></button>
+    <button type='button' style="background-color:#808080; color:#ffffff;" id="select" tabindex="1" ><b>Select All</b></button>
+     <button type='button' style="background-color:#808080; color:#ffffff;"  id="deselect" tabindex="2" ><b>Deselect All</b></button>
+<div>
 <div class= "nineteen">
 <label for ='exception'><b>{%if Exception %}
 <script>alert("Note: No Result found according to your selected criteria ");</script>
