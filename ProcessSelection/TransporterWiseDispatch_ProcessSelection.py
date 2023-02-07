@@ -43,7 +43,7 @@ def TransporterWiseDispatchProcessSelection(request):
         LSFileName = "TransporterWiseDispatchSummary" + LSFileName
         save_name = os.path.join(os.path.expanduser("~"),LSFileName)
         pdfrpt2.c = pdfrpt2.canvas.Canvas(save_name + ".pdf")
-        TWDGDFDB.TWDSGDFDB((LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,LSAllBranch,LSAllTransporter,LSAllDispatch,LSAllParty,LDStartDate,LDEndDate,LSReportType))
+        TWDGDFDB.TWDSGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,LSAllBranch,LSAllTransporter,LSAllDispatch,LSAllParty,LDStartDate,LDEndDate,LSReportType)
     elif LSReportType=="3":
         LSFileName = "TransporterWisePartyWiseDispatchDetail" + LSFileName
         save_name = os.path.join(os.path.expanduser("~"),LSFileName)

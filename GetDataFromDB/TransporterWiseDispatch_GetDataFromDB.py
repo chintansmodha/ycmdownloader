@@ -104,7 +104,23 @@ def TWDSGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,L
     elif LSParty:
         LSParty = " And xyz.Code in ("+str(LSParty)[1:-1]+")"
     
-    sql=( )
+    sql=(
+        " Select  Plant.Longdescription                       AS Company "
+        " ,TR_BP.Legalname1 as Transporter  "
+        " ,Cast(sum(PI.NETTVALUE) as decimal(18,2))  as Quantity "
+        " ,Cast(COALESCE(sum(Freight.Value),0) As decimal(18,2)) AS Freight  "
+" from PlantInvoice as PI "
+" Join    PLANTINVOICELINE PIL            ON      PI.CODE = PIL.PLANTINVOICECODE "
+" Join Plant on PI.FACTORYCODE = Plant.Code "
+" join OrderPartner as TR_OP    On      PI.TRANSPORTERCODCSMSUPPLIERTYPE = TR_OP.CUSTOMERSUPPLIERTYPE  "
+                                  " And     PI.TRANSPORTERCODCSMSUPPLIERCODE = TR_OP.CUSTOMERSUPPLIERCODE   "
+" join BusinessPartner as TR_BP  On     TR_OP.OrderbusinessPartnerNumberId = TR_BP.NumberID     "
+" Left Join    INDTAXDETAIL Freight       ON      PIL.ABSUNIQUEID = Freight.ABSUNIQUEID   "
+          " And     Freight.ITAXCODE = 'FRT'   "
+          " And     Freight.TAXCATEGORYCODE = 'GFR' "
+" Group By Plant.Longdescription,TR_BP.Legalname1 "
+" Order By Plant.Longdescription,TR_BP.Legalname1"
+     )
 	
     stmt = con.db.prepare(con.conn, sql)
     stdt = datetime.strptime(LDStartDate, '%Y-%m-%d').date()
@@ -113,29 +129,25 @@ def TWDSGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,L
     result = con.db.fetch_both(stmt)
     print(result)
     while result != False:
-        global counter
-        counter = counter + 1
-        pdfrpt1.textsize(result, pdfrpt1.d, stdt, etdt)
-        pdfrpt1.d = pdfrpt1.dvalue(stdt, etdt, pdfrpt1.divisioncode)
+        pdfrpt2.textsize(pdfrpt2.c, result, pdfrpt2.d, stdt, etdt)
+        pdfrpt2.d = pdfrpt2.dvalue(stdt, etdt, pdfrpt2.transporter)
         result = con.db.fetch_both(stmt)  
-    if pdfrpt1.d < 20:
-        pdfrpt1.d = 740
-        pdfrpt1.c.showPage()
-        pdfrpt1.header(stdt, etdt, pdfrpt1.divisioncode)
+    if pdfrpt2.d < 20:
+        pdfrpt2.d = 740
+        pdfrpt2.c.showPage()
+        pdfrpt2.header(stdt, etdt, pdfrpt2.transporter)
     if result == False:
-        global Exceptions
-    if counter>0:
-        pdfrpt1.d = pdfrpt1.dlocvalue(pdfrpt1.d)
-        pdfrpt1.fonts(7)
-        pdfrpt1.c.drawString(10, pdfrpt1.d, str(pdfrpt1.divisioncode[-2]) + " TOTAL : ")
-        pdfrpt1.companyclean()
+        pdfrpt2.d = pdfrpt2.dlocvalue(pdfrpt2.d)
+        pdfrpt2.fonts(7)
+        pdfrpt2.c.drawString(10, pdfrpt2.d, str(pdfrpt2.transporter[-1]) + " TOTAL : ")
+        pdfrpt2.companyclean()
         views.Exceptions = ""
     elif counter == 0:
         views.Exceptions = "Note: Please Select Valid Credentials"
         return
-    pdfrpt1.c.setPageSize(pdfrpt1.landscape(pdfrpt1.A4))
-    pdfrpt1.c.showPage()
-    pdfrpt1.c.save()
+    pdfrpt2.c.setPageSize(pdfrpt2.A4)
+    pdfrpt2.c.showPage()
+    pdfrpt2.c.save()
 def TWPWDDGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,LSAllBranch,LSAllTransporter,LSAllDispatch,LSAllParty,LDStartDate,LDEndDate,LSReportType):
     if not LSAllCompany and not LSCompany or LSAllCompany:
         LSCompany = ""
