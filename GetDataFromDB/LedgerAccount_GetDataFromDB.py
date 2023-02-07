@@ -58,19 +58,15 @@ def LedgerAccount_GetDataLedger(LSCompany,LCCompany,GLCode,startdate,enddate,rep
     if not LCCompany and not LSCompany or LCCompany:
         LSCompany = " "
     elif LSCompany:
-        LSCompany = " finbusinessunit.CODE in (" + str(LSCompany)[1:-1] + ")"
+        LSCompany = " and finbusinessunit.CODE in (" + str(LSCompany)[1:-1] + ")"
 
-    sql = "Select  finbusinessunit.LongDescription As Divcode, " \
-          "GLMaster.LongDescription As bank" \
-          ",findocumentline.FINDOCUMENTFINANCIALYEARCODE AS YEARcode" \
-          ",findocumentline.FINDOCDOCUMENTTEMPLATECODE as doctype," \
-          "         COALESCE(BUSINESSPARTNER.LegalName1,'') As SubAccount, findocument.code as vchno," \
-          "          VARCHAR_FORMAT(findocument.FINANCEDOCUMENTDATE, 'DD-MM-YYYY') as vchdate" \
-          ", findocument.DOCUMENTTYPECODE as docno," \
-          "           COALESCE(findocument.CHEQUENUMBER,'') as  chqno, " \
-          "(cast(Case When FinDocument.FINANCEDOCUMENTDATE <'"+startdate+"'" \
-         " Then findocumentline.AMOUNTINCC Else 0 End as decimal(18,2))) As OpBal," \
-         "(cast(Case When findocumentline.AMOUNTINCC > 0 And FinDocument.FINANCEDOCUMENTDATE" \
+    sql = "Select  finbusinessunit.LongDescription As Divcode, "\
+          " GLMaster.LongDescription As bank"\
+          ",findocumentline.FINDOCDOCUMENTTEMPLATECODE as doctype,"\
+           "        COALESCE(BUSINESSPARTNER.LegalName1,'') As party, findocument.code as vchno,"\
+            "        VARCHAR_FORMAT(findocument.FINANCEDOCUMENTDATE, 'DD-MM-YYYY') as vchdate"\
+             "        ,COALESCE(findocument.CHEQUENUMBER,'') as  chqno, "\
+         " (cast(Case When findocumentline.AMOUNTINCC > 0 And FinDocument.FINANCEDOCUMENTDATE"\
          " Between '"+startdate+"' And '"+enddate+"' Then findocumentline.AMOUNTINCC Else 0 End as decimal(18,2))) As DrAmount," \
          "Abs((cast(Case When findocumentline.AMOUNTINCC < 0 And FinDocument.FINANCEDOCUMENTDATE Between '"+startdate+"' And '"+enddate+"'" \
          " Then findocumentline.AMOUNTINCC Else 0 End as decimal(18,2)))) As CrAmount," \
@@ -93,8 +89,8 @@ def LedgerAccount_GetDataLedger(LSCompany,LCCompany,GLCode,startdate,enddate,rep
           " AND findocumentline.SLCUSTOMERSUPPLIERCODE = orderpartner.CUSTOMERSUPPLIERCODE " \
           " Left join businesspartner on ORDERPARTNER.ORDERBUSINESSPARTNERNUMBERID = BUSINESSPARTNER.NUMBERID " \
           " Where   FinDocument.FINANCEDOCUMENTDATE between '" + startdate + "' And '" + enddate + "' " + LSCompany + GLCode+" " \
-          " order by  finbusinessunit.LongDescription,findocument.FINANCEDOCUMENTDATE"
-
+          " order by  finbusinessunit.LongDescription,BUSINESSPARTNER.LegalName1,findocument.FINANCEDOCUMENTDATE"
+    print(sql)
     stmt = con.db.prepare(con.conn, sql)
     con.db.execute(stmt)
     result = con.db.fetch_both(stmt)
@@ -103,8 +99,11 @@ def LedgerAccount_GetDataLedger(LSCompany,LCCompany,GLCode,startdate,enddate,rep
         pdfrpt1.textsize(pdfrpt1.c, result, pdfrpt1.d,reportName,startdate,enddate)
         pdfrpt1.d = pdfrpt1.dvalue(pdfrpt1.divisioncode,result,reportName,startdate,enddate)
         result = con.db.fetch_both(stmt)
+    pdfrpt.c.line(0, pdfrpt.d, 850, pdfrpt.d)
+    pdfrpt.printTotal(pdfrpt.d-10)
+    pdfrpt.c.line(0, pdfrpt.d-20, 850, pdfrpt.d-20)
     pdfrpt1.c.setPageSize(pdfrpt1.landscape(pdfrpt1.A4))
     pdfrpt1.c.showPage()
     pdfrpt1.c.save()
     pdfrpt1.newrequest()
-    pdfrpt1.d = pdfrpt.newpage()
+    pdfrpt1.d = pdfrpt1.newpage()
