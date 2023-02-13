@@ -18,10 +18,10 @@ def BankReconProcessSelection(request):
     save_name = os.path.join(os.path.expanduser("~"),LSFileName)
     pdfrpt.c = pdfrpt.canvas.Canvas(save_name + ".pdf")
 
-    LSCompany=request.GET.getlist("vchno")
-    LSBank=request.GET.getlist("vchdate")
-    LSAllCompany=request.GET.getlist("partycode")
-    LSAllBank=request.GET.getlist("partycode")
+    LSCompany=request.GET.getlist("unit")
+    LSBank=request.GET.getlist("bank")
+    LSAllCompany=request.GET.getlist("allunit")
+    LSAllBank=request.GET.getlist("allbank")
     LDStartDate = str(request.GET['startdate'])
     LDEndDate = str(request.GET['enddate'])
 

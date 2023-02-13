@@ -202,7 +202,7 @@
     <br><br>
     <select  name='transporter' id='transporter' multiple>
         {%for i in GDataTransporter%}
-        <option value="{{ i.TRANSPORTERNAME }} ">{{ i.TRANSPORTERNAME }}</option>
+        <option value="{{ i.NUMBERID }} ">{{ i.TRANSPORTERNAME }}</option>
         {% endfor %}
     </select>
 </div>

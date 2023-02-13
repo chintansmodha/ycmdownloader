@@ -48,12 +48,12 @@ def TransporterWiseDispatchProcessSelection(request):
         LSFileName = "TransporterWisePartyWiseDispatchDetail" + LSFileName
         save_name = os.path.join(os.path.expanduser("~"),LSFileName)
         pdfrpt3.c = pdfrpt3.canvas.Canvas(save_name + ".pdf")
-        TWDGDFDB.TWPWDDGDFDB((LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,LSAllBranch,LSAllTransporter,LSAllDispatch,LSAllParty,LDStartDate,LDEndDate,LSReportType))
+        TWDGDFDB.TWPWDDGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,LSAllBranch,LSAllTransporter,LSAllDispatch,LSAllParty,LDStartDate,LDEndDate,LSReportType)
     elif LSReportType=="4":
         LSFileName="TransporterWisePartyWiseDispatchSummary"+LSFileName
         save_name=os.path.join(os.path.expanduser("~"),LSFileName)
         pdfrpt4.c = pdfrpt4.canvas.Canvas(save_name + ".pdf")
-        TWDGDFDB.TWPWDSGDFDB((LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,LSAllBranch,LSAllTransporter,LSAllDispatch,LSAllParty,LDStartDate,LDEndDate,LSReportType))
+        TWDGDFDB.TWPWDSGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,LSAllBranch,LSAllTransporter,LSAllDispatch,LSAllParty,LDStartDate,LDEndDate,LSReportType)
 
     filepath = save_name + ".pdf"
     if not os.path.isfile(filepath):

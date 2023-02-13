@@ -8,18 +8,19 @@ GDataTransporter = []
 GDataDispatch = []
 GDataParty = []
 
-stmt = con.db.exec_immediate(con.conn, "select CODE,LONGDESCRIPTION from finbusinessunit Order by LONGDESCRIPTION")
+stmt = con.db.exec_immediate(con.conn, "select CODE,LONGDESCRIPTION from Plant Order by LONGDESCRIPTION")
 result = con.db.fetch_both(stmt)
 while result != False:
     if result not in GDataCompany:
         GDataCompany.append(result)
     result = con.db.fetch_both(stmt)
 
-sql= " Select BP_Trpt.legalname1 as TransporterName from plantinvoice " \
+sql= " Select BP_Trpt.numberid, BP_Trpt.legalname1 as TransporterName from plantinvoice " \
      " Left join OrderPartner OP_Trpt    On      PLANTINVOICE.TRANSPORTERCODCSMSUPPLIERTYPE = OP_Trpt.CUSTOMERSUPPLIERTYPE" \
      "                                   And     PLANTINVOICE.TRANSPORTERCODCSMSUPPLIERCODE = OP_Trpt.CUSTOMERSUPPLIERCODE " \
      " Left join BusinessPartner BP_Trpt  On     OP_Trpt.OrderbusinessPartnerNumberId = BP_Trpt.NumberID" \
-     " group by BP_Trpt.legalname1"
+     " group by BP_Trpt.numberid,BP_Trpt.legalname1 " \
+        "Order by BP_Trpt.legalname1"
 stmt = con.db.exec_immediate(con.conn, sql)
 result = con.db.fetch_both(stmt)
 while result != False:

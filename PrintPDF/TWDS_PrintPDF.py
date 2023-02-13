@@ -146,6 +146,12 @@ def companyclean():
     global TotalBrokerQty
     global TotalPartyAmt
     global TotalPartyQty
+    global transporter
+    global despatch
+    global party
+    transporter=[]
+    party=[]
+    despatch=[]
     pageno =0
     TotalPartyQty=0
     TotalBrokerQty=0

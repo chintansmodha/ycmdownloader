@@ -11,22 +11,18 @@ def TWDDGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,L
         LSCompany = ""
     elif LSCompany:
         LSCompany = " And Plant.Code in ("+str(LSCompany)[1:-1]+")"
-    if not LSAllBranch and not LSBranch or LSAllBranch:
-        LSBranch = ""
-    elif LSBranch:
-        LSBranch = " And xyz.Code in ("+str(LSBranch)[1:-1]+")"
     if not LSAllTransporter and not LSTransporter or LSAllTransporter:
         LSTransporter = ""
     elif LSTransporter:
-        LSTransporter = " And xyz.Code in ("+str(LSTransporter)[1:-1]+")"
+        LSTransporter = " And TR_BP.numberid in ("+str(LSTransporter)[1:-1]+")"
     if not LSAllDispatch and not LSDispatch or LSAllDispatch:
         LSDispatch = ""
     elif LSDispatch:
-        LSDispatch = " And xyz.Code in ("+str(LSDispatch)[1:-1]+")"
+        LSDispatch = " And TZ.Code in ("+str(LSDispatch)[1:-1]+")"
     if not LSAllParty and not LSParty or LSAllParty:
         LSParty = ""
     elif LSParty:
-        LSParty = " And xyz.Code in ("+str(LSParty)[1:-1]+")"
+        LSParty = " And BP.numberid in ("+str(LSParty)[1:-1]+")"
     
     sql=("Select  PI.code                       AS InvoiceNo"
         " ,TR_BP.Legalname1 as Transporter  "
@@ -51,7 +47,7 @@ def TWDDGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,L
 " Left Join    INDTAXDETAIL Freight       ON      PIL.ABSUNIQUEID = Freight.ABSUNIQUEID   "
           " And     Freight.ITAXCODE = 'FRT'   "
           " And     Freight.TAXCATEGORYCODE = 'GFR' "
-          "Where PI.Invoicedate between '"+LDStartDate+"' and '"+LDEndDate+"'"
+          "Where PI.Invoicedate between '"+LDStartDate+"' and '"+LDEndDate+"'"+LSCompany+LSTransporter+LSDispatch+LSParty+""
 " Group By TR_BP.Legalname1,TZ.Longdescription,BP.legalname1,PI.LRDATE, PI.LRNO, PI.Code"
 " order by Transporter,Despatch,LRDate")
 
@@ -75,9 +71,7 @@ def TWDDGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,L
         pdfrpt1.fonts(7)
         pdfrpt1.c.drawString(10, pdfrpt1.d, str(pdfrpt1.transporter[-1]) + " TOTAL : ")
         pdfrpt1.companyclean()
-    elif counter == 0:
-        views.Exceptions = "Note: Please Select Valid Credentials"
-        return
+
     pdfrpt1.c.setPageSize(pdfrpt1.A4)
     pdfrpt1.c.showPage()
     pdfrpt1.c.save()
@@ -87,22 +81,18 @@ def TWDSGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,L
         LSCompany = ""
     elif LSCompany:
         LSCompany = " And Plant.Code in ("+str(LSCompany)[1:-1]+")"
-    if not LSAllBranch and not LSBranch or LSAllBranch:
-        LSBranch = ""
-    elif LSBranch:
-        LSBranch = " And xyz.Code in ("+str(LSBranch)[1:-1]+")"
     if not LSAllTransporter and not LSTransporter or LSAllTransporter:
         LSTransporter = ""
     elif LSTransporter:
-        LSTransporter = " And xyz.Code in ("+str(LSTransporter)[1:-1]+")"
+        LSTransporter = " And TR_BP.numberid in ("+str(LSTransporter)[1:-1]+")"
     if not LSAllDispatch and not LSDispatch or LSAllDispatch:
         LSDispatch = ""
     elif LSDispatch:
-        LSDispatch = " And xyz.Code in ("+str(LSDispatch)[1:-1]+")"
+        LSDispatch = " And TZ.Code in ("+str(LSDispatch)[1:-1]+")"
     if not LSAllParty and not LSParty or LSAllParty:
         LSParty = ""
     elif LSParty:
-        LSParty = " And xyz.Code in ("+str(LSParty)[1:-1]+")"
+        LSParty = " And BP.numberid in ("+str(LSParty)[1:-1]+")"
     
     sql=(
         " Select  Plant.Longdescription                       AS Company "
@@ -115,9 +105,11 @@ def TWDSGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,L
 " join OrderPartner as TR_OP    On      PI.TRANSPORTERCODCSMSUPPLIERTYPE = TR_OP.CUSTOMERSUPPLIERTYPE  "
                                   " And     PI.TRANSPORTERCODCSMSUPPLIERCODE = TR_OP.CUSTOMERSUPPLIERCODE   "
 " join BusinessPartner as TR_BP  On     TR_OP.OrderbusinessPartnerNumberId = TR_BP.NumberID     "
+" Left Join TransportZone  TZ       ON  TR_BP.Transportzonecode = TZ.Code     "
 " Left Join    INDTAXDETAIL Freight       ON      PIL.ABSUNIQUEID = Freight.ABSUNIQUEID   "
           " And     Freight.ITAXCODE = 'FRT'   "
           " And     Freight.TAXCATEGORYCODE = 'GFR' "
+          "Where PI.Invoicedate between '"+LDStartDate+"' and '"+LDEndDate+"'"+LSCompany+LSTransporter+LSDispatch+LSParty+""
 " Group By Plant.Longdescription,TR_BP.Legalname1 "
 " Order By Plant.Longdescription,TR_BP.Legalname1"
      )
@@ -142,9 +134,6 @@ def TWDSGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,L
         pdfrpt2.c.drawString(10, pdfrpt2.d, str(pdfrpt2.transporter[-1]) + " TOTAL : ")
         pdfrpt2.companyclean()
         views.Exceptions = ""
-    elif counter == 0:
-        views.Exceptions = "Note: Please Select Valid Credentials"
-        return
     pdfrpt2.c.setPageSize(pdfrpt2.A4)
     pdfrpt2.c.showPage()
     pdfrpt2.c.save()
@@ -153,25 +142,47 @@ def TWPWDDGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany
         LSCompany = ""
     elif LSCompany:
         LSCompany = " And Plant.Code in ("+str(LSCompany)[1:-1]+")"
-    if not LSAllBranch and not LSBranch or LSAllBranch:
-        LSBranch = ""
-    elif LSBranch:
-        LSBranch = " And xyz.Code in ("+str(LSBranch)[1:-1]+")"
     if not LSAllTransporter and not LSTransporter or LSAllTransporter:
         LSTransporter = ""
     elif LSTransporter:
-        LSTransporter = " And xyz.Code in ("+str(LSTransporter)[1:-1]+")"
+        LSTransporter = " And TR_BP.numberid in ("+str(LSTransporter)[1:-1]+")"
     if not LSAllDispatch and not LSDispatch or LSAllDispatch:
         LSDispatch = ""
     elif LSDispatch:
-        LSDispatch = " And xyz.Code in ("+str(LSDispatch)[1:-1]+")"
+        LSDispatch = " And TZ.Code in ("+str(LSDispatch)[1:-1]+")"
     if not LSAllParty and not LSParty or LSAllParty:
         LSParty = ""
     elif LSParty:
-        LSParty = " And xyz.Code in ("+str(LSParty)[1:-1]+")"
+        LSParty = " And BP.numberid in ("+str(LSParty)[1:-1]+")"
     
-    sql=( )
-	
+    sql=("Select  PI.code                       AS InvoiceNo"
+        " ,TR_BP.Legalname1 as Transporter  "
+        " ,BP.legalname1 as Party "
+        " ,Cast(sum(PI.NETTVALUE) as decimal(18,2))  as Quantity "
+        " ,Cast(COALESCE(sum(Freight.Value),0) As decimal(18,2)) AS Freight  "
+        " ,PI.LRNO "
+        " ,PI.LRDATE "
+        " ,COALESCE(TZ.Longdescription,'') as Despatch "
+" from PlantInvoice as PI "
+" Join    PLANTINVOICELINE PIL            ON      PI.CODE = PIL.PLANTINVOICECODE "
+" Join Plant on PI.FACTORYCODE = Plant.Code "
+" join OrderPartner as OP    On      PI.BUYERIFOTCCUSTOMERSUPPLIERTYPE = OP.CUSTOMERSUPPLIERTYPE  "
+                                  " And     PI.BUYERIFOTCCUSTOMERSUPPLIERCODE = OP.CUSTOMERSUPPLIERCODE   "
+" join BusinessPartner as BP  On     OP.OrderbusinessPartnerNumberId = BP.NumberID "
+ " "
+" join OrderPartner as TR_OP    On      PI.TRANSPORTERCODCSMSUPPLIERTYPE = TR_OP.CUSTOMERSUPPLIERTYPE  "
+                                  " And     PI.TRANSPORTERCODCSMSUPPLIERCODE = TR_OP.CUSTOMERSUPPLIERCODE   "
+" join BusinessPartner as TR_BP  On     TR_OP.OrderbusinessPartnerNumberId = TR_BP.NumberID "
+ " "
+" Left Join TransportZone  TZ       ON  TR_BP.Transportzonecode = TZ.Code     "
+" Left Join    INDTAXDETAIL Freight       ON      PIL.ABSUNIQUEID = Freight.ABSUNIQUEID   "
+          " And     Freight.ITAXCODE = 'FRT'   "
+          " And     Freight.TAXCATEGORYCODE = 'GFR' "
+          "Where PI.Invoicedate between '"+LDStartDate+"' and '"+LDEndDate+"'"+LSCompany+LSTransporter+LSDispatch+LSParty+""
+" Group By TR_BP.Legalname1,TZ.Longdescription,BP.legalname1,PI.LRDATE, PI.LRNO, PI.Code"
+" order by Transporter,Despatch,LRDate")
+
+    print(sql)
     stmt = con.db.prepare(con.conn, sql)
     stdt = datetime.strptime(LDStartDate, '%Y-%m-%d').date()
     etdt = datetime.strptime(LDEndDate, '%Y-%m-%d').date()
@@ -179,53 +190,65 @@ def TWPWDDGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany
     result = con.db.fetch_both(stmt)
     print(result)
     while result != False:
-        global counter
-        counter = counter + 1
-        pdfrpt1.textsize(result, pdfrpt1.d, stdt, etdt)
-        pdfrpt1.d = pdfrpt1.dvalue(stdt, etdt, pdfrpt1.divisioncode)
+        pdfrpt3.textsize(pdfrpt3.c,result, pdfrpt3.d, stdt, etdt)
+        pdfrpt3.d = pdfrpt3.dvalue(stdt, etdt, pdfrpt3.transporter)
         result = con.db.fetch_both(stmt)  
-    if pdfrpt1.d < 20:
-        pdfrpt1.d = 740
-        pdfrpt1.c.showPage()
-        pdfrpt1.header(stdt, etdt, pdfrpt1.divisioncode)
+    if pdfrpt3.d < 20:
+        pdfrpt3.d = 740
+        pdfrpt3.c.showPage()
+        pdfrpt3.header(stdt, etdt, pdfrpt3.transporter)
     if result == False:
-        global Exceptions
-    if counter>0:
-        pdfrpt1.d = pdfrpt1.dlocvalue(pdfrpt1.d)
-        pdfrpt1.fonts(7)
-        pdfrpt1.c.drawString(10, pdfrpt1.d, str(pdfrpt1.divisioncode[-2]) + " TOTAL : ")
-        pdfrpt1.companyclean()
-        views.Exceptions = ""
-    elif counter == 0:
-        views.Exceptions = "Note: Please Select Valid Credentials"
-        return
-    pdfrpt1.c.setPageSize(pdfrpt1.landscape(pdfrpt1.A4))
-    pdfrpt1.c.showPage()
-    pdfrpt1.c.save()
+        pdfrpt3.d = pdfrpt3.dlocvalue(pdfrpt3.d)
+        pdfrpt3.fonts(7)
+        pdfrpt3.c.drawString(10, pdfrpt3.d, str(pdfrpt3.transporter[-1]) + " TOTAL : ")
+        pdfrpt3.companyclean()
+
+    pdfrpt3.c.setPageSize(pdfrpt3.A4)
+    pdfrpt3.c.showPage()
+    pdfrpt3.c.save()
 def TWPWDSGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,LSAllBranch,LSAllTransporter,LSAllDispatch,LSAllParty,LDStartDate,LDEndDate,LSReportType):
     if not LSAllCompany and not LSCompany or LSAllCompany:
         LSCompany = ""
     elif LSCompany:
         LSCompany = " And Plant.Code in ("+str(LSCompany)[1:-1]+")"
-    if not LSAllBranch and not LSBranch or LSAllBranch:
-        LSBranch = ""
-    elif LSBranch:
-        LSBranch = " And xyz.Code in ("+str(LSBranch)[1:-1]+")"
     if not LSAllTransporter and not LSTransporter or LSAllTransporter:
         LSTransporter = ""
     elif LSTransporter:
-        LSTransporter = " And xyz.Code in ("+str(LSTransporter)[1:-1]+")"
+        LSTransporter = " And TR_BP.numberid in ("+str(LSTransporter)[1:-1]+")"
     if not LSAllDispatch and not LSDispatch or LSAllDispatch:
         LSDispatch = ""
     elif LSDispatch:
-        LSDispatch = " And xyz.Code in ("+str(LSDispatch)[1:-1]+")"
+        LSDispatch = " And TZ.Code in ("+str(LSDispatch)[1:-1]+")"
     if not LSAllParty and not LSParty or LSAllParty:
         LSParty = ""
     elif LSParty:
-        LSParty = " And xyz.Code in ("+str(LSParty)[1:-1]+")"
+        LSParty = " And BP.numberid in ("+str(LSParty)[1:-1]+")"
     
-    sql=( )
+    sql=(
+        " Select  Plant.Longdescription                       AS Company "
+         " ,TR_BP.Legalname1 as Transporter "
+         " ,BP.Legalname1 as party "
+         " ,Cast(sum(PI.NETTVALUE) as decimal(18,2))  as Quantity "
+         " ,Cast(COALESCE(sum(Freight.Value),0) As decimal(18,2)) AS Freight  "
+ " from PlantInvoice as PI "
+ " Join    PLANTINVOICELINE PIL            ON      PI.CODE = PIL.PLANTINVOICECODE "
+ " Join Plant on PI.FACTORYCODE = Plant.Code "
+ " join OrderPartner as OP    On      PI.BUYERIFOTCCUSTOMERSUPPLIERTYPE = OP.CUSTOMERSUPPLIERTYPE  "
+                                   " And     PI.BUYERIFOTCCUSTOMERSUPPLIERCODE = OP.CUSTOMERSUPPLIERCODE   "
+ " join BusinessPartner as BP  On     OP.OrderbusinessPartnerNumberId = BP.NumberID"
+ " join OrderPartner as TR_OP    On      PI.TRANSPORTERCODCSMSUPPLIERTYPE = TR_OP.CUSTOMERSUPPLIERTYPE  "
+                                   " And     PI.TRANSPORTERCODCSMSUPPLIERCODE = TR_OP.CUSTOMERSUPPLIERCODE   "
+ " join BusinessPartner as TR_BP  On     TR_OP.OrderbusinessPartnerNumberId = TR_BP.NumberID     "
+ " Left Join TransportZone  TZ       ON  TR_BP.Transportzonecode = TZ.Code     "
+ " Left Join    INDTAXDETAIL Freight       ON      PIL.ABSUNIQUEID = Freight.ABSUNIQUEID   "
+           " And     Freight.ITAXCODE = 'FRT'   "
+           " And     Freight.TAXCATEGORYCODE = 'GFR' "
+           "Where PI.Invoicedate between '"+LDStartDate+"' and '"+LDEndDate+"'"+LSCompany+LSTransporter+LSDispatch+LSParty+""
+ " Group By TR_BP.Legalname1 ,Plant.Longdescription ,BP.Legalname1"
+ " Order By TR_BP.Legalname1, Plant.Longdescription ,BP.Legalname1"
+     )
 	
+    print(sql)
     stmt = con.db.prepare(con.conn, sql)
     stdt = datetime.strptime(LDStartDate, '%Y-%m-%d').date()
     etdt = datetime.strptime(LDEndDate, '%Y-%m-%d').date()
@@ -233,26 +256,19 @@ def TWPWDSGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany
     result = con.db.fetch_both(stmt)
     print(result)
     while result != False:
-        global counter
-        counter = counter + 1
-        pdfrpt1.textsize(result, pdfrpt1.d, stdt, etdt)
-        pdfrpt1.d = pdfrpt1.dvalue(stdt, etdt, pdfrpt1.divisioncode)
+        pdfrpt4.textsize(pdfrpt4.c,result, pdfrpt4.d, stdt, etdt)
+        pdfrpt4.d = pdfrpt4.dvalue(stdt, etdt, pdfrpt4.transporter)
         result = con.db.fetch_both(stmt)  
-    if pdfrpt1.d < 20:
-        pdfrpt1.d = 740
-        pdfrpt1.c.showPage()
-        pdfrpt1.header(stdt, etdt, pdfrpt1.divisioncode)
+    if pdfrpt4.d < 20:
+        pdfrpt4.d = 740
+        pdfrpt4.c.showPage()
+        pdfrpt4.header(stdt, etdt, pdfrpt4.transporter)
     if result == False:
-        global Exceptions
-    if counter>0:
-        pdfrpt1.d = pdfrpt1.dlocvalue(pdfrpt1.d)
-        pdfrpt1.fonts(7)
-        pdfrpt1.c.drawString(10, pdfrpt1.d, str(pdfrpt1.divisioncode[-2]) + " TOTAL : ")
-        pdfrpt1.companyclean()
-        views.Exceptions = ""
-    elif counter == 0:
-        views.Exceptions = "Note: Please Select Valid Credentials"
-        return
-    pdfrpt1.c.setPageSize(pdfrpt1.landscape(pdfrpt1.A4))
-    pdfrpt1.c.showPage()
-    pdfrpt1.c.save()
+        pdfrpt4.d = pdfrpt4.dlocvalue(pdfrpt4.d)
+        pdfrpt4.fonts(7)
+        pdfrpt4.c.drawString(10, pdfrpt4.d, str(pdfrpt4.transporter[-1]) + " TOTAL : ")
+        pdfrpt4.companyclean()
+
+    pdfrpt4.c.setPageSize(pdfrpt4.A4)
+    pdfrpt4.c.showPage()
+    pdfrpt4.c.save()

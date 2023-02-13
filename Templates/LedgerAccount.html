@@ -40,6 +40,12 @@ position: absolute;
 
 }
 
+.opbal{
+    position: absolute;
+    margin-top: 50px;
+    margin-left: 850px;
+}
+
 select,
 .select2 {
     width: 100%;
@@ -150,17 +156,24 @@ select,
 </select>
 </div>
 <div class="two">
-    <label for="book"> Select Books</label>
+    <label for="book"> <b>Select Books</b></label>
     <select  name='book' id='book'>
         <option value=""></option>
     <option value="1">Sundry Debtors Ledger</option>
     <option value="2">Sundry Creditors Ledger</option>
     <option value="3">Sundry Debtors Summary</option>
     <option value="4">Sundry Creditors Summary</option>
+    <option value="5">Trial Balance</option>
     </select>
     </div>
 
-
+<div class="opbal">
+    <label for="opbal"><b> With Op Bal</b></label>
+    <select  name='opbal' id='opbal'>
+        <option value="1">Yes</option>
+    <option value="2">No</option>
+    </select>
+    </div>
 
 
 
@@ -180,7 +193,7 @@ alert(a);</script>
 </b></label>
 </div>
 <script>
-
+    
 function updateDate() {
     var selectBox = document.getElementById("year");
     var selectedValue = selectBox.options[selectBox.selectedIndex].value;
@@ -220,6 +233,8 @@ function updateDate() {
     }
 
    }
+
+   
 </script>
 </body>
 
