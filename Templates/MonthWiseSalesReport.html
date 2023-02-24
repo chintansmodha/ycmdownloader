@@ -25,6 +25,11 @@
     margin-top: 10px;
     margin-left:230px ;
 }
+.dispatch{
+    position: absolute;
+    margin-top: 200px;
+    margin-left:50px ;
+}
 
 .prefix{
     position: absolute;
@@ -142,7 +147,7 @@ select,
 <body  style="background-color:Lavender;">
 
 
-<form action='GSTRONE' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
+<form action='MonthWiseSalesReport' id='form1' class="mar" onsubmit=" date(event);" style="font-family:arial;" target="_blank">
 
 <div class="one">
 <label for='startdate'><b>Start Date:</b></label><br>
@@ -152,7 +157,13 @@ select,
 <input type='date' id='enddate' name='enddate'>
 </div>
 
-
+<div class="dispatch">
+    <label for='dispatch' ><b>Despatchwise:</b></label>
+<select  name='dispatch' id='dispatch'>
+<option value="0">No</option>
+<option value="1">Yes</option>
+</select>
+    </div>
 <div class="four">
 <label for='unit' ><b>Company Unit:</b></label>
 <label for="allcomp"> Select All Company Units</label>

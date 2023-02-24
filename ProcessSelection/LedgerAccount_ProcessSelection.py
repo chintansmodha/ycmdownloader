@@ -50,13 +50,14 @@ def LedgerAccount_Process(request):
         reportName="Sundry Creditors Summary"
         GLCode =" and glmaster.code in ('1010101210')"
         LAGDFDB.LedgerAccount_GetDataSummary(LSCompany,LCCompany,GLCode,startdate,enddate,reportName)
-    if request.GET.getlist():
+    if request.GET.getlist('book')[0] == '5':
         opbal = request.GET.getlist('opbal')
         LSFileName = "LATrialBalance" + LSFileName
         save_name = os.path.join(os.path.expanduser("~"),LSFileName)
         pdfrpt.c = pdfrpt.canvas.Canvas(save_name + ".pdf")
         reportName="Trial Balance"
-        LAGDFDB.trialBalance(LSCompany,LCCompany,GLCode,startdate,enddate,reportName,opbal)
+        
+        LAGDFDB.trialBalance(LSCompany,LCCompany,startdate,enddate,reportName,opbal)
 
 
     # LAGDFDB.LedgerAccount_GetData(LSCompany,LCCompany,startdate,enddate)

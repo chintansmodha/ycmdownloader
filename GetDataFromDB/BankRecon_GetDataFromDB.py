@@ -65,6 +65,9 @@ def BankReconGetDataFromDB(LSCompany,LSBank,LSAllCompany,LSAllBank,LDEndDate,LDS
     elif counter == 0:
         Exceptions = "Note: Please Select Valid Credentials"
         return
+    pdfrpt.boldfonts(8)
+    pdfrpt.c.drawString(10, pdfrpt.d, str(" Total Receipts : "))
+    pdfrpt.totalprint(pdfrpt.d)
     pdfrpt.newrequest()
     pdfrpt.c.setPageSize(pdfrpt.A4)
     pdfrpt.c.showPage()

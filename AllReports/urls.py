@@ -169,14 +169,16 @@ from AllReports import views
 # from ProcessSelection import TDSReport_ProcessSelection as TDRPS
 # from FormLoad import GSTRONE_FormLoad as GSTRFL
 # from ProcessSelection import GSTRONE_ProcessSelection as GSTRPS
-# from FormLoad import LedgerAccount_FormLoad as LAFL
+from FormLoad import LedgerAccount_FormLoad as LAFL
 from ProcessSelection import LedgerAccount_ProcessSelection as LAPS
 from FormLoad import TransporterWiseDispatch_FormLoad as twdfl
 from ProcessSelection import TransporterWiseDispatch_ProcessSelection as twdps
 from FormLoad import BankRecon_FormLoad as BRFL
 from ProcessSelection import BankRecon_ProcessSelection as BRPS
 from FormLoad import BrokerWiseWOList_FormLoad as BWLFL
+from ProcessSelection import BrokerWiseWOList_ProcessSelection as BWLPS
 from FormLoad import MothwiseSalesReport_FormLoad as MSRFL
+from ProcessSelection import MonthWiseSalesReport_ProcessSelection as MWSRPS
 urlpatterns = [
     path('', views.home, name='home'),
 #     path('AdhocLedger.html', AHLviews.AdhocLedger, name="AdhocLedger"),
@@ -427,15 +429,17 @@ urlpatterns = [
     # path("TDSReport",TDRPS.TDSReportProcess,name="TCSReport.html"),
     # path("GSTRONE.html",GSTRFL.GSTRONEHtml,name="GSTRONEHTML"),
     # path('GSTRONE',GSTRPS.GSTRONEPROCESS,name="GSTRONE"),
-    # path("LedgerAccount.html",LAFL.LedgerAccountHtml,name="LedgerAccount.html"),
-    # path("LedgerAccount",LAPS.LedgerAccount_Process,name="LedgerAccount"),
+    path("LedgerAccount.html",LAFL.LedgerAccountHtml,name="LedgerAccount.html"),
+    path("LedgerAccount",LAPS.LedgerAccount_Process,name="LedgerAccount"),
     path("TransporterWiseDispatch.html",twdfl.TWDFL,name="TransporterWiseDispatch.html"),
     path("TransporterWiseDispatch",twdps.TransporterWiseDispatchProcessSelection,name="TransporterWiseDispatch"),
     path("BankRecon.html",BRFL.BankReconFormLoad,name="BankRecon.html"),
     path("BankRecon",BRPS.BankReconProcessSelection,name="BankRecon"),
     
     path('BrokerWiseWOList.html',BWLFL.BrokerWiseWOListHtml,name="BrokerWiseWOList"),
+    path('BrokerWiseWOList',BWLPS.BrokerWiseWOList,name="BrokerWiseWOList"),
     path('MonthwiseSalesReport.html',MSRFL.MonthwiseSalesReport,name="MonthwiseSalesReport"),
+    path('MonthWiseSalesReport',MWSRPS.MonthWiseSalesReport,name="MonthwiseSalesReport"),
     
 
 ]

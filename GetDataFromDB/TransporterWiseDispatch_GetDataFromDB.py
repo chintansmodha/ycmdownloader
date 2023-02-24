@@ -57,7 +57,6 @@ def TWDDGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,L
     etdt = datetime.strptime(LDEndDate, '%Y-%m-%d').date()
     con.db.execute(stmt)
     result = con.db.fetch_both(stmt)
-    print(result)
     while result != False:
         pdfrpt1.textsize(pdfrpt1.c,result, pdfrpt1.d, stdt, etdt)
         pdfrpt1.d = pdfrpt1.dvalue(stdt, etdt, pdfrpt1.transporter)
@@ -67,14 +66,21 @@ def TWDDGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,L
         pdfrpt1.c.showPage()
         pdfrpt1.header(stdt, etdt, pdfrpt1.transporter)
     if result == False:
-        pdfrpt1.d = pdfrpt1.dlocvalue(pdfrpt1.d)
-        pdfrpt1.fonts(7)
-        pdfrpt1.c.drawString(10, pdfrpt1.d, str(pdfrpt1.transporter[-1]) + " TOTAL : ")
-        pdfrpt1.companyclean()
 
+        pdfrpt1.fonts(7)
+        pdfrpt1.dateTotalPrint(pdfrpt1.d)
+        pdfrpt1.d = pdfrpt1.dvalue(stdt, etdt, pdfrpt1.transporter)    
+        pdfrpt1.d = pdfrpt1.dvalue(stdt, etdt, pdfrpt1.transporter)       
+        pdfrpt1.despatchTotalprint(pdfrpt1.d)
+        pdfrpt1.d = pdfrpt1.dvalue(stdt, etdt, pdfrpt1.transporter)  
+        pdfrpt1.d = pdfrpt1.dvalue(stdt, etdt, pdfrpt1.transporter)  
+        pdfrpt1.transporterTotalprint(pdfrpt1.d)
+        
     pdfrpt1.c.setPageSize(pdfrpt1.A4)
     pdfrpt1.c.showPage()
     pdfrpt1.c.save()
+    pdfrpt1.newrequest()
+    pdfrpt1.newpage()
 
 def TWDSGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,LSAllBranch,LSAllTransporter,LSAllDispatch,LSAllParty,LDStartDate,LDEndDate,LSReportType):
     if not LSAllCompany and not LSCompany or LSAllCompany:
@@ -129,14 +135,19 @@ def TWDSGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,L
         pdfrpt2.c.showPage()
         pdfrpt2.header(stdt, etdt, pdfrpt2.transporter)
     if result == False:
-        pdfrpt2.d = pdfrpt2.dlocvalue(pdfrpt2.d)
-        pdfrpt2.fonts(7)
-        pdfrpt2.c.drawString(10, pdfrpt2.d, str(pdfrpt2.transporter[-1]) + " TOTAL : ")
-        pdfrpt2.companyclean()
+        pdfrpt2.d = pdfrpt2.dvalue(stdt, etdt, pdfrpt2.transporter)
+        pdfrpt2.d = pdfrpt2.dvalue(stdt, etdt, pdfrpt2.transporter)
+        pdfrpt2.brokertotalprint(pdfrpt2.d,stdt,etdt)
+        pdfrpt2.d = pdfrpt2.dvalue(stdt, etdt, pdfrpt2.transporter)
+        pdfrpt2.d = pdfrpt2.dvalue(stdt, etdt, pdfrpt2.transporter)
+        pdfrpt2.grandtotalprint(pdfrpt2.d,stdt,etdt)
+        
         views.Exceptions = ""
+    pdfrpt2.newrequest()
     pdfrpt2.c.setPageSize(pdfrpt2.A4)
     pdfrpt2.c.showPage()
     pdfrpt2.c.save()
+
 def TWPWDDGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany,LSAllBranch,LSAllTransporter,LSAllDispatch,LSAllParty,LDStartDate,LDEndDate,LSReportType):
     if not LSAllCompany and not LSCompany or LSAllCompany:
         LSCompany = ""
@@ -180,7 +191,7 @@ def TWPWDDGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany
           " And     Freight.TAXCATEGORYCODE = 'GFR' "
           "Where PI.Invoicedate between '"+LDStartDate+"' and '"+LDEndDate+"'"+LSCompany+LSTransporter+LSDispatch+LSParty+""
 " Group By TR_BP.Legalname1,TZ.Longdescription,BP.legalname1,PI.LRDATE, PI.LRNO, PI.Code"
-" order by Transporter,Despatch,LRDate")
+" order by Transporter,Despatch,party,LRDate")
 
     print(sql)
     stmt = con.db.prepare(con.conn, sql)
@@ -198,11 +209,16 @@ def TWPWDDGDFDB(LSCompany,LSBranch,LSTransporter,LSDispatch,LSParty,LSAllCompany
         pdfrpt3.c.showPage()
         pdfrpt3.header(stdt, etdt, pdfrpt3.transporter)
     if result == False:
-        pdfrpt3.d = pdfrpt3.dlocvalue(pdfrpt3.d)
-        pdfrpt3.fonts(7)
-        pdfrpt3.c.drawString(10, pdfrpt3.d, str(pdfrpt3.transporter[-1]) + " TOTAL : ")
-        pdfrpt3.companyclean()
+        pdfrpt3.d = pdfrpt3.dvalue(stdt, etdt, pdfrpt3.transporter) 
+        pdfrpt3.datetotalprint(pdfrpt3.d)
+        pdfrpt3.d = pdfrpt3.dvalue(stdt, etdt, pdfrpt3.transporter)  
+        pdfrpt3.partytotalprint(pdfrpt3.d,stdt,etdt)
+        pdfrpt3.d = pdfrpt3.dvalue(stdt, etdt, pdfrpt3.transporter) 
+        pdfrpt3.printDespatchTotal(pdfrpt3.d,stdt,etdt)   
+        pdfrpt3.d = pdfrpt3.dvalue(stdt, etdt, pdfrpt3.transporter)       
+        pdfrpt3.brokertotalprint(pdfrpt3.d,stdt,etdt)
 
+    pdfrpt3.newrequest()
     pdfrpt3.c.setPageSize(pdfrpt3.A4)
     pdfrpt3.c.showPage()
     pdfrpt3.c.save()

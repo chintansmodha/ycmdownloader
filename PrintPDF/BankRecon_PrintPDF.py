@@ -66,7 +66,7 @@ def data(result, d):
         c.drawString(180,d,str(result['PARTY']))
     if result['CHQNO']!=None:
         c.drawString(320,d,str(result['CHQNO']))
-    if result['CHQDATE']!=None:
+    if str(result['CHQDATE'])!='1999-01-01':
         c.drawString(420,d,str(result['CHQDATE']))
     if result['AMOUNT']!=None:
         c.drawString(520,d,str(result['AMOUNT']))
@@ -115,8 +115,8 @@ def textsize(c, result, d, stdt, etdt):
         data(result, d)              
 
     elif divisioncode[-1] != divisioncode[-2]:
-        fonts(7)
-        c.drawString(10, d, str(divisioncode[-2]) + " TOTAL : ")
+        boldfonts(8)
+        c.drawString(10, d, str(" Total Receipts : "))
         totalprint(d)
         c.setPageSize(A4)
         c.showPage()
